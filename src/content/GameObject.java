@@ -1,168 +1,85 @@
 package content;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public abstract class GameObject {
 
-    private double x, y;
+    private float x, y;
+    private float velX, velY;
+    private ObjectID id;
+    private float width, height;
+    private int scale;
 
-    private double velX, velY;
-
-    private Dimension dimension;
-
-    private BufferedImage style;
-
-    private double gravityAcc;
-
-    private boolean falling, jumping;
-
-    public GameObject(double x, double y, BufferedImage style){
-        setLocation(x, y);
-        setStyle(style);
-
-        if(style != null){
-            setDimension(style.getWidth(), style.getHeight());
-        }
-
-        setVelX(0);
-        setVelY(0);
-        setGravityAcc(0.38);
-        jumping = false;
-        falling = true;
+    public GameObject(float x, float y, ObjectID id, float width, float height, int scale) {
+        this.x = x * scale;
+        this.y = y * scale;
+        this.id = id;
+        this.width = width * scale;
+        this.height = height * scale;
+        this.scale = scale;
     }
 
-    public void draw(Graphics g) {
-        BufferedImage style = getStyle();
+    public abstract void tick();
+    public abstract void render(Graphics g);
+    public abstract Rectangle getBounds();
 
-        if(style != null){
-            g.drawImage(style, (int)x, (int)y, null);
-        }
-
-        //for debugging
-        /*Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(Color.WHITE);
-
-        g2.draw(getTopBounds());
-        g2.draw(getBottomBounds());
-        g2.draw(getRightBounds());
-        g2.draw(getLeftBounds());*/
+    public void applyGravity() {
+        velY += 0.5f;
     }
 
-    public void updateLocation() {
-        if(jumping && velY <= 0){
-            jumping = false;
-            falling = true;
-        }
-        else if(jumping){
-            velY = velY - gravityAcc;
-            y = y - velY;
-        }
-
-        if(falling){
-            y = y + velY;
-            velY = velY + gravityAcc;
-        }
-
-        x = x + velX;
-    }
-
-    public void setLocation(double x, double y) {
-        setX(x);
-        setY(y);
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public Dimension getDimension(){
-        return dimension;
+    public float getX() {
+        return x;
     }
 
-    public void setDimension(Dimension dimension) {
-        this.dimension = dimension;
+    public float getY() {
+        return y;
     }
 
-    public void setDimension(int width, int height){ this.dimension =  new Dimension(width, height); }
-
-    public BufferedImage getStyle() {
-        return style;
-    }
-
-    public void setStyle(BufferedImage style) {
-        this.style = style;
-    }
-
-    public double getVelX() {
+    public float getVelX() {
         return velX;
     }
 
-    public void setVelX(double velX) {
+    public void setVelX(float velX) {
         this.velX = velX;
     }
 
-    public double getVelY() {
+    public float getVelY() {
         return velY;
     }
 
-    public void setVelY(double velY) {
+    public void setVelY(float velY) {
         this.velY = velY;
     }
 
-    public double getGravityAcc() {
-        return gravityAcc;
+    public ObjectID getId() {
+        return id;
     }
 
-    public void setGravityAcc(double gravityAcc) {
-        this.gravityAcc = gravityAcc;
+    public void setId(ObjectID id) {
+        this.id = id;
     }
 
-    public Rectangle getTopBounds(){
-        return new Rectangle((int)x+dimension.width/6, (int)y, 2*dimension.width/3, dimension.height/2);
+    public float getWidth() {
+        return width;
     }
 
-    public Rectangle getBottomBounds(){
-        return new Rectangle((int)x+dimension.width/6, (int)y + dimension.height/2, 2*dimension.width/3, dimension.height/2);
+    public void setWidth(float width) {
+        this.width = width;
     }
 
-    public Rectangle getLeftBounds(){
-        return new Rectangle((int)x, (int)y + dimension.height/4, dimension.width/4, dimension.height/2);
+    public float getHeight() {
+        return height;
     }
 
-    public Rectangle getRightBounds(){
-        return new Rectangle((int)x + 3*dimension.width/4, (int)y + dimension.height/4, dimension.width/4, dimension.height/2);
-    }
-
-    public Rectangle getBounds(){
-        return new Rectangle((int)x, (int)y, dimension.width, dimension.height);
-    }
-
-    public boolean isFalling() {
-        return falling;
-    }
-
-    public void setFalling(boolean falling) {
-        this.falling = falling;
-    }
-
-    public boolean isJumping() {
-        return jumping;
-    }
-
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
+    public void setHeight(float height) {
+        this.height = height;
     }
 }

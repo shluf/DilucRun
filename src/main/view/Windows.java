@@ -1,4 +1,4 @@
-package utility;
+package main.view;
 
 import main.GameEngine;
 
@@ -13,14 +13,17 @@ public class Windows {
         size = new Dimension(width, height);
         frame = new JFrame(title);
 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(size);
         frame.setMaximumSize(size);
         frame.setMinimumSize(size);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setFocusable(true);
+
         frame.add(game);
+
+        frame.requestFocusInWindow();
         frame.setVisible(true);
 
     }

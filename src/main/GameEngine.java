@@ -1,6 +1,11 @@
 package main;
 
-import utility.Windows;
+import content.ObjectHandler;
+import content.block.Block;
+import content.hero.Diluc;
+import main.condition.GameStatus;
+import main.view.Windows;
+import textures.Texture;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -14,8 +19,11 @@ public class GameEngine extends Canvas implements Runnable {
     private static final int WINDOW_WIDTH = 960;
     private static final int WINDOW_HEIGHT = 720;
 
-    private boolean running;
+    private GameStatus gameStatus;
 
+    private boolean running;
+    private ObjectHandler handler;
+    private static Texture tex;
     private Thread thread;
 
     public GameEngine() {
@@ -27,6 +35,19 @@ public class GameEngine extends Canvas implements Runnable {
     }
 
     private void initialize() {
+        tex = new Texture();
+
+        handler = new ObjectHandler();
+        this.addKeyListener(new GameKey(handler));
+
+        handler.setHero(new Diluc(32,32,1, handler));
+        for (int i = 0; i < 20; i++) {
+            handler.addObj(new Block(i*32,32*10,32,32,1));
+        }
+        for (int i = 0; i < 30; i++) {
+            handler.addObj(new Block(i*32,32*15,32,32,1));
+        }
+
         new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
 
         start();
@@ -35,12 +56,13 @@ public class GameEngine extends Canvas implements Runnable {
     private synchronized void start() {
         thread = new Thread(this);
         thread.start();
-        this.running=true;
+        this.running = true;
     }
+
     private synchronized void stop() {
         try {
             thread.join();
-            this.running=false;
+            this.running = false;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -49,13 +71,14 @@ public class GameEngine extends Canvas implements Runnable {
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-         double amountOfTick = NUM_TICKS;
-         double ns = NANOS_PER_SEC / amountOfTick;
-         double delta = 0;
-         long timer = System.currentTimeMillis();
-         int frames = 0;
-         int updates = 0;
-         while (running) {
+        double ns = NANOS_PER_SEC / NUM_TICKS;
+
+        double delta = 0;
+        long timer = System.currentTimeMillis();
+        int frames = 0;
+        int updates = 0;
+
+        while (running) {
              long now = System.nanoTime();
              delta += (now - lastTime) / ns;
              lastTime = now;
@@ -76,16 +99,16 @@ public class GameEngine extends Canvas implements Runnable {
                  updates = 0;
                  frames = 0;
              }
-         }
+        }
 
-         stop();
+        stop();
     }
 
     private void tick() {
-
+        handler.tick();
     }
 
-    private void  render() {
+    private void render() {
         BufferStrategy buf = this.getBufferStrategy();
         if (buf == null) {
             this.createBufferStrategy(3);
@@ -95,10 +118,17 @@ public class GameEngine extends Canvas implements Runnable {
         Graphics g = buf.getDrawGraphics();
         g.setColor(Color.BLACK);
         g.fillRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
+        g.drawImage(tex.getDilucTex()[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null );
+
+        handler.render(g);
 
         g.dispose();
         buf.show();
 
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
     }
 
     public static int getWindowWidth() {
@@ -107,5 +137,9 @@ public class GameEngine extends Canvas implements Runnable {
 
     public static int getWindowHeight() {
         return WINDOW_HEIGHT;
+    }
+
+    public static Texture getTexture() {
+        return tex;
     }
 }
