@@ -16,7 +16,6 @@ public class Diluc extends GameObject {
 
     private HeroAction action = HeroAction.IDLE_RIGHT;
     private boolean jumped = false;
-    private ButtonAction buttonAction;
 
     private ObjectHandler handler;
     private Texture tex;

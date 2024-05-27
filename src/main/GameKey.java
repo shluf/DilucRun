@@ -23,6 +23,9 @@ public class GameKey implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         switch (keyCode) {
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
+                break;
             case KeyEvent.VK_UP:
                 if (!handler.getHero().isJumped()) {
                     handler.getHero().setVelY(-15);

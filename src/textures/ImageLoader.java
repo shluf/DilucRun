@@ -13,14 +13,25 @@ public class ImageLoader {
 ////        brickAnimation = loadImage("/brick-animation.png");
 //    }
 
-    public BufferedImage loadImage(String path){
+    public BufferedImage loadImage(String path, char type) {
         BufferedImage image = null;
 
-        try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/sprite" + path)));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (type == 's') {
+            try {
+                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/sprite" + path)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        if (type == 'a') {
+            try {
+                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets" + path)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         return image;
     }

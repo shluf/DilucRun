@@ -4,6 +4,7 @@ import content.ObjectHandler;
 import content.block.Block;
 import content.hero.Diluc;
 import main.condition.GameStatus;
+import main.view.Camera;
 import main.view.Windows;
 import textures.Texture;
 
@@ -18,13 +19,17 @@ public class GameEngine extends Canvas implements Runnable {
     private static final String NAME = "Diluc Run";
     private static final int WINDOW_WIDTH = 960;
     private static final int WINDOW_HEIGHT = 720;
+    private static final int SREEN_WIDTH = WINDOW_WIDTH - 67;
+    private static final int SREEN_HEIGHT = WINDOW_HEIGHT;
+    private static final int SREEN_OFFSET = 16*3;
 
     private GameStatus gameStatus;
-
     private boolean running;
-    private ObjectHandler handler;
-    private static Texture tex;
+
     private Thread thread;
+    private ObjectHandler handler;
+    private Camera cam;
+    private static Texture tex;
 
     public GameEngine() {
         initialize();
@@ -40,14 +45,21 @@ public class GameEngine extends Canvas implements Runnable {
         handler = new ObjectHandler();
         this.addKeyListener(new GameKey(handler));
 
-        handler.setHero(new Diluc(32,32,1, handler));
-        for (int i = 0; i < 20; i++) {
-            handler.addObj(new Block(i*32,32*10,32,32,1));
+        handler.setHero(new Diluc(32,32,2, handler));
+        for (int i = 8; i < 23; i++) {
+            if (i != 16 && i!=17 && i != 18) {
+                handler.addObj(new Block(i * 32, 32 * 10, 32, 32, 1));
+            }
+        }for (int i = 8; i < 23; i++) {
+            if (i != 16 && i!=17 && i != 18) {
+                handler.addObj(new Block(i * 32, 32 * 20, 32, 32, 1));
+            }
         }
         for (int i = 0; i < 30; i++) {
             handler.addObj(new Block(i*32,32*15,32,32,1));
         }
 
+        cam = new Camera(0, SREEN_OFFSET);
         new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
 
         start();
@@ -106,6 +118,7 @@ public class GameEngine extends Canvas implements Runnable {
 
     private void tick() {
         handler.tick();
+        cam.tick(handler.getHero());
     }
 
     private void render() {
@@ -116,11 +129,20 @@ public class GameEngine extends Canvas implements Runnable {
         }
 
         Graphics g = buf.getDrawGraphics();
+        Graphics2D g2 = (Graphics2D) g;
+
         g.setColor(Color.BLACK);
         g.fillRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
-        g.drawImage(tex.getDilucTex()[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null );
+//        g.drawImage(tex.getDilucTex()[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null );
+        g.drawImage(tex.getBackgroundOne(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundTwo(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundThree(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundFour(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundFive(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
 
+        g2.translate(cam.getX(), cam.getY());
         handler.render(g);
+        g2.translate(-cam.getX(), -cam.getY());
 
         g.dispose();
         buf.show();
@@ -138,6 +160,15 @@ public class GameEngine extends Canvas implements Runnable {
     public static int getWindowHeight() {
         return WINDOW_HEIGHT;
     }
+
+    public static int getSreenWidth() {
+        return SREEN_WIDTH;
+    }
+
+    public static int getSreenHeight() {
+        return SREEN_HEIGHT;
+    }
+
 
     public static Texture getTexture() {
         return tex;

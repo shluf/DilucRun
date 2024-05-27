@@ -7,9 +7,11 @@ public class Texture {
     private ImageLoader loader;
     private BufferedImage hero_sheet;
 
-    public BufferedImage[] diluc;
+    private BufferedImage[] diluc;
 
-    public BufferedImage idleRight, idleLeft, runRight, runLeft;
+    private BufferedImage idleRight, idleLeft, runRight, runLeft;
+    private BufferedImage backgroundOne, backgroundTwo, backgroundThree, backgroundFour, backgroundFive;
+
 
     public Texture() {
         diluc = new BufferedImage[4];
@@ -17,11 +19,16 @@ public class Texture {
         loader = new ImageLoader();
 
         try {
-            hero_sheet = loader.loadImage("/hero-Sheet.png");
-            idleRight = loader.loadImage("/hero-Idle.gif");
-            idleLeft = loader.loadImage("/hero-Idle-left.gif");
-            runRight = loader.loadImage("/hero-Run.gif");
-            runLeft = loader.loadImage("/hero-Run-left.gif");
+            hero_sheet = loader.loadImage("/hero-Sheet.png", 's');
+            idleRight = loader.loadImage("/hero-Idle.gif",'s');
+            idleLeft = loader.loadImage("/hero-Idle-left.gif",'s');
+            runRight = loader.loadImage("/hero-Run.gif",'s');
+            runLeft = loader.loadImage("/hero-Run-left.gif",'s');
+            backgroundOne = loader.loadImage("/plx-1.png",'a');
+            backgroundTwo = loader.loadImage("/plx-2.png",'a');
+            backgroundThree = loader.loadImage("/plx-3.png",'a');
+            backgroundFour = loader.loadImage("/plx-4.png",'a');
+            backgroundFive = loader.loadImage("/plx-5.png",'a');
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,5 +64,25 @@ public class Texture {
 
     public BufferedImage getRunLeft() {
         return runLeft;
+    }
+
+    public BufferedImage getBackgroundOne() {
+        return backgroundOne;
+    }
+
+    public BufferedImage getBackgroundTwo() {
+        return backgroundTwo;
+    }
+
+    public BufferedImage getBackgroundThree() {
+        return backgroundThree;
+    }
+
+    public BufferedImage getBackgroundFour() {
+        return backgroundFour;
+    }
+
+    public BufferedImage getBackgroundFive() {
+        return backgroundFive;
     }
 }

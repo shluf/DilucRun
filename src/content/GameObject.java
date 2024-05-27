@@ -8,7 +8,6 @@ public abstract class GameObject {
     private float velX, velY;
     private ObjectID id;
     private float width, height;
-    private int scale;
 
     public GameObject(float x, float y, ObjectID id, float width, float height, int scale) {
         this.x = x * scale;
@@ -16,7 +15,6 @@ public abstract class GameObject {
         this.id = id;
         this.width = width * scale;
         this.height = height * scale;
-        this.scale = scale;
     }
 
     public abstract void tick();
