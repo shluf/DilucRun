@@ -12,7 +12,7 @@ public class Camera {
     }
 
     public void tick(GameObject hero) {
-        x = (int) -hero.getX() + GameEngine.getSreenWidth()/2;
+        x = (int) -hero.getX() + GameEngine.getScreenWidth()/2;
     }
 
     public int getX() {

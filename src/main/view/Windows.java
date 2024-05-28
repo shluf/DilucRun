@@ -20,6 +20,7 @@ public class Windows {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setFocusable(true);
+        frame.pack();
 
         frame.add(game);
 
