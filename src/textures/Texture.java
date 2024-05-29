@@ -1,5 +1,7 @@
 package textures;
 
+import content.hero.Diluc;
+
 import java.awt.image.BufferedImage;
 
 public class Texture {
@@ -14,7 +16,6 @@ public class Texture {
 
 
     public Texture() {
-        diluc = new BufferedImage[4];
 
         loader = new ImageLoader();
 
@@ -33,22 +34,45 @@ public class Texture {
             e.printStackTrace();
         }
 
-        getHeroTexture();
+        getFrames();
+//        getHeroTexture();
     }
 
-    private void getHeroTexture() {
-        int x_off = 1;
-        int y_off = 1;
-        int width = 37, height = 37;
+//    private void getHeroTexture() {
+//        int x_off = 1;
+//        int y_off = 1;
+//        int width = 37, height = 37;
+//
+//        for (int i = 0; i < 4; i++) {
+//            diluc[i] = hero_sheet.getSubimage(x_off, i*(width), y_off, height);
+//        }
+//    }
 
-        for (int i = 0; i < 4; i++) {
-            diluc[i] = hero_sheet.getSubimage(x_off, i*(width), y_off, height);
+
+    public void getFrames() {
+//        System.out.println(hero_sheet.getHeight());
+//        System.out.println(hero_sheet.getHeight());
+        int heroHeight = Diluc.getHeroHeight();
+        int heroWidth = Diluc.getHeroWidth();
+        int rows = hero_sheet.getHeight() / heroHeight;
+        int cols = hero_sheet.getWidth() / heroWidth;
+
+        diluc = new BufferedImage[rows * cols];
+
+        int index = 0;
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                diluc[index++] = hero_sheet.getSubimage(x * heroWidth, y * heroHeight, heroWidth, heroHeight);
+            }
         }
+
     }
 
     public BufferedImage[] getDilucTex() {
         return diluc;
     }
+
+
 
     public BufferedImage getIdleRight() {
         return idleRight;

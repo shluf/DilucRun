@@ -11,8 +11,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Diluc extends GameObject {
-    private static final float WIDTH = 37;
-    private static final float HEIGHT = 37;
+    private static final int WIDTH = 50;
+    private static final int HEIGHT = 37;
 
     private HeroAction action = HeroAction.IDLE_RIGHT;
     private boolean jumped = false;
@@ -20,12 +20,14 @@ public class Diluc extends GameObject {
     private ObjectHandler handler;
     private Texture tex;
     private BufferedImage idleRight, idleLeft, runLeft, runRight;
+    private BufferedImage[] diluc;
 
     public Diluc(float x, float y, int scale, ObjectHandler handler) {
         super(x, y, ObjectID.HERO, WIDTH, HEIGHT, scale);
         this.handler = handler;
 
         tex = GameEngine.getTexture();
+        diluc = tex.getDilucTex();
         idleRight = tex.getIdleRight();
         idleLeft = tex.getIdleLeft();
         runRight = tex.getRunRight();
@@ -74,20 +76,20 @@ public class Diluc extends GameObject {
 //        g.fillRect((int) getX(), (int) getY(), (int) WIDTH, (int) HEIGHT);
         switch (action) {
             case RUN_LEFT:
-                g.drawImage(runLeft, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
                 break;
             case RUN_RIGHT:
-                g.drawImage(runRight, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+                g.drawImage(diluc[8], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
                 break;
             case IDLE_LEFT:
-                g.drawImage(idleLeft, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+                g.drawImage(diluc[0], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
                 break;
             case IDLE_RIGHT:
-                g.drawImage(idleRight, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+                g.drawImage(diluc[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
                 break;
         }
 
-//        showBounds(g);
+        showBounds(g);
     }
 
     @Override
@@ -142,4 +144,13 @@ public class Diluc extends GameObject {
     public void setAction(HeroAction action) {
         this.action = action;
     }
+
+    public static int getHeroHeight() {
+        return HEIGHT;
+    }
+
+    public static int getHeroWidth() {
+        return WIDTH;
+    }
+
 }
