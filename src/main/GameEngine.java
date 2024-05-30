@@ -173,4 +173,6 @@ public class GameEngine extends Canvas implements Runnable {
     public static Texture getTexture() {
         return tex;
     }
+
+    // test komen
 }
