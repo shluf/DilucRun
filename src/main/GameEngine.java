@@ -40,17 +40,25 @@ public class GameEngine extends Canvas implements Runnable {
     }
 
     private void initialize() {
+
+
         tex = new Texture();
 
         handler = new ObjectHandler();
         this.addKeyListener(new GameKey(handler));
 
-        handler.setHero(new Diluc(32,32,1, handler));
+        handler.setHero(new Diluc(32,32,2, handler));
         for (int i = 8; i < 23; i++) {
             if (i != 16 && i!=17 && i != 18) {
                 handler.addObj(new Block(i * 32, 32 * 10, 32, 32, 1));
             }
         }
+
+        handler.addObj(new Block(17 * 32, 32 * 14, 32, 32, 1));
+//        handler.addObj(new Block(10 * 32, 32 * 11, 32, 32, 1));
+//        handler.addObj(new Block(10 * 32, 32 * 12, 32, 32, 1));
+        handler.addObj(new Block(10 * 32, 32 * 13, 32, 32, 1));
+        handler.addObj(new Block(10 * 32, 32 * 14, 32, 32, 1));
 
         for (int i = 32; i < 48; i++) {
             if (i != 37 && i!=38) {

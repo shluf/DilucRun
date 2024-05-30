@@ -55,7 +55,9 @@ public class Diluc extends GameObject {
                 }
 
                 if (getBoundsLeft().intersects(temp.getBounds())) {
-                    setX(temp.getX() + getWidth());
+                    setX(temp.getX() + getWidth()/3);
+                    System.out.println(temp.getX() + getWidth());
+                    System.out.println("X: " + temp.getX());
                 }
 
             }
@@ -87,6 +89,9 @@ public class Diluc extends GameObject {
             case IDLE_RIGHT:
                 g.drawImage(diluc[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
                 break;
+            case ATTACK:
+                g.drawImage(diluc[44], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+                break;
         }
 
         showBounds(g);
@@ -107,13 +112,13 @@ public class Diluc extends GameObject {
                 (int) getHeight()/2);
     }
     public Rectangle getBoundsRight() {
-        return new Rectangle((int) (getX() + getWidth() - 5),
+        return new Rectangle((int) (getX() + getWidth() - 12),
                 (int) getY() + 5,
                 5,
                 (int) getHeight() -10);
     }
     public Rectangle getBoundsLeft() {
-        return new Rectangle((int) getX(),
+        return new Rectangle((int) getX() + 5,
                 (int) (getY() +5),
                 5,
                 (int) (getHeight() - 10));

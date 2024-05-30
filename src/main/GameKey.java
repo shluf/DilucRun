@@ -42,6 +42,9 @@ public class GameKey implements KeyListener {
                 handler.getHero().setVelX(8);
                 keyDown[2] = true;
                 break;
+            case KeyEvent.VK_SPACE:
+                handler.getHero().setAction(HeroAction.ATTACK);
+                break;
         }
     }
 

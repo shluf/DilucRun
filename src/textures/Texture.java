@@ -21,10 +21,10 @@ public class Texture {
 
         try {
             hero_sheet = loader.loadImage("/hero-Sheet.png", 's');
-            idleRight = loader.loadImage("/hero-Idle.gif",'s');
-            idleLeft = loader.loadImage("/hero-Idle-left.gif",'s');
-            runRight = loader.loadImage("/hero-Run.gif",'s');
-            runLeft = loader.loadImage("/hero-Run-left.gif",'s');
+//            idleRight = loader.loadImage("/hero-Idle.gif",'s');
+//            idleLeft = loader.loadImage("/hero-Idle-left.gif",'s');
+//            runRight = loader.loadImage("/hero-Run.gif",'s');
+//            runLeft = loader.loadImage("/hero-Run-left.gif",'s');
             backgroundOne = loader.loadImage("/plx-1.png",'a');
             backgroundTwo = loader.loadImage("/plx-2.png",'a');
             backgroundThree = loader.loadImage("/plx-3.png",'a');
@@ -71,7 +71,6 @@ public class Texture {
     public BufferedImage[] getDilucTex() {
         return diluc;
     }
-
 
 
     public BufferedImage getIdleRight() {
