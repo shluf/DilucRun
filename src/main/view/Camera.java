@@ -5,6 +5,7 @@ import main.GameEngine;
 
 public class Camera {
     private int x, y;
+//    komen
 
     public Camera(int x, int y) {
         this.x = x;
