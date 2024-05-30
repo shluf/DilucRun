@@ -174,5 +174,5 @@ public class GameEngine extends Canvas implements Runnable {
         return tex;
     }
 
-    // test komen 2
+    // test komen 3
 }
