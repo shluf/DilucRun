@@ -27,18 +27,25 @@ public class GameKey implements KeyListener {
                 System.exit(0);
                 break;
             case KeyEvent.VK_UP:
-                if (!handler.getHero().isJumped()) {
-                    handler.getHero().setVelY(-15);
-                    handler.getHero().setJumped(true);
+                if (handler.getHero().isJumped() < 2) {
+                    handler.getHero().setAction(HeroAction.JUMP);
+                    handler.getHero().setJumped();
+                    handler.getHero().setVelY(-10);
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                handler.getHero().setAction(HeroAction.RUN_LEFT);
+                if (handler.getHero().isJumped() == 0) {
+                    handler.getHero().setAction(HeroAction.RUN);
+                }
+                handler.getHero().setRight(false);
                 handler.getHero().setVelX(-8);
                 keyDown[1] = true;
                 break;
             case KeyEvent.VK_RIGHT:
-                handler.getHero().setAction(HeroAction.RUN_RIGHT);
+                if (handler.getHero().isJumped() == 0) {
+                    handler.getHero().setAction(HeroAction.RUN);
+                }
+                handler.getHero().setRight(true);
                 handler.getHero().setVelX(8);
                 keyDown[2] = true;
                 break;
@@ -57,12 +64,15 @@ public class GameKey implements KeyListener {
                 break;
             case KeyEvent.VK_LEFT:
                 keyDown[1] = false;
-                handler.getHero().setAction(HeroAction.IDLE_LEFT);
+                handler.getHero().setAction(HeroAction.IDLE);
                 break;
             case KeyEvent.VK_RIGHT:
                 keyDown[2] = false;
-                handler.getHero().setAction(HeroAction.IDLE_RIGHT);
+                handler.getHero().setAction(HeroAction.IDLE);
                 break;
+//            case KeyEvent.VK_SPACE:
+//                handler.getHero().setAction(HeroAction.IDLE);
+//                break;
         }
         if (!keyDown[1] && !keyDown[2]) {
             handler.getHero().setVelX(0);

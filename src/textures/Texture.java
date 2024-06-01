@@ -11,9 +11,9 @@ public class Texture {
 
     private BufferedImage[] diluc;
 
-    private BufferedImage idleRight, idleLeft, runRight, runLeft;
+    private BufferedImage[] idle, idleSword, run, slash, jump, doubleJump;
     private BufferedImage backgroundOne, backgroundTwo, backgroundThree, backgroundFour, backgroundFive;
-
+    private BufferedImage tile;
 
     public Texture() {
 
@@ -21,10 +21,7 @@ public class Texture {
 
         try {
             hero_sheet = loader.loadImage("/hero-Sheet.png", 's');
-//            idleRight = loader.loadImage("/hero-Idle.gif",'s');
-//            idleLeft = loader.loadImage("/hero-Idle-left.gif",'s');
-//            runRight = loader.loadImage("/hero-Run.gif",'s');
-//            runLeft = loader.loadImage("/hero-Run-left.gif",'s');
+            tile = loader.loadImage("/jungle tileset.png",'a');
             backgroundOne = loader.loadImage("/plx-1.png",'a');
             backgroundTwo = loader.loadImage("/plx-2.png",'a');
             backgroundThree = loader.loadImage("/plx-3.png",'a');
@@ -35,18 +32,40 @@ public class Texture {
         }
 
         getFrames();
-//        getHeroTexture();
+        getHeroTexture();
     }
 
-//    private void getHeroTexture() {
-//        int x_off = 1;
-//        int y_off = 1;
-//        int width = 37, height = 37;
-//
-//        for (int i = 0; i < 4; i++) {
-//            diluc[i] = hero_sheet.getSubimage(x_off, i*(width), y_off, height);
-//        }
-//    }
+    private void getHeroTexture() {
+        idle = new BufferedImage[4];
+        for (int i = 0; i < 4; i++) {
+            idle[i] = diluc[i];
+        }
+
+        run = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            run[i] = diluc[8 + i];
+        }
+
+        idleSword = new BufferedImage[4];
+        for (int i = 0; i < 4; i++) {
+            idleSword[i] = diluc[38 + i];
+        }
+
+        slash = new BufferedImage[3];
+        for (int i = 0; i < 3; i++) {
+            slash[i] = diluc[43 + i];
+        }
+
+        doubleJump = new BufferedImage[2];
+        for (int i = 0; i < 2; i++) {
+            doubleJump[i] = diluc[15 + i];
+        }
+
+        jump = new BufferedImage[5];
+        for (int i = 0; i < 5; i++) {
+            jump[i] = diluc[17 + i];
+        }
+    }
 
 
     public void getFrames() {
@@ -68,26 +87,50 @@ public class Texture {
 
     }
 
+    public BufferedImage[] getIdle() {
+        return idle;
+    }
+
+    public BufferedImage[] getIdleSword() {
+        return idleSword;
+    }
+
+    public BufferedImage[] getRun() {
+        return run;
+    }
+
+    public BufferedImage[] getSlash() {
+        return slash;
+    }
+
+    public BufferedImage[] getJump() {
+        return jump;
+    }
+
+    public BufferedImage[] getDoubleJump() {
+        return doubleJump;
+    }
+
     public BufferedImage[] getDilucTex() {
         return diluc;
     }
 
 
-    public BufferedImage getIdleRight() {
-        return idleRight;
-    }
-
-    public BufferedImage getIdleLeft() {
-        return idleLeft;
-    }
-
-    public BufferedImage getRunRight() {
-        return runRight;
-    }
-
-    public BufferedImage getRunLeft() {
-        return runLeft;
-    }
+//    public BufferedImage getIdleRight() {
+//        return idleRight;
+//    }
+//
+//    public BufferedImage getIdleLeft() {
+//        return idleLeft;
+//    }
+//
+//    public BufferedImage getRunRight() {
+//        return runRight;
+//    }
+//
+//    public BufferedImage getRunLeft() {
+//        return runLeft;
+//    }
 
     public BufferedImage getBackgroundOne() {
         return backgroundOne;

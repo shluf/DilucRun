@@ -5,11 +5,11 @@ import content.ObjectID;
 
 import java.awt.*;
 
-public class Pipe extends GameObject {
+public class Hollow extends GameObject {
     private boolean enterable;
 
-    public Pipe(float x, float y, float width, float height, int scale, boolean enterable) {
-        super(x, y, ObjectID.PIPE, width, height, scale);
+    public Hollow(float x, float y, float width, float height, int scale, boolean enterable) {
+        super(x, y, ObjectID.TILE, width, height, scale);
         this.enterable = enterable;
     }
 

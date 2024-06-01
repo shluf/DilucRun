@@ -1,7 +1,7 @@
 package main;
 
 import content.ObjectHandler;
-import content.block.Block;
+import content.block.Tile;
 import content.hero.Diluc;
 import main.condition.GameStatus;
 import main.view.Camera;
@@ -22,6 +22,8 @@ public class GameEngine extends Canvas implements Runnable {
     private static final int SCREEN_WIDTH = WINDOW_WIDTH - 67;
     private static final int SCREEN_HEIGHT = WINDOW_HEIGHT;
     private static final int SCREEN_OFFSET = 16*3;
+
+    private float bgOneX = 0, bgTwoX = 0, bgThreeX = 0, bgFourX = 0, bgFiveX = 0;
 
     private GameStatus gameStatus;
     private boolean running;
@@ -50,24 +52,25 @@ public class GameEngine extends Canvas implements Runnable {
         handler.setHero(new Diluc(32,32,2, handler));
         for (int i = 8; i < 23; i++) {
             if (i != 16 && i!=17 && i != 18) {
-                handler.addObj(new Block(i * 32, 32 * 10, 32, 32, 1));
+                handler.addObj(new Tile(i * 32, 32 * 10, 32, 32, 1));
             }
         }
 
-        handler.addObj(new Block(17 * 32, 32 * 14, 32, 32, 1));
-//        handler.addObj(new Block(10 * 32, 32 * 11, 32, 32, 1));
-//        handler.addObj(new Block(10 * 32, 32 * 12, 32, 32, 1));
-        handler.addObj(new Block(10 * 32, 32 * 13, 32, 32, 1));
-        handler.addObj(new Block(10 * 32, 32 * 14, 32, 32, 1));
+        handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
+//        handler.addObj(new Tile(10 * 32, 32 * 11, 32, 32, 1));
+        handler.addObj(new Tile(90 * 32, 32 * 12, 32, 32, 1));
 
-        for (int i = 32; i < 48; i++) {
+        handler.addObj(new Tile(10 * 32, 32 * 13, 32, 32, 1));
+        handler.addObj(new Tile(10 * 32, 32 * 14, 32, 32, 1));
+
+        for (int i = 32; i < 100; i++) {
             if (i != 37 && i!=38) {
-                handler.addObj(new Block(i * 32, 32 * 13, 32, 32, 1));
+                handler.addObj(new Tile(i * 32, 32 * 13, 32, 32, 1));
             }
         }
 
         for (int i = 0; i < 30; i++) {
-            handler.addObj(new Block(i*32,32*15,32,32,1));
+            handler.addObj(new Tile(i*32,32*15,32,32,1));
         }
 
         cam = new Camera(0, SCREEN_OFFSET);
@@ -130,6 +133,19 @@ public class GameEngine extends Canvas implements Runnable {
     private void tick() {
         handler.tick();
         cam.tick(handler.getHero());
+
+        float playerSpeed = (float) handler.getHero().getX();
+        bgOneX = 0;
+        bgTwoX = -playerSpeed * 0.008f;
+        bgThreeX = -playerSpeed * 0.02f;
+        bgFourX = -playerSpeed * 0.04f;
+        bgFiveX = -playerSpeed * 0.06f;
+
+        if (bgOneX <= -WINDOW_WIDTH) bgOneX += WINDOW_WIDTH;
+        if (bgTwoX <= -WINDOW_WIDTH) bgTwoX += WINDOW_WIDTH;
+        if (bgThreeX <= -WINDOW_WIDTH) bgThreeX += WINDOW_WIDTH;
+        if (bgFourX <= -WINDOW_WIDTH) bgFourX += WINDOW_WIDTH;
+        if (bgFiveX <= -WINDOW_WIDTH) bgFiveX += WINDOW_WIDTH;
     }
 
     private void render() {
@@ -145,11 +161,22 @@ public class GameEngine extends Canvas implements Runnable {
         g.setColor(Color.BLACK);
         g.fillRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
 //        g.drawImage(tex.getDilucTex()[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null );
-        g.drawImage(tex.getBackgroundOne(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundTwo(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundThree(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundFour(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundFive(), 0,0,(int) WINDOW_WIDTH,(int) WINDOW_HEIGHT, null);
+        // Draw backgrounds with parallax effect
+
+        g.drawImage(tex.getBackgroundOne(), (int) bgOneX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+//        g.drawImage(tex.getBackgroundOne(), (int) bgOneX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+
+        g.drawImage(tex.getBackgroundTwo(), (int) bgTwoX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundTwo(), (int) bgTwoX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+
+        g.drawImage(tex.getBackgroundThree(), (int) bgThreeX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundThree(), (int) bgThreeX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+
+        g.drawImage(tex.getBackgroundFour(), (int) bgFourX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundFour(), (int) bgFourX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+
+        g.drawImage(tex.getBackgroundFive(), (int) bgFiveX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+        g.drawImage(tex.getBackgroundFive(), (int) bgFiveX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
 
         g2.translate(cam.getX(), cam.getY());
         handler.render(g);

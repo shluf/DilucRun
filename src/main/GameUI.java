@@ -2,10 +2,10 @@ package main;
 
 import javax.swing.*;
 
-public class GameUi extends JPanel {
+public class GameUI extends JPanel {
     private GameEngine engine;
 
-    public GameUi(GameEngine engine) {
+    public GameUI(GameEngine engine) {
         this.engine = engine;
     }
 

@@ -7,11 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ObjectHandler {
-    private List<GameObject> gameObjs;
+    private final List<GameObject> gameObjs;
     private Diluc hero;
 
     public ObjectHandler() {
-        gameObjs = new LinkedList<GameObject>();
+        gameObjs = new LinkedList<>();
     }
 
     public void tick() {
