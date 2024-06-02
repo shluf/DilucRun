@@ -134,14 +134,14 @@ public class GameEngine extends Canvas implements Runnable {
         handler.tick();
         cam.tick(handler.getHero());
 
-        float playerSpeed = (float) handler.getHero().getX();
+        float playerSpeed = handler.getHero().getX();
         bgOneX = 0;
         bgTwoX = -playerSpeed * 0.008f;
         bgThreeX = -playerSpeed * 0.02f;
         bgFourX = -playerSpeed * 0.04f;
         bgFiveX = -playerSpeed * 0.06f;
 
-        if (bgOneX <= -WINDOW_WIDTH) bgOneX += WINDOW_WIDTH;
+//        if (bgOneX <= -WINDOW_WIDTH) bgOneX += WINDOW_WIDTH;
         if (bgTwoX <= -WINDOW_WIDTH) bgTwoX += WINDOW_WIDTH;
         if (bgThreeX <= -WINDOW_WIDTH) bgThreeX += WINDOW_WIDTH;
         if (bgFourX <= -WINDOW_WIDTH) bgFourX += WINDOW_WIDTH;

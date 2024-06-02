@@ -43,7 +43,6 @@ public class Diluc extends GameObject {
                 if (getBounds().intersects(temp.getBounds())) {
                     setY(temp.getY() - getHeight());
                     setVelY(0);
-                    setAction(HeroAction.IDLE);
                     jumped = 0;
                 }
 
@@ -83,50 +82,50 @@ public class Diluc extends GameObject {
     public void render(Graphics g) {
 //        g.setColor(Color.yellow);
 //        g.fillRect((int) getX(), (int) getY(), (int) WIDTH, (int) HEIGHT);
-        switch (action) {
-            case RUN:
-//                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
-                if (jumped == 0) {
-                    if (!isRight) {
-                        animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
-                    } else {
-                        animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+        if (jumped == 0) {
+            switch (action) {
+                case RUN:
+    //                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
+                    if (jumped == 0) {
+                        if (!isRight) {
+                            animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        } else {
+                            animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case IDLE:
-                if (!isRight) {
-                    animIdle.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
-                } else {
-                    animIdle.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
-                }
-                break;
-
-            case ATTACK:
-                if (!isRight) {
-                    g.drawImage(tex.getSlash()[1], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
-                } else {
-                    g.drawImage(tex.getSlash()[1], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
-                }
-                break;
-
-            case JUMP:
-                if (jumped == 2) {
+                case IDLE:
                     if (!isRight) {
-                        animJump.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        animIdle.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
                     } else {
-                        animJump.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        animIdle.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
                     }
-                } else {
+                    break;
+
+                case ATTACK:
                     if (!isRight) {
-                        animDoubleJump.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        g.drawImage(tex.getSlash()[1], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
                     } else {
-                        animDoubleJump.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        g.drawImage(tex.getSlash()[1], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
                     }
-                }
-                break;
+                    break;
+            }
+        } else if (jumped == 2) {
+            if (!isRight) {
+                animDoubleJump.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+            } else {
+                animDoubleJump.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+            }
+        } else {
+            if (!isRight) {
+                animJump.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+            } else {
+                animJump.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+            }
         }
+        System.out.println("Jump: " + jumped);
+        System.out.println("Action: " + action);
 
 
 //        showBounds(g);

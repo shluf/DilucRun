@@ -28,24 +28,23 @@ public class GameKey implements KeyListener {
                 break;
             case KeyEvent.VK_UP:
                 if (handler.getHero().isJumped() < 2) {
-                    handler.getHero().setAction(HeroAction.JUMP);
                     handler.getHero().setJumped();
                     handler.getHero().setVelY(-10);
                 }
                 break;
             case KeyEvent.VK_LEFT:
+                handler.getHero().setRight(false);
                 if (handler.getHero().isJumped() == 0) {
                     handler.getHero().setAction(HeroAction.RUN);
                 }
-                handler.getHero().setRight(false);
                 handler.getHero().setVelX(-8);
                 keyDown[1] = true;
                 break;
             case KeyEvent.VK_RIGHT:
+                handler.getHero().setRight(true);
                 if (handler.getHero().isJumped() == 0) {
                     handler.getHero().setAction(HeroAction.RUN);
                 }
-                handler.getHero().setRight(true);
                 handler.getHero().setVelX(8);
                 keyDown[2] = true;
                 break;

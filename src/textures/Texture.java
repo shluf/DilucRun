@@ -56,14 +56,14 @@ public class Texture {
             slash[i] = diluc[43 + i];
         }
 
-        doubleJump = new BufferedImage[2];
+        jump = new BufferedImage[2];
         for (int i = 0; i < 2; i++) {
-            doubleJump[i] = diluc[15 + i];
+            jump[i] = diluc[15 + i];
         }
 
-        jump = new BufferedImage[5];
+        doubleJump = new BufferedImage[5];
         for (int i = 0; i < 5; i++) {
-            jump[i] = diluc[17 + i];
+            doubleJump[i] = diluc[17 + i];
         }
     }
 

@@ -9,7 +9,7 @@ public class Hollow extends GameObject {
     private boolean enterable;
 
     public Hollow(float x, float y, float width, float height, int scale, boolean enterable) {
-        super(x, y, ObjectID.TILE, width, height, scale);
+        super(x, y, ObjectID.HOLLOW, width, height, scale);
         this.enterable = enterable;
     }
 
