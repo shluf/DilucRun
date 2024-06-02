@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class GameKey implements KeyListener {
-    private boolean[] keyDown = new boolean[4];
-    private ObjectHandler handler;
+    private final boolean[] keyDown = new boolean[4];
+    private final ObjectHandler handler;
 
     public GameKey(ObjectHandler handler) {
         this.handler = handler;

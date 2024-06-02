@@ -86,12 +86,10 @@ public class Diluc extends GameObject {
             switch (action) {
                 case RUN:
     //                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
-                    if (jumped == 0) {
-                        if (!isRight) {
-                            animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
-                        } else {
-                            animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
-                        }
+                    if (!isRight) {
+                        animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                    } else {
+                        animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
                     }
                     break;
 
