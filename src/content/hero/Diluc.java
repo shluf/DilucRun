@@ -124,8 +124,8 @@ public class Diluc extends GameObject {
                 animJump.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
             }
         }
-        System.out.println("Jump: " + jumped);
-        System.out.println("Action: " + action);
+//        System.out.println("Jump: " + jumped);
+//        System.out.println("Action: " + action);
 
 
 //        showBounds(g);

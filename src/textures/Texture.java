@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class Texture {
 
-    private ImageLoader loader;
+    private final ImageLoader loader;
     private BufferedImage hero_sheet;
 
     private BufferedImage[] diluc;
@@ -47,9 +47,7 @@ public class Texture {
         }
 
         idleSword = new BufferedImage[4];
-        for (int i = 0; i < 4; i++) {
-            idleSword[i] = diluc[38 + i];
-        }
+        System.arraycopy(diluc, 38, idleSword, 0, 4);
 
         slash = new BufferedImage[3];
         for (int i = 0; i < 3; i++) {
