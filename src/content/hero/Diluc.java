@@ -103,9 +103,11 @@ public class Diluc extends GameObject {
 
                 case ATTACK:
                     if (!isRight) {
-                        g.drawImage(tex.getSlash()[1], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
+                        animSlash.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+//                        g.drawImage(tex.getSlash()[1], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
                     } else {
-                        g.drawImage(tex.getSlash()[1], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+                        animSlash.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+//                        g.drawImage(tex.getSlash()[1], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
                     }
                     break;
             }

@@ -49,8 +49,8 @@ public class Texture {
         idleSword = new BufferedImage[4];
         System.arraycopy(diluc, 38, idleSword, 0, 4);
 
-        slash = new BufferedImage[3];
-        for (int i = 0; i < 3; i++) {
+        slash = new BufferedImage[16];
+        for (int i = 0; i < 16; i++) {
             slash[i] = diluc[43 + i];
         }
 
