@@ -6,6 +6,8 @@ import content.ObjectID;
 import java.awt.*;
 
 public class Chest extends GameObject {
+    private boolean opened = false;
+
     public Chest(float x, float y, ObjectID id, float width, float height, int scale) {
         super(x, y, ObjectID.CHEST, width, height, scale);
     }
@@ -23,5 +25,9 @@ public class Chest extends GameObject {
     @Override
     public Rectangle getBounds() {
         return null;
+    }
+
+    public void setOpened(boolean opened) {
+        this.opened = opened;
     }
 }

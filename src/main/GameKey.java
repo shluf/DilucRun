@@ -1,7 +1,7 @@
 package main;
 
+import content.ObjectAction;
 import content.ObjectHandler;
-import content.hero.HeroAction;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -35,7 +35,7 @@ public class GameKey implements KeyListener {
             case KeyEvent.VK_LEFT:
                 handler.getHero().setRight(false);
                 if (handler.getHero().isJumped() == 0) {
-                    handler.getHero().setAction(HeroAction.RUN);
+                    handler.getHero().setAction(ObjectAction.RUN);
                 }
                 handler.getHero().setVelX(-8);
                 keyDown[1] = true;
@@ -43,13 +43,13 @@ public class GameKey implements KeyListener {
             case KeyEvent.VK_RIGHT:
                 handler.getHero().setRight(true);
                 if (handler.getHero().isJumped() == 0) {
-                    handler.getHero().setAction(HeroAction.RUN);
+                    handler.getHero().setAction(ObjectAction.RUN);
                 }
                 handler.getHero().setVelX(8);
                 keyDown[2] = true;
                 break;
             case KeyEvent.VK_SPACE:
-                handler.getHero().setAction(HeroAction.ATTACK);
+                handler.getHero().setAction(ObjectAction.ATTACK);
                 break;
         }
     }
@@ -63,14 +63,14 @@ public class GameKey implements KeyListener {
                 break;
             case KeyEvent.VK_LEFT:
                 keyDown[1] = false;
-                handler.getHero().setAction(HeroAction.IDLE);
+                handler.getHero().setAction(ObjectAction.IDLE);
                 break;
             case KeyEvent.VK_RIGHT:
                 keyDown[2] = false;
-                handler.getHero().setAction(HeroAction.IDLE);
+                handler.getHero().setAction(ObjectAction.IDLE);
                 break;
 //            case KeyEvent.VK_SPACE:
-//                handler.getHero().setAction(HeroAction.IDLE);
+//                handler.getHero().setAction(ObjectAction.IDLE);
 //                break;
         }
         if (!keyDown[1] && !keyDown[2]) {

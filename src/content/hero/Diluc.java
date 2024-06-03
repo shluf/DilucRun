@@ -1,6 +1,7 @@
 package content.hero;
 
 import content.GameObject;
+import content.ObjectAction;
 import content.ObjectHandler;
 import content.ObjectID;
 import main.GameEngine;
@@ -13,7 +14,7 @@ public class Diluc extends GameObject {
     private static final int WIDTH = 50;
     private static final int HEIGHT = 37;
 
-    private HeroAction action = HeroAction.IDLE;
+    private ObjectAction action = ObjectAction.IDLE;
     private int jumped = 0;
     private boolean isRight = true;
 
@@ -176,11 +177,11 @@ public class Diluc extends GameObject {
         jumped++;
     }
 
-    public HeroAction getAction() {
+    public ObjectAction getAction() {
         return action;
     }
 
-    public void setAction(HeroAction action) {
+    public void setAction(ObjectAction action) {
         this.action = action;
     }
 

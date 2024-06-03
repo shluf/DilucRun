@@ -2,6 +2,7 @@ package main;
 
 import content.ObjectHandler;
 import content.block.Tile;
+import content.enemy.Slime;
 import content.hero.Diluc;
 import main.condition.GameStatus;
 import main.view.Camera;
@@ -55,6 +56,8 @@ public class GameEngine extends Canvas implements Runnable {
                 handler.addObj(new Tile(i * 32, 32 * 10, 32, 32, 1));
             }
         }
+
+        handler.addObj(new Slime(17 * 78, 32 * 12, 1, false));
 
         handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
 //        handler.addObj(new Tile(10 * 32, 32 * 11, 32, 32, 1));
