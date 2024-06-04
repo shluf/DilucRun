@@ -24,6 +24,8 @@ public class Windows {
 
         frame.add(game);
 
+        game.requestFocusInWindow(); // Request focus for the game component
+
         frame.requestFocusInWindow();
         frame.setVisible(true);
 
