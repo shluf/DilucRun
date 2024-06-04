@@ -59,8 +59,34 @@ public class Diluc extends GameObject {
                 if (getBoundsLeft().intersects(temp.getBounds())) {
                     setX(temp.getX() + getWidth() / 5);
                 }
-
             }
+
+            if (temp.getId() == ObjectID.SLIME) {
+                if (getBounds().intersects(temp.getBounds())) {
+                    setVelY(0);
+                    setVelX(0);
+                    action = ObjectAction.DEATH;
+                }
+                if (action == ObjectAction.ATTACK) {
+                    if(!isRight) {
+                        if (getBoundsAttackLeft().intersects(temp.getBounds())) {
+                            handler.removeObj(temp);
+                        }
+                    } else {
+                        if (getBoundsAttackRight().intersects(temp.getBounds())) {
+                            handler.removeObj(temp);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void death() {
+        if (action == ObjectAction.DEATH) {
+            setX(32);
+            setY(300);
+            setAction(ObjectAction.IDLE);
         }
     }
 
@@ -70,6 +96,9 @@ public class Diluc extends GameObject {
         setY(getVelY() + getY());
         applyGravity();
         collision();
+        death();
+
+        System.out.println("X: " + getX() + ",  Y: " + getY());
 
         animRun.runAnimation();
         animIdle.runAnimation();
@@ -129,7 +158,7 @@ public class Diluc extends GameObject {
 //        System.out.println("Action: " + action);
 
 
-//        showBounds(g);
+        showBounds(g);
     }
 
     @Override
@@ -148,15 +177,29 @@ public class Diluc extends GameObject {
     }
     public Rectangle getBoundsRight() {
         return new Rectangle((int) (getX() + getWidth() - 20),
-                (int) getY() + 10,
+                (int) getY() + 15,
                 5,
-                (int) getHeight() -15);
+                (int) getHeight() -20);
     }
     public Rectangle getBoundsLeft() {
         return new Rectangle((int) getX() + 15,
-                (int) (getY() + 10),
+                (int) (getY() + 15),
                 5,
-                (int) (getHeight() - 15));
+                (int) (getHeight() - 20));
+    }
+
+    public Rectangle getBoundsAttackLeft() {
+        return new Rectangle((int) getX() - 15,
+                (int) (getY() + 15),
+                30,
+                (int) (getHeight() - 20));
+    }
+
+    public Rectangle getBoundsAttackRight() {
+        return new Rectangle((int) (getX() + getWidth() - 15),
+                (int) (getY() + 15),
+                30,
+                (int) (getHeight() - 20));
     }
 
     private void showBounds(Graphics g) {
@@ -167,6 +210,9 @@ public class Diluc extends GameObject {
         g2.draw(getBoundsRight());
         g2.draw(getBoundsLeft());
         g2.draw(getBoundsTop());
+        g2.draw(getBoundsAttackRight());
+        g2.draw(getBoundsAttackLeft());
+
     }
 
     public int isJumped() {

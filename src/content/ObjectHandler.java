@@ -48,13 +48,12 @@ public class ObjectHandler {
         return 0;
     }
 
-    public int removeHero() {
+    public void removeHero() {
         if (hero == null) {
-            return -1;
+            return;
         }
         removeObj(hero);
         this.hero = null;
-        return 0;
     }
 
     public Diluc getHero() {

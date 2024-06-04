@@ -49,7 +49,11 @@ public class GameKey implements KeyListener {
                 keyDown[2] = true;
                 break;
             case KeyEvent.VK_SPACE:
+                handler.getHero().setVelX(0);
                 handler.getHero().setAction(ObjectAction.ATTACK);
+                break;
+            case KeyEvent.VK_Z:
+                handler.getHero().setAction(ObjectAction.INTERACT);
                 break;
         }
     }
@@ -69,9 +73,9 @@ public class GameKey implements KeyListener {
                 keyDown[2] = false;
                 handler.getHero().setAction(ObjectAction.IDLE);
                 break;
-//            case KeyEvent.VK_SPACE:
+            case KeyEvent.VK_SPACE:
 //                handler.getHero().setAction(ObjectAction.IDLE);
-//                break;
+                break;
         }
         if (!keyDown[1] && !keyDown[2]) {
             handler.getHero().setVelX(0);

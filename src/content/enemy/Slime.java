@@ -59,12 +59,26 @@ public class Slime extends GameObject {
                 }
                 break;
         }
+
+        showBounds(g);
     }
 
     @Override
     public Rectangle getBounds() {
-        return null;
+        return new Rectangle((int) getX() + 15,
+                (int) getY() + 30,
+                (int) getWidth() - 30,
+                (int) getHeight() - 30);
     }
+
+
+    private void showBounds(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        g.setColor(Color.red);
+        g2.draw(getBounds());
+    }
+
 
 
     public static int getSlimeHeight() {
