@@ -1,14 +1,14 @@
 package main;
 
+import content.ObjectAction;
 import content.ObjectHandler;
-import content.hero.HeroAction;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class GameKey implements KeyListener {
-    private boolean[] keyDown = new boolean[4];
-    private ObjectHandler handler;
+    private final boolean[] keyDown = new boolean[4];
+    private final ObjectHandler handler;
 
     public GameKey(ObjectHandler handler) {
         this.handler = handler;
@@ -27,20 +27,34 @@ public class GameKey implements KeyListener {
                 System.exit(0);
                 break;
             case KeyEvent.VK_UP:
-                if (!handler.getHero().isJumped()) {
-                    handler.getHero().setVelY(-15);
-                    handler.getHero().setJumped(true);
+                if (handler.getHero().isJumped() < 2) {
+                    handler.getHero().setJumped();
+                    handler.getHero().setVelY(-10);
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                handler.getHero().setAction(HeroAction.RUN_LEFT);
+                handler.getHero().setRight(false);
+                if (handler.getHero().isJumped() == 0) {
+                    handler.getHero().setAction(ObjectAction.RUN);
+                }
                 handler.getHero().setVelX(-8);
                 keyDown[1] = true;
                 break;
             case KeyEvent.VK_RIGHT:
-                handler.getHero().setAction(HeroAction.RUN_RIGHT);
+                handler.getHero().setRight(true);
+                if (handler.getHero().isJumped() == 0) {
+                    handler.getHero().setAction(ObjectAction.RUN);
+                }
                 handler.getHero().setVelX(8);
                 keyDown[2] = true;
+                break;
+            case KeyEvent.VK_SPACE:
+                handler.getHero().setVelX(0);
+                handler.getHero().setAction(ObjectAction.ATTACK);
+                handler.getHero().setKilling(true);
+                break;
+            case KeyEvent.VK_Z:
+                handler.getHero().setAction(ObjectAction.INTERACT);
                 break;
         }
     }
@@ -54,11 +68,15 @@ public class GameKey implements KeyListener {
                 break;
             case KeyEvent.VK_LEFT:
                 keyDown[1] = false;
-                handler.getHero().setAction(HeroAction.IDLE_LEFT);
+                handler.getHero().setAction(ObjectAction.IDLE);
                 break;
             case KeyEvent.VK_RIGHT:
                 keyDown[2] = false;
-                handler.getHero().setAction(HeroAction.IDLE_RIGHT);
+                handler.getHero().setAction(ObjectAction.IDLE);
+                break;
+            case KeyEvent.VK_SPACE:
+                handler.getHero().setKilling(false);
+                handler.getHero().setAction(ObjectAction.IDLE);
                 break;
         }
         if (!keyDown[1] && !keyDown[2]) {

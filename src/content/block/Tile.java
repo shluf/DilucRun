@@ -5,9 +5,9 @@ import content.ObjectID;
 
 import java.awt.*;
 
-public class Block extends GameObject {
-    public Block(float x, float y, float width, float height, int scale) {
-        super(x, y, ObjectID.BLOCK, width, height, scale);
+public class Tile extends GameObject {
+    public Tile(float x, float y, float width, float height, int scale) {
+        super(x, y, ObjectID.TILE, width, height, scale);
     }
 
     @Override
