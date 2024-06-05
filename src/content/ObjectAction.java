@@ -5,5 +5,6 @@ public enum ObjectAction {
     INTERACT,
     IDLE,
     RUN,
-    DEATH
+    DEATH,
+    RESPAWN
 }

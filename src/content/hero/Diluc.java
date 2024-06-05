@@ -4,7 +4,10 @@ import content.GameObject;
 import content.ObjectAction;
 import content.ObjectHandler;
 import content.ObjectID;
+import content.enemy.Slime;
 import main.GameEngine;
+import main.GameUI;
+import main.condition.GameStatus;
 import textures.Animation;
 import textures.Texture;
 
@@ -17,6 +20,9 @@ public class Diluc extends GameObject {
     private ObjectAction action = ObjectAction.IDLE;
     private int jumped = 0;
     private boolean isRight = true;
+
+    private boolean killing = false;
+    private int lives = 1;
 
     private final ObjectHandler handler;
     private final Texture tex;
@@ -62,19 +68,23 @@ public class Diluc extends GameObject {
             }
 
             if (temp.getId() == ObjectID.SLIME) {
+                Slime slime = (Slime) temp;
                 if (getBounds().intersects(temp.getBounds())) {
                     setVelY(0);
                     setVelX(0);
                     action = ObjectAction.DEATH;
                 }
-                if (action == ObjectAction.ATTACK) {
+
+                if (killing) {
                     if(!isRight) {
                         if (getBoundsAttackLeft().intersects(temp.getBounds())) {
-                            handler.removeObj(temp);
+//                            handler.removeObj(temp);
+                            System.out.println("Slime: " + slime);
+                            slime.setAction(ObjectAction.DEATH);
                         }
                     } else {
                         if (getBoundsAttackRight().intersects(temp.getBounds())) {
-                            handler.removeObj(temp);
+                            handler.removeObj(slime);
                         }
                     }
                 }
@@ -84,9 +94,15 @@ public class Diluc extends GameObject {
 
     private void death() {
         if (action == ObjectAction.DEATH) {
-            setX(32);
-            setY(300);
-            setAction(ObjectAction.IDLE);
+            if (lives > 0) {
+                decreaseLives();
+                setX(32);
+                setY(300);
+                setAction(ObjectAction.IDLE);
+            }
+//            else {
+//                setGameStatus(GameStatus.GAME_OVER);
+//            }
         }
     }
 
@@ -98,14 +114,16 @@ public class Diluc extends GameObject {
         collision();
         death();
 
-        System.out.println("X: " + getX() + ",  Y: " + getY());
+//        System.out.println("X: " + getX() + ",  Y: " + getY());
 
         animRun.runAnimation();
         animIdle.runAnimation();
         animJump.runAnimation();
         animDoubleJump.runAnimation();
-        animSlash.runAnimation();
         animIdleSword.runAnimation();
+        animSlash.runAnimation();
+
+
     }
 
     @Override
@@ -156,7 +174,6 @@ public class Diluc extends GameObject {
         }
 //        System.out.println("Jump: " + jumped);
 //        System.out.println("Action: " + action);
-
 
         showBounds(g);
     }
@@ -241,5 +258,21 @@ public class Diluc extends GameObject {
 
     public void setRight(boolean right) {
         isRight = right;
+    }
+
+    public void setKilling(boolean killing) {
+        this.killing = killing;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void increaseLives(int lives) {
+        this.lives++;
+    }
+
+    public void decreaseLives() {
+        this.lives--;
     }
 }

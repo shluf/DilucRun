@@ -51,8 +51,9 @@ public class GameEngine extends Canvas implements Runnable {
         handler = new ObjectHandler();
         this.addKeyListener(new GameKey(handler));
 
-        handler.setHero(new Diluc(32,32,2, handler));
+        handler.setHero(new Diluc(32 * 20,32,2, handler));
 
+        handler.addObj(new Slime(32 * 50, 32 * 11, 1, false, handler));
 
         for (int i = 8; i < 23; i++) {
             if (i != 16 && i!=17 && i != 18) {
@@ -60,12 +61,10 @@ public class GameEngine extends Canvas implements Runnable {
             }
         }
 
-
-        handler.addObj(new Slime(17 * 78, 32 * 12, 1, false));
-
         handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
 //        handler.addObj(new Tile(10 * 32, 32 * 11, 32, 32, 1));
         handler.addObj(new Tile(90 * 32, 32 * 12, 32, 32, 1));
+        handler.addObj(new Tile(45 * 32, 32 * 12, 32, 32, 1));
 
         handler.addObj(new Tile(10 * 32, 32 * 13, 32, 32, 1));
         handler.addObj(new Tile(10 * 32, 32 * 14, 32, 32, 1));
@@ -82,6 +81,8 @@ public class GameEngine extends Canvas implements Runnable {
 
         cam = new Camera(0, SCREEN_OFFSET);
         new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
+
+        handler.allObject();
 
         start();
     }
@@ -128,7 +129,7 @@ public class GameEngine extends Canvas implements Runnable {
              }
              if (System.currentTimeMillis() - timer > MILLIS_PER_SEC) {
                  timer += MILLIS_PER_SEC;
-                 System.out.println("FPS: " + frames + " TPS: " + updates);
+//                 System.out.println("FPS: " + frames + " TPS: " + updates);
                  updates = 0;
                  frames = 0;
              }

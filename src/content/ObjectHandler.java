@@ -1,5 +1,6 @@
 package content;
 
+import content.enemy.Slime;
 import content.hero.Diluc;
 
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.util.List;
 public class ObjectHandler {
     private final List<GameObject> gameObjs;
     private Diluc hero;
+    private Slime slime;
 
     public ObjectHandler() {
         gameObjs = new LinkedList<>();
@@ -48,6 +50,8 @@ public class ObjectHandler {
         return 0;
     }
 
+    public int setSlime(Slime slime)
+
     public void removeHero() {
         if (hero == null) {
             return;
@@ -56,7 +60,17 @@ public class ObjectHandler {
         this.hero = null;
     }
 
+    public void removeSlime(){
+        if ()
+    }
+
     public Diluc getHero() {
         return hero;
+    }
+
+    public void allObject() {
+        for (GameObject obj: gameObjs) {
+            System.out.println(obj);
+        }
     }
 }

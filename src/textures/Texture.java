@@ -56,9 +56,10 @@ public class Texture {
         dilucIdleSword = new BufferedImage[4];
         System.arraycopy(diluc, 38, dilucIdleSword, 0, 4);
 
-        slash = new BufferedImage[16];
-        for (int i = 0; i < 16; i++) {
-            slash[i] = diluc[43 + i];
+        slash = new BufferedImage[3]; //16
+        for (int i = 0; i < 3; i++) {
+//            slash[i] = diluc[43 + i];
+            slash[i] = diluc[48 + i];
         }
 
         jump = new BufferedImage[2];
@@ -92,8 +93,8 @@ public class Texture {
 
 
     public void getFrames() {
-        System.out.println(slime_sheet.getHeight());
-        System.out.println(slime_sheet.getWidth());
+//        System.out.println(slime_sheet.getHeight());
+//        System.out.println(slime_sheet.getWidth());
 //        System.out.println(hero_sheet.getHeight());
 //        System.out.println(hero_sheet.getWidth());
         int heroHeight = Diluc.getHeroHeight();
