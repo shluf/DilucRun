@@ -1,7 +1,7 @@
 package main;
 
-import content.ObjectAction;
 import content.ObjectHandler;
+import content.block.Hollow;
 import content.block.Tile;
 import content.enemy.Slime;
 import content.hero.Diluc;
@@ -54,6 +54,8 @@ public class GameEngine extends Canvas implements Runnable {
         handler.setHero(new Diluc(32 * 20,32,2, handler));
 
         handler.addObj(new Slime(32 * 50, 32 * 11, 1, false, handler));
+
+        handler.addObj(new Hollow());
 
         for (int i = 8; i < 23; i++) {
             if (i != 16 && i!=17 && i != 18) {
@@ -166,8 +168,8 @@ public class GameEngine extends Canvas implements Runnable {
         Graphics g = buf.getDrawGraphics();
         Graphics2D g2 = (Graphics2D) g;
 
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
+//        g.setColor(Color.BLACK);
+//        g.fillRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
 //        g.drawImage(tex.getDilucTex()[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null );
         // Draw backgrounds with parallax effect
 
@@ -220,5 +222,4 @@ public class GameEngine extends Canvas implements Runnable {
         return tex;
     }
 
-    // test komen 3
 }

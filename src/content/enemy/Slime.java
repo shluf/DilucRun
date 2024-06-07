@@ -106,6 +106,8 @@ public class Slime extends GameObject {
                 } else {
                     animDeath.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
                 }
+                setBoundsDeath();
+                break;
         }
 
         showBounds(g);
@@ -133,6 +135,11 @@ public class Slime extends GameObject {
         g.setColor(Color.red);
         g2.draw(getBoundsBotom());
         g2.draw(getBounds());
+    }
+
+    public void setBoundsDeath() {
+        setY(getY()+getHeight());
+        setVelY(0);
     }
 
     public void setAction(ObjectAction action) {

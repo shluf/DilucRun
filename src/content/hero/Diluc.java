@@ -6,8 +6,6 @@ import content.ObjectHandler;
 import content.ObjectID;
 import content.enemy.Slime;
 import main.GameEngine;
-import main.GameUI;
-import main.condition.GameStatus;
 import textures.Animation;
 import textures.Texture;
 
@@ -79,11 +77,12 @@ public class Diluc extends GameObject {
                     if(!isRight) {
                         if (getBoundsAttackLeft().intersects(temp.getBounds())) {
 //                            handler.removeObj(temp);
-                            System.out.println("Slime: " + slime);
+                            slime.setBoundsDeath();
                             slime.setAction(ObjectAction.DEATH);
                         }
                     } else {
                         if (getBoundsAttackRight().intersects(temp.getBounds())) {
+//                            System.out.println("Slime: " + slime);
                             handler.removeObj(slime);
                         }
                     }
@@ -100,9 +99,9 @@ public class Diluc extends GameObject {
                 setY(300);
                 setAction(ObjectAction.IDLE);
             }
-//            else {
-//                setGameStatus(GameStatus.GAME_OVER);
-//            }
+            else {
+//                GameUI.setGameStatus(GameStatus.GAME_OVER);
+            }
         }
     }
 
