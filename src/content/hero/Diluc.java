@@ -23,6 +23,8 @@ public class Diluc extends GameObject {
     private GameEngine engine;
 
     private boolean slash = false;
+
+    private int level = 2;
     private int lives = 3;
 
     private final ObjectHandler handler;
@@ -75,7 +77,13 @@ public class Diluc extends GameObject {
                 if (getBounds().intersects(temp.getBounds()) && !(slime.getAction() == ObjectAction.DEATH)) {
                     setVelY(0);
                     setVelX(0);
-                    action = ObjectAction.DEATH;
+                    if (level > 1) {
+                        decreaseLevel();
+                        slime.setAction(ObjectAction.DEATH);
+                    }
+                    else if (level == 1) {
+                        action = ObjectAction.DEATH;
+                    }
                 }
 
                 if (slash) {
@@ -104,7 +112,7 @@ public class Diluc extends GameObject {
                 setY(300);
                 setAction(ObjectAction.RESPAWN);
             }
-            else if (lives == 1) {
+            else if (lives == 1){
                 decreaseLives();
                 engine.getGameUI().setGameStatus(GameStatus.GAME_OVER);
             }
@@ -137,7 +145,7 @@ public class Diluc extends GameObject {
 //        g.setColor(Color.yellow);
 //        g.fillRect((int) getX(), (int) getY(), (int) WIDTH, (int) HEIGHT);
         if (jumped == 0) {
-            if (lives>=2) {
+            if (level >= 2) {
                 switch (action) {
                     case RUN:
                         //                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
@@ -301,5 +309,14 @@ public class Diluc extends GameObject {
     public void decreaseLives() {
         this.lives--;
         System.out.println("Sisa nyawa : " + lives);
+    }
+
+    public void increaseLevel(int lives) {
+        this.level++;
+    }
+
+    public void decreaseLevel() {
+        this.level--;
+        System.out.println("Level : " + level);
     }
 }
