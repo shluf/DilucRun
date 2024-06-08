@@ -28,8 +28,6 @@ public class Slime extends GameObject {
         this.isRight = isRight;
         this.handler = handler;
 
-        System.out.println(scale);
-
         tex = GameEngine.getTexture();
 
         animIdle = new Animation(10, tex.getSlimeIdle());
@@ -44,29 +42,33 @@ public class Slime extends GameObject {
     }
 
     public void movement() {
-        for (int i = 0; i < handler.getGameObjs().size(); i++) {
-            GameObject temp = handler.getGameObjs().get(i);
-            if (!isRight) {
-                setVelX(-SPEED);
-                if (temp.getId() == ObjectID.TILE) {
-                   if (getBounds().intersects(temp.getBounds())) {
-                       isRight = true;
-                   }
-                    if (getBoundsBotom().intersects(temp.getBounds())) {
-                        setVelY(0);
+        if (!(action == ObjectAction.DEATH)) {
+            for (int i = 0; i < handler.getGameObjs().size(); i++) {
+                GameObject temp = handler.getGameObjs().get(i);
+                if (!isRight) {
+                    setVelX(-SPEED);
+                    if (temp.getId() == ObjectID.TILE) {
+                        if (getBounds().intersects(temp.getBounds())) {
+                            isRight = true;
+                        }
+                        if (getBoundsBotom().intersects(temp.getBounds())) {
+                            setVelY(0);
+                        }
                     }
-                }
-            } else {
-                setVelX(SPEED);
-                if (temp.getId() == ObjectID.TILE) {
-                    if (getBounds().intersects(temp.getBounds())) {
-                        isRight=false;
-                    }
-                    if (getBoundsBotom().intersects(temp.getBounds())) {
-                        setVelY(0);
+                } else {
+                    setVelX(SPEED);
+                    if (temp.getId() == ObjectID.TILE) {
+                        if (getBounds().intersects(temp.getBounds())) {
+                            isRight = false;
+                        }
+                        if (getBoundsBotom().intersects(temp.getBounds())) {
+                            setVelY(0);
+                        }
                     }
                 }
             }
+        } else {
+            setBoundsDeath();
         }
     }
 
@@ -80,7 +82,6 @@ public class Slime extends GameObject {
 
         animRun.runAnimation();
         animIdle.runAnimation();
-        animDeath.runSingleAnimation();
     }
 
     @Override
@@ -106,11 +107,10 @@ public class Slime extends GameObject {
                 } else {
                     animDeath.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
                 }
-                setBoundsDeath();
                 break;
         }
 
-        showBounds(g);
+//        showBounds(g);
     }
 
     @Override
@@ -138,12 +138,18 @@ public class Slime extends GameObject {
     }
 
     public void setBoundsDeath() {
-        setY(getY()+getHeight());
+//        setY(getY() + 29);
+        animDeath.runSingleAnimation();
         setVelY(0);
+        setVelX(0);
     }
 
     public void setAction(ObjectAction action) {
         this.action = action;
+    }
+
+    public ObjectAction getAction() {
+        return action;
     }
 
     public static int getSlimeHeight() {

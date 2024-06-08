@@ -49,16 +49,20 @@ public class Animation {
 
     private void nextSingleFrame() {
         for (int i = 0; i < frames; i++) {
+            if (isFinished) {
+                currentImg = images[frames -1];
+                break;
+            }
+
             if (count == i) {
                 currentImg = images[i];
             }
         }
-
         count++;
 
-        if (count >= frames) {
-            count = frames - 1;
+        if (count > frames) {
             isFinished = true;
+            count = 0;
         }
     }
 
@@ -66,7 +70,4 @@ public class Animation {
         g.drawImage(currentImg, x, y, w, h, null);
     }
 
-    public boolean isFinished() {
-        return isFinished;
-    }
 }

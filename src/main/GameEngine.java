@@ -23,12 +23,10 @@ public class GameEngine extends Canvas implements Runnable {
     private static final int WINDOW_HEIGHT = 720;
     private static final int SCREEN_WIDTH = WINDOW_WIDTH - 67;
     private static final int SCREEN_HEIGHT = WINDOW_HEIGHT;
-    private static final int SCREEN_OFFSET = 16*3;
+    private static final int SCREEN_OFFSET = 16 * 3;
 
-    private float bgOneX = 0, bgTwoX = 0, bgThreeX = 0, bgFourX = 0, bgFiveX = 0;
-
-    private GameStatus gameStatus;
     private boolean running;
+    private GameUI gameUI;
 
     private Thread thread;
     private ObjectHandler handler;
@@ -45,17 +43,23 @@ public class GameEngine extends Canvas implements Runnable {
 
     private void initialize() {
 
-
         tex = new Texture();
 
         handler = new ObjectHandler();
         this.addKeyListener(new GameKey(handler));
 
-        handler.setHero(new Diluc(32 * 20,32,2, handler));
+        gameUI = new GameUI(this);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        handler.setHero(new Diluc(32,32,2, handler, this));
+        System.out.println("Sisa nyawa : " + handler.getHero().getLives());
 
         handler.addObj(new Slime(32 * 50, 32 * 11, 1, false, handler));
+        handler.addObj(new Slime(32 * 57, 32 * 11, 1, false, handler));
+        handler.addObj(new Slime(32 * 11, 32 * 13, 1, true, handler));
 
-        handler.addObj(new Hollow());
+        handler.addObj(new Hollow(handler, 120));
 
         for (int i = 8; i < 23; i++) {
             if (i != 16 && i!=17 && i != 18) {
@@ -64,7 +68,7 @@ public class GameEngine extends Canvas implements Runnable {
         }
 
         handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
-//        handler.addObj(new Tile(10 * 32, 32 * 11, 32, 32, 1));
+
         handler.addObj(new Tile(90 * 32, 32 * 12, 32, 32, 1));
         handler.addObj(new Tile(45 * 32, 32 * 12, 32, 32, 1));
 
@@ -81,10 +85,13 @@ public class GameEngine extends Canvas implements Runnable {
             handler.addObj(new Tile(i*32,32*15,32,32,1));
         }
 
+//        handler.allObject();
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         cam = new Camera(0, SCREEN_OFFSET);
         new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
 
-        handler.allObject();
 
         start();
     }
@@ -144,18 +151,7 @@ public class GameEngine extends Canvas implements Runnable {
         handler.tick();
         cam.tick(handler.getHero());
 
-        float playerSpeed = handler.getHero().getX();
-        bgOneX = 0;
-        bgTwoX = -playerSpeed * 0.008f;
-        bgThreeX = -playerSpeed * 0.02f;
-        bgFourX = -playerSpeed * 0.04f;
-        bgFiveX = -playerSpeed * 0.06f;
-
-//        if (bgOneX <= -WINDOW_WIDTH) bgOneX += WINDOW_WIDTH;
-        if (bgTwoX <= -WINDOW_WIDTH) bgTwoX += WINDOW_WIDTH;
-        if (bgThreeX <= -WINDOW_WIDTH) bgThreeX += WINDOW_WIDTH;
-        if (bgFourX <= -WINDOW_WIDTH) bgFourX += WINDOW_WIDTH;
-        if (bgFiveX <= -WINDOW_WIDTH) bgFiveX += WINDOW_WIDTH;
+        gameUI.tick();
     }
 
     private void render() {
@@ -168,37 +164,18 @@ public class GameEngine extends Canvas implements Runnable {
         Graphics g = buf.getDrawGraphics();
         Graphics2D g2 = (Graphics2D) g;
 
-//        g.setColor(Color.BLACK);
-//        g.fillRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
-//        g.drawImage(tex.getDilucTex()[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null );
-        // Draw backgrounds with parallax effect
-
-        g.drawImage(tex.getBackgroundOne(), (int) bgOneX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-//        g.drawImage(tex.getBackgroundOne(), (int) bgOneX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-
-        g.drawImage(tex.getBackgroundTwo(), (int) bgTwoX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundTwo(), (int) bgTwoX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-
-        g.drawImage(tex.getBackgroundThree(), (int) bgThreeX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundThree(), (int) bgThreeX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-
-        g.drawImage(tex.getBackgroundFour(), (int) bgFourX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundFour(), (int) bgFourX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-
-        g.drawImage(tex.getBackgroundFive(), (int) bgFiveX, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
-        g.drawImage(tex.getBackgroundFive(), (int) bgFiveX + WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT, null);
+        gameUI.render(g);
 
         g2.translate(cam.getX(), cam.getY());
         handler.render(g);
         g2.translate(-cam.getX(), -cam.getY());
 
+        if (gameUI.getGameStatus() == GameStatus.GAME_OVER) {
+            g2.drawString("GAME OVER", SCREEN_WIDTH/2, WINDOW_HEIGHT/2);
+        }
+
         g.dispose();
         buf.show();
-
-    }
-
-    public GameStatus getGameStatus() {
-        return gameStatus;
     }
 
     public static int getWindowWidth() {
@@ -217,9 +194,19 @@ public class GameEngine extends Canvas implements Runnable {
         return SCREEN_HEIGHT;
     }
 
+    public static int getScreenOffset() {
+        return SCREEN_OFFSET;
+    }
 
     public static Texture getTexture() {
         return tex;
     }
 
+    public ObjectHandler getHandler() {
+        return handler;
+    }
+
+    public GameUI getGameUI() {
+        return gameUI;
+    }
 }
