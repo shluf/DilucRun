@@ -6,7 +6,6 @@ import content.ObjectHandler;
 import content.ObjectID;
 import content.enemy.Slime;
 import main.GameEngine;
-import main.GameUI;
 import main.condition.GameStatus;
 import textures.Animation;
 import textures.Texture;
@@ -21,22 +20,26 @@ public class Diluc extends GameObject {
     private int jumped = 0;
     private boolean isRight = true;
 
-    private boolean killing = false;
-    private int lives = 1;
+    private GameEngine engine;
+
+    private boolean slash = false;
+    private int lives = 3;
 
     private final ObjectHandler handler;
     private final Texture tex;
-    private final Animation animIdle, animRun, animIdleSword, animSlash, animJump, animDoubleJump;
+    private final Animation animIdle, animRun, animIdleSword, animRunSword, animSlash, animJump, animDoubleJump;
 
-    public Diluc(float x, float y, int scale, ObjectHandler handler) {
+    public Diluc(float x, float y, int scale, ObjectHandler handler, GameEngine engine) {
         super(x, y, ObjectID.HERO, WIDTH, HEIGHT, scale);
         this.handler = handler;
+        this.engine = engine;
 
         tex = GameEngine.getTexture();
 
         animIdle = new Animation(10, tex.getIdle());
-        animRun = new Animation(5, tex.getRun());
         animIdleSword = new Animation(10, tex.getIdleSword());
+        animRun = new Animation(5, tex.getRun());
+        animRunSword = new Animation(5, tex.getRunSword());
         animSlash = new Animation(5, tex.getSlash());
         animJump = new Animation(10, tex.getJump());
         animDoubleJump = new Animation(5, tex.getDoubleJump());
@@ -69,22 +72,23 @@ public class Diluc extends GameObject {
 
             if (temp.getId() == ObjectID.SLIME) {
                 Slime slime = (Slime) temp;
-                if (getBounds().intersects(temp.getBounds())) {
+                if (getBounds().intersects(temp.getBounds()) && !(slime.getAction() == ObjectAction.DEATH)) {
                     setVelY(0);
                     setVelX(0);
                     action = ObjectAction.DEATH;
                 }
 
-                if (killing) {
+                if (slash) {
                     if(!isRight) {
                         if (getBoundsAttackLeft().intersects(temp.getBounds())) {
 //                            handler.removeObj(temp);
-                            System.out.println("Slime: " + slime);
                             slime.setAction(ObjectAction.DEATH);
                         }
                     } else {
                         if (getBoundsAttackRight().intersects(temp.getBounds())) {
-                            handler.removeObj(slime);
+//                            System.out.println("Slime: " + slime);
+//                            handler.removeObj(slime);
+                            slime.setAction(ObjectAction.DEATH);
                         }
                     }
                 }
@@ -94,15 +98,16 @@ public class Diluc extends GameObject {
 
     private void death() {
         if (action == ObjectAction.DEATH) {
-            if (lives > 0) {
+            if (lives > 1) {
                 decreaseLives();
                 setX(32);
                 setY(300);
-                setAction(ObjectAction.IDLE);
+                setAction(ObjectAction.RESPAWN);
             }
-//            else {
-//                setGameStatus(GameStatus.GAME_OVER);
-//            }
+            else if (lives == 1) {
+                decreaseLives();
+                engine.getGameUI().setGameStatus(GameStatus.GAME_OVER);
+            }
         }
     }
 
@@ -121,6 +126,7 @@ public class Diluc extends GameObject {
         animJump.runAnimation();
         animDoubleJump.runAnimation();
         animIdleSword.runAnimation();
+        animRunSword.runAnimation();
         animSlash.runAnimation();
 
 
@@ -131,33 +137,53 @@ public class Diluc extends GameObject {
 //        g.setColor(Color.yellow);
 //        g.fillRect((int) getX(), (int) getY(), (int) WIDTH, (int) HEIGHT);
         if (jumped == 0) {
-            switch (action) {
-                case RUN:
-    //                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
-                    if (!isRight) {
-                        animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
-                    } else {
-                        animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
-                    }
-                    break;
+            if (lives>=2) {
+                switch (action) {
+                    case RUN:
+                        //                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
+                        if (!isRight) {
+                            animRunSword.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        } else {
+                            animRunSword.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        }
+                        break;
+                    case RESPAWN:
+                    case IDLE:
+                        if (!isRight) {
+                            animIdleSword.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        } else {
+                            animIdleSword.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        }
+                        break;
 
-                case IDLE:
-                    if (!isRight) {
-                        animIdle.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
-                    } else {
-                        animIdle.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
-                    }
-                    break;
-
-                case ATTACK:
-                    if (!isRight) {
-                        animSlash.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                    case ATTACK:
+                        if (!isRight) {
+                            animSlash.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
 //                        g.drawImage(tex.getSlash()[1], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
-                    } else {
-                        animSlash.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        } else {
+                            animSlash.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
 //                        g.drawImage(tex.getSlash()[1], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
-                    }
-                    break;
+                        }
+                        break;
+                }
+            } else {
+                switch (action) {
+                    case RUN:
+                        if (!isRight) {
+                            animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        } else {
+                            animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        }
+                        break;
+                    case RESPAWN:
+                    case IDLE:
+                        if (!isRight) {
+                            animIdle.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        } else {
+                            animIdle.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        }
+                        break;
+                }
             }
         } else if (jumped == 2) {
             if (!isRight) {
@@ -175,7 +201,7 @@ public class Diluc extends GameObject {
 //        System.out.println("Jump: " + jumped);
 //        System.out.println("Action: " + action);
 
-        showBounds(g);
+//        showBounds(g);
     }
 
     @Override
@@ -260,8 +286,8 @@ public class Diluc extends GameObject {
         isRight = right;
     }
 
-    public void setKilling(boolean killing) {
-        this.killing = killing;
+    public void setSlash(boolean slash) {
+        this.slash = slash;
     }
 
     public int getLives() {
@@ -274,5 +300,6 @@ public class Diluc extends GameObject {
 
     public void decreaseLives() {
         this.lives--;
+        System.out.println("Sisa nyawa : " + lives);
     }
 }

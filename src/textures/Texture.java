@@ -1,5 +1,6 @@
 package textures;
 
+import content.block.Tile;
 import content.enemy.Slime;
 import content.hero.Diluc;
 
@@ -9,16 +10,19 @@ public class Texture {
 
     private final ImageLoader loader;
     private BufferedImage hero_sheet;
+    private BufferedImage heroSwordRun_sheet;
     private BufferedImage slime_sheet;
 
     private BufferedImage[] diluc;
-    private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, slash, jump, doubleJump;
+    private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, dilucRunSword, slash, jump, doubleJump;
 
     private BufferedImage[] slime;
     private BufferedImage[] slimeIdle, slimeMove, slimeDeath;
 
     private BufferedImage backgroundOne, backgroundTwo, backgroundThree, backgroundFour, backgroundFive;
-    private BufferedImage tile;
+
+    private BufferedImage tile_sheet;
+    private BufferedImage tileLandBlock;
 
     public Texture() {
 
@@ -26,8 +30,9 @@ public class Texture {
 
         try {
             hero_sheet = loader.loadImage("/hero-Sheet.png", 's');
+            heroSwordRun_sheet = loader.loadImage("/heroSwordRun-Sheet.png", 's');
             slime_sheet = loader.loadImage("/slime-Sheet.png", 's');
-            tile = loader.loadImage("/jungle tileset.png",'a');
+            tile_sheet = loader.loadImage("/jungle tileset.png",'a');
             backgroundOne = loader.loadImage("/plx-1.png",'a');
             backgroundTwo = loader.loadImage("/plx-2.png",'a');
             backgroundThree = loader.loadImage("/plx-3.png",'a');
@@ -54,12 +59,19 @@ public class Texture {
         }
 
         dilucIdleSword = new BufferedImage[4];
-        System.arraycopy(diluc, 38, dilucIdleSword, 0, 4);
+        for (int i = 0; i < 4; i++) {
+            dilucIdleSword[i] = diluc[38 + i];
+        }
 
-        slash = new BufferedImage[3]; //16
-        for (int i = 0; i < 3; i++) {
+        dilucRunSword = new BufferedImage[6];
+        for (int i = 0; i < 6; i++) {
+            dilucRunSword[i] = diluc[77 + i];
+        }
+
+        slash = new BufferedImage[2]; //16
+        for (int i = 0; i < 2; i++) {
 //            slash[i] = diluc[43 + i];
-            slash[i] = diluc[48 + i];
+            slash[i] = diluc[49 + i];
         }
 
         jump = new BufferedImage[2];
@@ -102,12 +114,22 @@ public class Texture {
         int heroRows = hero_sheet.getHeight() / heroHeight;
         int heroCols = hero_sheet.getWidth() / heroWidth;
 
-        diluc = new BufferedImage[heroRows * heroCols];
+        int heroSwordRunRows = heroSwordRun_sheet.getHeight() / heroHeight;
+        int heroSwordRunCols = heroSwordRun_sheet.getWidth() / heroWidth;
+
+        diluc = new BufferedImage[heroRows * heroCols + heroSwordRunRows * heroSwordRunCols];   // 77 + 6
+
+//        System.out.println(heroRows * heroCols + heroSwordRunRows * heroSwordRunCols);
 
         int heroIndex = 0;
         for (int y = 0; y < heroRows; y++) {
             for (int x = 0; x < heroCols; x++) {
                 diluc[heroIndex++] = hero_sheet.getSubimage(x * heroWidth, y * heroHeight, heroWidth, heroHeight);
+            }
+        }
+        for (int y = 0; y < heroSwordRunRows; y++) {
+            for (int x = 0; x < heroSwordRunCols; x++) {
+                diluc[heroIndex++] = heroSwordRun_sheet.getSubimage(x * heroWidth, y * heroHeight, heroWidth, heroHeight);
             }
         }
 
@@ -125,6 +147,10 @@ public class Texture {
             }
         }
 
+
+        tileLandBlock = tile_sheet.getSubimage(16, 224, 31,31);
+
+
     }
 
     public BufferedImage[] getIdle() {
@@ -137,6 +163,10 @@ public class Texture {
 
     public BufferedImage[] getRun() {
         return dilucRun;
+    }
+
+    public BufferedImage[] getRunSword() {
+        return dilucRunSword;
     }
 
     public BufferedImage[] getSlash() {
@@ -185,5 +215,9 @@ public class Texture {
 
     public BufferedImage[] getSlime() {
         return slime;
+    }
+
+    public BufferedImage getTileLandBlock() {
+        return tileLandBlock;
     }
 }

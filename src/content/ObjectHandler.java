@@ -50,7 +50,7 @@ public class ObjectHandler {
         return 0;
     }
 
-    public int setSlime(Slime slime)
+//    public int setSlime(Slime slime)
 
     public void removeHero() {
         if (hero == null) {
@@ -60,9 +60,9 @@ public class ObjectHandler {
         this.hero = null;
     }
 
-    public void removeSlime(){
-        if ()
-    }
+//    public void removeSlime(){
+//        if ()
+//    }
 
     public Diluc getHero() {
         return hero;
