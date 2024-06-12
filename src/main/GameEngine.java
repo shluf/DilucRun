@@ -1,18 +1,10 @@
 package main;
 
 import content.ObjectHandler;
-import content.block.Hollow;
-import content.block.Tile;
-import content.enemy.Slime;
-import content.hero.Diluc;
-import main.condition.GameStatus;
-import main.menu.LevelCreator;
-import main.view.Camera;
 import main.view.Windows;
 import textures.Texture;
 
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 
 public class GameEngine extends Canvas implements Runnable {
     private static final int MILLIS_PER_SEC = 1000;
@@ -28,11 +20,9 @@ public class GameEngine extends Canvas implements Runnable {
 
     private boolean running;
     private GameUI gameUI;
-    private LevelCreator levelCreator;
 
     private Thread thread;
     private ObjectHandler handler;
-    private Camera cam;
     private static Texture tex;
 
     public GameEngine() {
@@ -48,54 +38,51 @@ public class GameEngine extends Canvas implements Runnable {
         tex = new Texture();
 
         handler = new ObjectHandler();
-        this.addKeyListener(new GameKey(handler));
+        gameUI = new GameUI(this, handler);
+        gameUI.addKeyListener(new GameKey(handler, gameUI));
 
-        gameUI = new GameUI(this);
-
-//        levelCreator = new LevelCreator(handler, this);
-//        levelCreator.start();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        handler.setHero(new Diluc(32,32,2, handler, this));
-        System.out.println("Sisa nyawa : " + handler.getHero().getLives());
-
-        handler.addObj(new Slime(32 * 50, 32 * 11, 1, false, handler));
-        handler.addObj(new Slime(32 * 57, 32 * 11, 1, false, handler));
-        handler.addObj(new Slime(32 * 11, 32 * 13, 1, true, handler));
-
-        handler.addObj(new Hollow(handler, 120));
-
-        for (int i = 8; i < 23; i++) {
-            if (i != 16 && i!=17 && i != 18) {
-                handler.addObj(new Tile(i * 32, 32 * 10, 32, 32, 1));
-            }
-        }
-
-        handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
-
-        handler.addObj(new Tile(90 * 32, 32 * 12, 32, 32, 1));
-        handler.addObj(new Tile(45 * 32, 32 * 12, 32, 32, 1));
-
-        handler.addObj(new Tile(10 * 32, 32 * 13, 32, 32, 1));
-        handler.addObj(new Tile(10 * 32, 32 * 14, 32, 32, 1));
-
-        for (int i = 32; i < 100; i++) {
-            if (i != 37 && i!=38) {
-                handler.addObj(new Tile(i * 32, 32 * 13, 32, 32, 1));
-            }
-        }
-
-        for (int i = 0; i < 30; i++) {
-            handler.addObj(new Tile(i*32,32*15,32,32,1));
-        }
-
-        handler.allObject();
+//        handler.setHero(new Diluc(32,32,2, handler, this));
+//        System.out.println("Sisa nyawa : " + handler.getHero().getLives());
+//
+//        handler.addObj(new Slime(32 * 50, 32 * 11, 1, false, handler));
+//        handler.addObj(new Slime(32 * 57, 32 * 11, 1, false, handler));
+//        handler.addObj(new Slime(32 * 11, 32 * 13, 1, true, handler));
+//
+//        handler.addObj(new Hollow(handler, 120));
+//
+//        for (int i = 8; i < 23; i++) {
+//            if (i != 16 && i!=17 && i != 18) {
+//                handler.addObj(new Tile(i * 32, 32 * 10, 32, 32, 1));
+//            }
+//        }
+//
+//        handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
+//
+//        handler.addObj(new Tile(90 * 32, 32 * 12, 32, 32, 1));
+//        handler.addObj(new Tile(45 * 32, 32 * 12, 32, 32, 1));
+//
+//        handler.addObj(new Tile(10 * 32, 32 * 13, 32, 32, 1));
+//        handler.addObj(new Tile(10 * 32, 32 * 14, 32, 32, 1));
+//
+//        for (int i = 32; i < 100; i++) {
+//            if (i != 37 && i!=38) {
+//                handler.addObj(new Tile(i * 32, 32 * 13, 32, 32, 1));
+//            }
+//        }
+//
+//        for (int i = 0; i < 30; i++) {
+//            handler.addObj(new Tile(i*32,32*15,32,32,1));
+//        }
+//
+//        handler.allObject();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        cam = new Camera(0, SCREEN_OFFSET);
-        new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
+
+        new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, gameUI);
 
 
         start();
@@ -141,6 +128,7 @@ public class GameEngine extends Canvas implements Runnable {
                  render();
                  frames++;
              }
+
              if (System.currentTimeMillis() - timer > MILLIS_PER_SEC) {
                  timer += MILLIS_PER_SEC;
 //                 System.out.println("FPS: " + frames + " TPS: " + updates);
@@ -154,33 +142,10 @@ public class GameEngine extends Canvas implements Runnable {
 
     private void tick() {
         gameUI.tick();
-        handler.tick();
-        cam.tick(handler.getHero());
-
     }
 
     private void render() {
-        BufferStrategy buf = this.getBufferStrategy();
-        if (buf == null) {
-            this.createBufferStrategy(3);
-            return;
-        }
-
-        Graphics g = buf.getDrawGraphics();
-        Graphics2D g2 = (Graphics2D) g;
-
-        gameUI.render(g);
-
-        g2.translate(cam.getX(), cam.getY());
-        handler.render(g);
-        g2.translate(-cam.getX(), -cam.getY());
-
-        if (gameUI.getGameStatus() == GameStatus.GAME_OVER) {
-            g2.drawString("GAME OVER", SCREEN_WIDTH/2, WINDOW_HEIGHT/2);
-        }
-
-        g.dispose();
-        buf.show();
+        gameUI.repaint();
     }
 
     public static int getWindowWidth() {
@@ -205,10 +170,6 @@ public class GameEngine extends Canvas implements Runnable {
 
     public static Texture getTexture() {
         return tex;
-    }
-
-    public ObjectHandler getHandler() {
-        return handler;
     }
 
     public GameUI getGameUI() {

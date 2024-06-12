@@ -2,6 +2,7 @@ package main;
 
 import content.ObjectAction;
 import content.ObjectHandler;
+import main.condition.GameStatus;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,9 +10,11 @@ import java.awt.event.KeyListener;
 public class GameKey implements KeyListener {
     private final boolean[] keyDown = new boolean[4];
     private final ObjectHandler handler;
+    private final GameUI gameUI;
 
-    public GameKey(ObjectHandler handler) {
+    public GameKey(ObjectHandler handler, GameUI gameUI) {
         this.handler = handler;
+        this.gameUI = gameUI;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class GameKey implements KeyListener {
                 if (handler.getHero().isJumped() == 0) {
                     handler.getHero().setAction(ObjectAction.RUN);
                 }
-                handler.getHero().setVelX(-8);
+                handler.getHero().setVelX(-5);
                 keyDown[1] = true;
                 break;
             case KeyEvent.VK_RIGHT:
@@ -45,7 +48,7 @@ public class GameKey implements KeyListener {
                 if (handler.getHero().isJumped() == 0) {
                     handler.getHero().setAction(ObjectAction.RUN);
                 }
-                handler.getHero().setVelX(8);
+                handler.getHero().setVelX(5);
                 keyDown[2] = true;
                 break;
             case KeyEvent.VK_SPACE:
@@ -57,6 +60,9 @@ public class GameKey implements KeyListener {
                 break;
             case KeyEvent.VK_Z:
                 handler.getHero().setAction(ObjectAction.INTERACT);
+                break;
+            case KeyEvent.VK_ENTER:
+                gameUI.setGameStatus(GameStatus.RUNNING);
                 break;
         }
     }

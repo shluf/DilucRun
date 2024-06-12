@@ -1,11 +1,8 @@
 package main;
 
 import content.ObjectHandler;
-import content.block.Hollow;
-import content.block.Tile;
-import content.enemy.Slime;
-import content.hero.Diluc;
 import main.condition.GameStatus;
+import main.menu.LevelCreator;
 import main.view.Camera;
 import textures.Texture;
 
@@ -17,10 +14,9 @@ import java.io.InputStream;
 public class GameUI extends JPanel {
     private int screenOffset;
 
-    private GameEngine engine;
-
     private float bgOneX = 0, bgTwoX = 0, bgThreeX = 0, bgFourX = 0, bgFiveX = 0;
 
+    private LevelCreator levelCreator;
     private final ObjectHandler handler;
     private Camera cam;
 
@@ -29,17 +25,16 @@ public class GameUI extends JPanel {
 
     private Texture tex;
 
-    public GameUI(GameEngine engine) {
-        this.engine = engine;
+    public GameUI(GameEngine engine, ObjectHandler handler) {
+        this.handler = handler;
 
         tex = GameEngine.getTexture();
 
-        handler = engine.getHandler();
-
         screenOffset = GameEngine.getScreenOffset();
+        cam = new Camera(0, screenOffset);
 
-//        setLevel();
-
+        levelCreator = new LevelCreator(handler, engine);
+        levelCreator.start();
 
         try {
             InputStream in = getClass().getResourceAsStream("/assets/font/mario-font.ttf");
@@ -51,29 +46,68 @@ public class GameUI extends JPanel {
     }
 
     @Override
-    public void paintComponents(Graphics g) {
-        super.paintComponents(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        Graphics2D g2 = (Graphics2D) g.create();
+
+        if(gameStatus == GameStatus.START_SCREEN){
+            g2.setFont(gameFont.deriveFont(50f));
+            g2.setColor(Color.BLACK);
+            g2.drawString("START", GameEngine.getWindowWidth()/2, GameEngine.getWindowHeight()/2);
+        }
+        else if(gameStatus == GameStatus.ABOUT_SCREEN){
+            g2.setFont(gameFont.deriveFont(50f));
+            g2.setColor(Color.WHITE);
+            g2.drawString("ABOUT", GameEngine.getWindowWidth()/2, GameEngine.getWindowHeight()/2);
+        }
+        else if(gameStatus == GameStatus.HELP_SCREEN){
+            g2.setFont(gameFont.deriveFont(50f));
+            g2.setColor(Color.WHITE);
+            g2.drawString("HELP", GameEngine.getWindowWidth()/2, GameEngine.getWindowHeight()/2);
+        }
+        else if(gameStatus == GameStatus.GAME_OVER){
+            g2.setFont(gameFont.deriveFont(50f));
+            g2.setColor(Color.BLACK);
+            g2.drawString("GAME OVER", GameEngine.getWindowWidth()/2 , GameEngine.getWindowHeight()/2);
+        }
+        else {
+            renderBackground(g);
+
+            g2.translate(-cam.getX(), -cam.getY());
+            handler.render(g2);
+            g2.translate(cam.getX(), cam.getY());
+
+
+
+//            System.out.println("HeroX: " + handler.getHero().getX());
+
+
+
+//            drawPoints(g2);
+//            drawRemainingLives(g2);
+//            drawAcquiredCoins(g2);
+//            drawRemainingTime(g2);
+
+//            if(gameStatus == GameStatus.PAUSED){
+//                drawPauseScreen(g2);
+//            }
+//            else if(gameStatus == GameStatus.MISSION_PASSED){
+//                drawVictoryScreen(g2);
+//            }
+        }
+
+        g2.dispose();
 
 
     }
 
     public void tick() {
-        animateBackground();
-    }
-
-    public void render(Graphics g) {
-//        Graphics2D g2 = (Graphics2D) g;
-        renderBackground(g);
-
-
-    }
-
-    private void setLevel() {
-
-    }
-
-    private void gameStart() {
-
+        if (handler.getHero() != null) {
+            handler.tick();
+            animateBackground();
+            cam.tick(handler.getHero());
+        }
     }
 
     public GameStatus getGameStatus() {
@@ -85,12 +119,12 @@ public class GameUI extends JPanel {
     }
 
     private void animateBackground() {
-        float playerSpeed = handler.getHero().getX();
+        float camX = cam.getX();
         bgOneX = 0;
-        bgTwoX = -playerSpeed * 0.008f;
-        bgThreeX = -playerSpeed * 0.02f;
-        bgFourX = -playerSpeed * 0.04f;
-        bgFiveX = -playerSpeed * 0.06f;
+        bgTwoX = -camX * 0.008f;
+        bgThreeX = -camX * 0.02f;
+        bgFourX = -camX * 0.04f;
+        bgFiveX = -camX * 0.06f;
 
         if (bgTwoX <= -GameEngine.getWindowWidth()) bgTwoX += GameEngine.getWindowWidth();
         if (bgThreeX <= -GameEngine.getWindowWidth()) bgThreeX += GameEngine.getWindowWidth();

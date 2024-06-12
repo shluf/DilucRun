@@ -4,6 +4,7 @@ import content.GameObject;
 import content.ObjectAction;
 import content.ObjectHandler;
 import content.ObjectID;
+import main.GameEngine;
 
 import java.awt.*;
 
@@ -11,7 +12,7 @@ public class Hollow extends GameObject {
     private ObjectHandler handler;
 
     public Hollow(ObjectHandler handler, int blocks) {
-        super(32 *  -15, 630, ObjectID.HOLLOW, 32*blocks, 1, 1);
+        super(32 *  -15, GameEngine.getWindowHeight(), ObjectID.HOLLOW, 32*blocks, 1, 1);
         this.handler = handler;
     }
 

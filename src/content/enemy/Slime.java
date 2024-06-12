@@ -139,7 +139,6 @@ public class Slime extends GameObject {
     }
 
     public void setBoundsDeath() {
-//        setY(getY() + 29);
         animDeath.runSingleAnimation();
         setVelY(0);
         setVelX(0);

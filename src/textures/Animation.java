@@ -76,4 +76,8 @@ public class Animation {
         index = 0;
         count = 0;
     }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
 }

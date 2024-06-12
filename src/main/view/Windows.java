@@ -10,7 +10,7 @@ public class Windows {
     private JFrame frame;
     private Dimension size;
 
-    public Windows(int width, int height, String title, GameEngine game) {
+    public Windows(int width, int height, String title, GameUI game) {
         size = new Dimension(width, height);
         frame = new JFrame(title);
 
