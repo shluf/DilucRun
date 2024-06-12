@@ -13,6 +13,8 @@ public class Texture {
     private BufferedImage heroSwordRun_sheet;
     private BufferedImage slime_sheet;
 
+    private BufferedImage level1, level2;
+
     private BufferedImage[] diluc;
     private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, dilucRunSword, slash, jump, doubleJump;
 
@@ -32,7 +34,8 @@ public class Texture {
             hero_sheet = loader.loadImage("/hero-Sheet.png", 's');
             heroSwordRun_sheet = loader.loadImage("/heroSwordRun-Sheet.png", 's');
             slime_sheet = loader.loadImage("/slime-Sheet.png", 's');
-            tile_sheet = loader.loadImage("/jungle tileset.png",'a');
+            level1 = loader.loadImage("/level/Map 1.png", 'a');
+            tile_sheet = loader.loadImage("/jungle-tileset.png",'a');
             backgroundOne = loader.loadImage("/plx-1.png",'a');
             backgroundTwo = loader.loadImage("/plx-2.png",'a');
             backgroundThree = loader.loadImage("/plx-3.png",'a');
@@ -219,5 +222,13 @@ public class Texture {
 
     public BufferedImage getTileLandBlock() {
         return tileLandBlock;
+    }
+
+    public BufferedImage getLevel1() {
+        return level1;
+    }
+
+    public BufferedImage getLevel2() {
+        return level2;
     }
 }

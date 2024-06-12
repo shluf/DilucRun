@@ -22,8 +22,8 @@ public class Hollow extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.drawRect((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+//        g.setColor(Color.BLUE);
+//        g.drawRect((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
     }
 
 

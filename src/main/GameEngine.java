@@ -6,6 +6,7 @@ import content.block.Tile;
 import content.enemy.Slime;
 import content.hero.Diluc;
 import main.condition.GameStatus;
+import main.menu.LevelCreator;
 import main.view.Camera;
 import main.view.Windows;
 import textures.Texture;
@@ -27,6 +28,7 @@ public class GameEngine extends Canvas implements Runnable {
 
     private boolean running;
     private GameUI gameUI;
+    private LevelCreator levelCreator;
 
     private Thread thread;
     private ObjectHandler handler;
@@ -49,6 +51,9 @@ public class GameEngine extends Canvas implements Runnable {
         this.addKeyListener(new GameKey(handler));
 
         gameUI = new GameUI(this);
+
+//        levelCreator = new LevelCreator(handler, this);
+//        levelCreator.start();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +90,7 @@ public class GameEngine extends Canvas implements Runnable {
             handler.addObj(new Tile(i*32,32*15,32,32,1));
         }
 
-//        handler.allObject();
+        handler.allObject();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -148,10 +153,10 @@ public class GameEngine extends Canvas implements Runnable {
     }
 
     private void tick() {
+        gameUI.tick();
         handler.tick();
         cam.tick(handler.getHero());
 
-        gameUI.tick();
     }
 
     private void render() {

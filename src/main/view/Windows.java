@@ -1,6 +1,7 @@
 package main.view;
 
 import main.GameEngine;
+import main.GameUI;
 
 import javax.swing.*;
 import java.awt.*;

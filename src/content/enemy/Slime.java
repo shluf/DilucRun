@@ -38,6 +38,7 @@ public class Slime extends GameObject {
     public void respawn() {
         if (handler.getHero().getAction() == ObjectAction.RESPAWN) {
             setAction(ObjectAction.IDLE);
+            animDeath.reset();
         }
     }
 

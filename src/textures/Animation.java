@@ -70,4 +70,10 @@ public class Animation {
         g.drawImage(currentImg, x, y, w, h, null);
     }
 
+
+    public void reset() {
+        isFinished = false;
+        index = 0;
+        count = 0;
+    }
 }

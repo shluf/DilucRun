@@ -106,6 +106,7 @@ public class Diluc extends GameObject {
 
     private void death() {
         if (action == ObjectAction.DEATH) {
+            level = 1;
             if (lives > 1) {
                 decreaseLives();
                 setX(32);

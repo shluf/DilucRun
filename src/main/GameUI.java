@@ -50,52 +50,26 @@ public class GameUI extends JPanel {
         }
     }
 
-    public void tick() {
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
 
+
+    }
+
+    public void tick() {
         animateBackground();
     }
 
     public void render(Graphics g) {
 //        Graphics2D g2 = (Graphics2D) g;
-
         renderBackground(g);
+
 
     }
 
     private void setLevel() {
 
-        handler.setHero(new Diluc(32 * 20,32,2, handler, engine));
-
-        handler.addObj(new Slime(32 * 50, 32 * 11, 1, false, handler));
-
-        handler.addObj(new Hollow(handler, 100));
-
-        for (int i = 8; i < 23; i++) {
-            if (i != 16 && i!=17 && i != 18) {
-                handler.addObj(new Tile(i * 32, 32 * 10, 32, 32, 1));
-            }
-        }
-
-        handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
-
-
-        handler.addObj(new Tile(90 * 32, 32 * 12, 32, 32, 1));
-        handler.addObj(new Tile(45 * 32, 32 * 12, 32, 32, 1));
-
-        handler.addObj(new Tile(10 * 32, 32 * 13, 32, 32, 1));
-        handler.addObj(new Tile(10 * 32, 32 * 14, 32, 32, 1));
-
-        for (int i = 32; i < 100; i++) {
-            if (i != 37 && i!=38) {
-                handler.addObj(new Tile(i * 32, 32 * 13, 32, 32, 1));
-            }
-        }
-
-        for (int i = 0; i < 30; i++) {
-            handler.addObj(new Tile(i*32,32*15,32,32,1));
-        }
-
-        cam = new Camera(0, screenOffset);
     }
 
     private void gameStart() {

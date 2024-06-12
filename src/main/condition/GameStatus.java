@@ -5,7 +5,6 @@ public enum GameStatus {
     PAUSED,
     RUNNING,
     START_SCREEN,
-    MAP_SELECTION,
     HELP_SCREEN,
     FINISHED,
     ABOUT_SCREEN
