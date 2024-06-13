@@ -111,7 +111,7 @@ public class Slime extends GameObject {
                 break;
         }
 
-//        showBounds(g);
+        showBounds(g);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class GameUI extends JPanel {
         if(gameStatus == GameStatus.START_SCREEN){
             g2.setFont(gameFont.deriveFont(50f));
             g2.setColor(Color.BLACK);
-            g2.drawString("START", GameEngine.getWindowWidth()/2, GameEngine.getWindowHeight()/2);
+            g2.drawString("START", GameEngine.getWindowWidth()/2 - 150, GameEngine.getWindowHeight()/2);
         }
         else if(gameStatus == GameStatus.ABOUT_SCREEN){
             g2.setFont(gameFont.deriveFont(50f));
@@ -69,7 +69,7 @@ public class GameUI extends JPanel {
         else if(gameStatus == GameStatus.GAME_OVER){
             g2.setFont(gameFont.deriveFont(50f));
             g2.setColor(Color.BLACK);
-            g2.drawString("GAME OVER", GameEngine.getWindowWidth()/2 , GameEngine.getWindowHeight()/2);
+            g2.drawString("GAME OVER", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
         }
         else {
             renderBackground(g);

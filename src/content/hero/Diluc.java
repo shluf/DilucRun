@@ -95,8 +95,8 @@ public class Diluc extends GameObject {
                     } else {
                         if (getBoundsAttackRight().intersects(temp.getBounds())) {
 //                            System.out.println("Slime: " + slime);
-//                            handler.removeObj(slime);
-                            slime.setAction(ObjectAction.DEATH);
+                            handler.removeObj(slime);
+//                            slime.setAction(ObjectAction.DEATH);
                         }
                     }
                 }
