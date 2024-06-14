@@ -75,13 +75,20 @@ public class Diluc extends GameObject {
                 }
             }
 
-            if (temp.getId() == ObjectID.CHEST && action == ObjectAction.INTERACT) {
+            if (temp.getId() == ObjectID.CHEST) {
                 Chest chest = (Chest) temp;
-                if (getBoundsRight().intersects(chest.getOuterBounds()) || getBoundsLeft().intersects(chest.getOuterBounds())){
-                    if (!chest.isOpened()) {
-                        increaseLevel();
+                chest.setNotify(false);
+                if (getBoundsRight().intersects(chest.getOuterBounds()) || getBoundsLeft().intersects(chest.getOuterBounds())) {
+                    chest.setNotify(true);
+                    if (action == ObjectAction.INTERACT) {
+                        if (!chest.isOpened()) {
+                            increaseLevel();
+                            chest.setOpened(true);
+                        }
                     }
-                    chest.setOpened(true);
+                        if (chest.isOpened()){
+                        chest.setNotify(false);
+                        }
                 }
             }
 
@@ -267,7 +274,7 @@ public class Diluc extends GameObject {
 //        System.out.println("Jump: " + jumped);
 //        System.out.println("Action: " + action);
 
-        showBounds(g);
+//        showBounds(g);
     }
 
     @Override

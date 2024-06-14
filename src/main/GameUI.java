@@ -33,7 +33,7 @@ public class GameUI extends JPanel {
         screenOffset = GameEngine.getScreenOffset();
         cam = new Camera(0, screenOffset);
 
-        levelCreator = new LevelCreator(handler, engine);
+        levelCreator = new LevelCreator(handler, engine, this);
         createMap(0);
 
         try {
@@ -159,5 +159,7 @@ public class GameUI extends JPanel {
 
     }
 
-
+    public Font getGameFont() {
+        return gameFont;
+    }
 }

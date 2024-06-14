@@ -6,6 +6,7 @@ import content.enemy.Slime;
 import content.enemy.SlimeHolder;
 import content.hero.Diluc;
 import main.GameEngine;
+import main.GameUI;
 import textures.ImageLoader;
 
 import java.awt.*;
@@ -13,14 +14,16 @@ import java.awt.image.BufferedImage;
 
 public class LevelCreator {
     private GameEngine engine;
+    private GameUI gameUI;
     private ImageLoader loader;
     private BufferedImage mapTex;
     private ObjectHandler handler;
 
-    public LevelCreator(ObjectHandler handler, GameEngine engine) {
+    public LevelCreator(ObjectHandler handler, GameEngine engine, GameUI gameUI) {
         this.handler = handler;
-        loader = new ImageLoader();
         this.engine = engine;
+        this.gameUI = gameUI;
+        loader = new ImageLoader();
     }
 
     public boolean start(int mapLevel) {
@@ -79,7 +82,7 @@ public class LevelCreator {
                 } else if (pixel == slimeHolder) {
                     handler.addObj(new SlimeHolder(i*32,j*32, 32, 32, 1));
                 } else if (pixel == chest) {
-                    handler.addObj(new Chest(i*32,j*32,1));
+                    handler.addObj(new Chest(i*32,j*32,1, gameUI));
                 }
                 else if (pixel == gate) {
 //                    handler.addObj(new Gate(i*32,j*32,1, handler));

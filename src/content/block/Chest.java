@@ -4,6 +4,7 @@ import content.GameObject;
 import content.ObjectHandler;
 import content.ObjectID;
 import main.GameEngine;
+import main.GameUI;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,12 +16,16 @@ public class Chest extends GameObject {
     private static final int HEIGHT = 32;
 
     private boolean opened = false;
+    private boolean notify = false;
     private int type;
+
+    private GameUI gameUI;
 
     private final BufferedImage[] chestTex;
 
-    public Chest(float x, float y, int scale) {
+    public Chest(float x, float y, int scale, GameUI gameUI) {
         super(x, y, ObjectID.CHEST, WIDTH, HEIGHT, scale);
+        this.gameUI = gameUI;
 
         int[] index = {0, 2, 4, 6};
         Random random = new Random();
@@ -41,6 +46,11 @@ public class Chest extends GameObject {
         } else {
             g.drawImage(chestTex[type+1], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
         }
+        if (notify) {
+            g.setFont(gameUI.getGameFont().deriveFont(10f));
+            g.setColor(Color.WHITE);
+            g.drawString("Press Z to open", (int) (getX() - getWidth() - 20), (int) (getY() - getHeight() - 10));
+        }
     }
 
     @Override
@@ -58,5 +68,9 @@ public class Chest extends GameObject {
 
     public boolean isOpened() {
         return opened;
+    }
+
+    public void setNotify(boolean notify) {
+        this.notify = notify;
     }
 }
