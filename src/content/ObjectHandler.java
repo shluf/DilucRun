@@ -1,19 +1,23 @@
 package content;
 
+import content.block.Coin;
 import content.enemy.Slime;
 import content.hero.Diluc;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ObjectHandler {
-    private LinkedList<GameObject> gameObjs;
+    private ArrayList<GameObject> gameObjs;
+    private ArrayList<Slime> deathSlime;
+    private ArrayList<Coin> coin;
     private Diluc hero;
-    private LinkedList<Slime> slime;
 
     public ObjectHandler() {
-        gameObjs = new LinkedList<>();
+        gameObjs = new ArrayList<>();
+        deathSlime = new ArrayList<>();
     }
 
     public void tick() {
@@ -40,6 +44,7 @@ public class ObjectHandler {
         return gameObjs;
     }
 
+
     public int setHero(Diluc diluc) {
         if (this.hero != null) {
             return -1;
@@ -50,8 +55,6 @@ public class ObjectHandler {
         return 0;
     }
 
-//    public int setSlime(Slime slime)
-
     public void removeHero() {
         if (hero == null) {
             return;
@@ -60,12 +63,16 @@ public class ObjectHandler {
         this.hero = null;
     }
 
-//    public void removeSlime(){
-//        if ()
-//    }
-
     public Diluc getHero() {
         return hero;
+    }
+
+    public ArrayList<Slime> getDeathSlime() {
+        return deathSlime;
+    }
+
+    public void addDeathSlime(Slime deathSlime) {
+        this.deathSlime.add(deathSlime);
     }
 
     public void allObject() {

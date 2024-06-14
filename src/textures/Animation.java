@@ -9,7 +9,7 @@ public class Animation {
     private int index = 0;
     private int count = 0;
     private boolean isFinished = false;
-    private BufferedImage[] images;
+    private final BufferedImage[] images;
     private BufferedImage currentImg;
 
     public Animation(int speed, BufferedImage... args) {

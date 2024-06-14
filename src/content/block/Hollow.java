@@ -12,7 +12,7 @@ public class Hollow extends GameObject {
     private ObjectHandler handler;
 
     public Hollow(ObjectHandler handler, int blocks) {
-        super(32 *  -15, GameEngine.getWindowHeight(), ObjectID.HOLLOW, 32*blocks, 1, 1);
+        super(32 *  -15, GameEngine.getWindowHeight()+(int)(GameEngine.getWindowHeight()/2), ObjectID.HOLLOW, 32*blocks, 1, 1);
         this.handler = handler;
     }
 
@@ -24,7 +24,6 @@ public class Hollow extends GameObject {
     @Override
     public void render(Graphics g) {
 //        g.setColor(Color.BLUE);
-//        g.drawRect((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
     }
 
 

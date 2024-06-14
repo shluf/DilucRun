@@ -41,47 +41,6 @@ public class GameEngine extends Canvas implements Runnable {
         gameUI = new GameUI(this, handler);
         gameUI.addKeyListener(new GameKey(handler, gameUI));
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//        handler.setHero(new Diluc(32,32,2, handler, this));
-//        System.out.println("Sisa nyawa : " + handler.getHero().getLives());
-//
-//        handler.addObj(new Slime(32 * 50, 32 * 11, 1, false, handler));
-//        handler.addObj(new Slime(32 * 57, 32 * 11, 1, false, handler));
-//        handler.addObj(new Slime(32 * 11, 32 * 13, 1, true, handler));
-//
-//        handler.addObj(new Hollow(handler, 120));
-//
-//        for (int i = 8; i < 23; i++) {
-//            if (i != 16 && i!=17 && i != 18) {
-//                handler.addObj(new Tile(i * 32, 32 * 10, 32, 32, 1));
-//            }
-//        }
-//
-//        handler.addObj(new Tile(17 * 32, 32 * 14, 32, 32, 1));
-//
-//        handler.addObj(new Tile(90 * 32, 32 * 12, 32, 32, 1));
-//        handler.addObj(new Tile(45 * 32, 32 * 12, 32, 32, 1));
-//
-//        handler.addObj(new Tile(10 * 32, 32 * 13, 32, 32, 1));
-//        handler.addObj(new Tile(10 * 32, 32 * 14, 32, 32, 1));
-//
-//        for (int i = 32; i < 100; i++) {
-//            if (i != 37 && i!=38) {
-//                handler.addObj(new Tile(i * 32, 32 * 13, 32, 32, 1));
-//            }
-//        }
-//
-//        for (int i = 0; i < 30; i++) {
-//            handler.addObj(new Tile(i*32,32*15,32,32,1));
-//        }
-//
-//        handler.allObject();
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
         new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, gameUI);
 
 

@@ -4,6 +4,8 @@ import content.GameObject;
 import content.ObjectAction;
 import content.ObjectHandler;
 import content.ObjectID;
+import content.block.Chest;
+import content.block.Gate;
 import content.enemy.Slime;
 import main.GameEngine;
 import main.condition.GameStatus;
@@ -16,27 +18,27 @@ public class Diluc extends GameObject {
     private static final int WIDTH = 50;
     private static final int HEIGHT = 37;
 
+    private final GameEngine engine;
+    private final ObjectHandler handler;
+    private final Animation animIdle, animRun, animIdleSword, animRunSword, animSlash, animJump, animDoubleJump, animInteract;
+
     private ObjectAction action = ObjectAction.IDLE;
     private int jumped = 0;
     private boolean isRight = true;
-
-    private GameEngine engine;
-
     private boolean slash = false;
 
-    private int level = 2;
+    private int level = 1;
     private int lives = 3;
 
-    private final ObjectHandler handler;
-    private final Texture tex;
-    private final Animation animIdle, animRun, animIdleSword, animRunSword, animSlash, animJump, animDoubleJump;
+    private boolean levelDecreased = false;
+
 
     public Diluc(float x, float y, int scale, ObjectHandler handler, GameEngine engine) {
         super(x, y, ObjectID.HERO, WIDTH, HEIGHT, scale);
         this.handler = handler;
         this.engine = engine;
 
-        tex = GameEngine.getTexture();
+        Texture tex = GameEngine.getTexture();
 
         animIdle = new Animation(10, tex.getIdle());
         animIdleSword = new Animation(10, tex.getIdleSword());
@@ -45,6 +47,7 @@ public class Diluc extends GameObject {
         animSlash = new Animation(5, tex.getSlash());
         animJump = new Animation(10, tex.getJump());
         animDoubleJump = new Animation(5, tex.getDoubleJump());
+        animInteract = new Animation(5, tex.getDilucInteract());
     }
 
     private void collision() {
@@ -64,39 +67,84 @@ public class Diluc extends GameObject {
                 }
 
                 if (getBoundsRight().intersects(temp.getBounds())) {
-                    setX(temp.getX() - getWidth() + 15);
+                    setX(temp.getX() - getWidth() + 25);
                 }
 
                 if (getBoundsLeft().intersects(temp.getBounds())) {
-                    setX(temp.getX() + getWidth() / 5);
+                    setX(temp.getX() + getWidth() / 5 - 10);
+                }
+            }
+
+            if (temp.getId() == ObjectID.CHEST && action == ObjectAction.INTERACT) {
+                Chest chest = (Chest) temp;
+                if (getBoundsRight().intersects(chest.getOuterBounds()) || getBoundsLeft().intersects(chest.getOuterBounds())){
+                    if (!chest.isOpened()) {
+                        increaseLevel();
+                    }
+                    chest.setOpened(true);
+                }
+            }
+
+            if (temp.getId() == ObjectID.GATE) {
+                Gate gate = (Gate) temp;
+                if (getBounds().intersects(gate.getOuterBounds()) && action == ObjectAction.INTERACT) {
+                    gate.getAnimGate().runSingleAnimation();
+                    gate.setOpened(true);
+                    if (gate.getAnimGate().isFinished()) {
+                        gate.setEnterable(true);
+                    }
+                }
+                if (getBounds().intersects(gate.getBounds()) && gate.isEnterable()) {
+                    System.out.println("Next Level");
+                    setVelX(0);
                 }
             }
 
             if (temp.getId() == ObjectID.SLIME) {
                 Slime slime = (Slime) temp;
-                if (getBounds().intersects(temp.getBounds()) && !(slime.getAction() == ObjectAction.DEATH)) {
-                    setVelY(0);
+                if (getBoundsRight().intersects(slime.getBoundsAttackLeft())) {
+                    slime.setAttackRight(true);
+                }
+
+                else if (getBoundsLeft().intersects(slime.getBoundsAttackRight())) {
+                    slime.setAttackRight(false);
+                }
+                if ((getBounds().intersects(slime.getBoundsAttackLeft()) || getBounds().intersects(slime.getBoundsAttackRight())) && !(slime.getAction() == ObjectAction.DEATH)) {
+
+                    if (slime.getAnimAttack().isFinished()) {
+                        slime.getAnimAttack().reset();
+                    }
                     setVelX(0);
+                    slime.setVelX(0);
+                    slime.getAnimAttack().runSingleAnimation();
+                    slime.setAction(ObjectAction.ATTACK);
+
                     if (level > 1) {
-                        decreaseLevel();
-                        slime.setAction(ObjectAction.DEATH);
+                        if (slime.getAnimAttack().isFinished()) {
+                            decreaseLevel();
+                        }
                     }
                     else if (level == 1) {
-                        action = ObjectAction.DEATH;
+                        if (slime.getAnimAttack().isFinished()) {
+                            action = ObjectAction.DEATH;
+                        }
                     }
                 }
 
                 if (slash) {
-                    if(!isRight) {
-                        if (getBoundsAttackLeft().intersects(temp.getBounds())) {
-//                            handler.removeObj(temp);
-                            slime.setAction(ObjectAction.DEATH);
-                        }
-                    } else {
-                        if (getBoundsAttackRight().intersects(temp.getBounds())) {
-//                            System.out.println("Slime: " + slime);
-                            handler.removeObj(slime);
-//                            slime.setAction(ObjectAction.DEATH);
+                    if (slime.getLives() >= 1) {
+                        if (!isRight) {
+                            if (getBoundsAttackLeft().intersects(temp.getBounds())) {
+                                slime.decreaseLives();
+                            }
+                        } else {
+                            if (getBoundsAttackRight().intersects(temp.getBounds())) {
+//                                slime.setAction(ObjectAction.DEATH);
+//                                System.out.println("Slime: " + slime);
+                                slime.decreaseLives();
+                                handler.addDeathSlime(slime);
+                                System.out.println(handler.getDeathSlime());
+                            }
                         }
                     }
                 }
@@ -108,7 +156,10 @@ public class Diluc extends GameObject {
         if (action == ObjectAction.DEATH) {
             level = 1;
             if (lives > 1) {
-                decreaseLives();
+                if (!levelDecreased) {
+                    decreaseLives();
+                    levelDecreased = true;
+                }
                 setX(32);
                 setY(300);
                 setAction(ObjectAction.RESPAWN);
@@ -118,6 +169,7 @@ public class Diluc extends GameObject {
                 engine.getGameUI().setGameStatus(GameStatus.GAME_OVER);
             }
         }
+        levelDecreased = false;
     }
 
     @Override
@@ -129,6 +181,7 @@ public class Diluc extends GameObject {
         death();
 
 //        System.out.println("X: " + getX() + ",  Y: " + getY());
+//        System.out.println("Slime: " + handler.getDeathSlime().size());
 
         animRun.runAnimation();
         animIdle.runAnimation();
@@ -137,15 +190,21 @@ public class Diluc extends GameObject {
         animIdleSword.runAnimation();
         animRunSword.runAnimation();
         animSlash.runAnimation();
+        animInteract.runSingleAnimation();
 
 
     }
 
     @Override
     public void render(Graphics g) {
-//        g.setColor(Color.yellow);
-//        g.fillRect((int) getX(), (int) getY(), (int) WIDTH, (int) HEIGHT);
         if (jumped == 0) {
+            if (action== ObjectAction.INTERACT) {
+                if (!isRight) {
+                    animInteract.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                } else {
+                    animInteract.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                }
+            }
             if (level >= 2) {
                 switch (action) {
                     case RUN:
@@ -208,47 +267,47 @@ public class Diluc extends GameObject {
 //        System.out.println("Jump: " + jumped);
 //        System.out.println("Action: " + action);
 
-//        showBounds(g);
+        showBounds(g);
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle((int) (getX() + getWidth() / 2 - (getWidth() / 4)),
+        return new Rectangle((int) (getX() + getWidth() / 2 - (getWidth() / 8)),
                 (int) (getY() + getHeight()/2),
-                (int) getWidth()/2,
+                (int) getWidth()/4,
                 (int) getHeight()/2);
     }
 
     public Rectangle getBoundsTop() {
-        return new Rectangle((int) (getX() + getWidth() / 2 - (getWidth() / 4)),
+        return new Rectangle((int) (getX() + getWidth() / 2 - (getWidth() / 8)),
                 (int) getY() + 10,
-                (int) getWidth()/2,
+                (int) getWidth()/4,
                 (int) getHeight()/2 - 10);
     }
     public Rectangle getBoundsRight() {
-        return new Rectangle((int) (getX() + getWidth() - 20),
+        return new Rectangle((int) (getX() + getWidth() - 30),
                 (int) getY() + 15,
                 5,
                 (int) getHeight() -20);
     }
     public Rectangle getBoundsLeft() {
-        return new Rectangle((int) getX() + 15,
+        return new Rectangle((int) getX() + 25,
                 (int) (getY() + 15),
                 5,
                 (int) (getHeight() - 20));
     }
 
     public Rectangle getBoundsAttackLeft() {
-        return new Rectangle((int) getX() - 15,
+        return new Rectangle((int) getX() - 10,
                 (int) (getY() + 15),
-                30,
+                40,
                 (int) (getHeight() - 20));
     }
 
     public Rectangle getBoundsAttackRight() {
-        return new Rectangle((int) (getX() + getWidth() - 15),
+        return new Rectangle((int) (getX() + getWidth()/2 + 20),
                 (int) (getY() + 15),
-                30,
+                40,
                 (int) (getHeight() - 20));
     }
 
@@ -301,7 +360,7 @@ public class Diluc extends GameObject {
         return lives;
     }
 
-    public void increaseLives(int lives) {
+    public void increaseLives() {
         this.lives++;
     }
 
@@ -310,12 +369,21 @@ public class Diluc extends GameObject {
         System.out.println("Sisa nyawa : " + lives);
     }
 
-    public void increaseLevel(int lives) {
+    public void increaseLevel() {
         this.level++;
+        System.out.println("Level : " + level);
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public void decreaseLevel() {
         this.level--;
         System.out.println("Level : " + level);
+    }
+
+    public Animation getAnimInteract() {
+        return animInteract;
     }
 }

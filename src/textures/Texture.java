@@ -1,6 +1,5 @@
 package textures;
 
-import content.block.Tile;
 import content.enemy.Slime;
 import content.hero.Diluc;
 
@@ -8,30 +7,39 @@ import java.awt.image.BufferedImage;
 
 public class Texture {
 
-    private final ImageLoader loader;
     private BufferedImage hero_sheet;
     private BufferedImage heroSwordRun_sheet;
     private BufferedImage slime_sheet;
+    private BufferedImage chest_sheet;
+    private BufferedImage tile_sheet;
+    private BufferedImage gate_sheet;
+    private BufferedImage gateBack_sheet;
 
     private BufferedImage[] diluc;
-    private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, dilucRunSword, slash, jump, doubleJump;
+    private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, dilucRunSword, dilucInteract, slash, jump, doubleJump;
 
     private BufferedImage[] slime;
-    private BufferedImage[] slimeIdle, slimeMove, slimeDeath;
+    private BufferedImage[] slimeIdle, slimeMove, slimeDeath, slimeAttack;
+
+    private BufferedImage[] chest;
 
     private BufferedImage backgroundOne, backgroundTwo, backgroundThree, backgroundFour, backgroundFive;
 
-    private BufferedImage tile_sheet;
-    private BufferedImage tileLandBlock;
+    private BufferedImage[] tile;
+
+    private BufferedImage[] gate, gateBackground;
 
     public Texture() {
 
-        loader = new ImageLoader();
+        ImageLoader loader = new ImageLoader();
 
         try {
             hero_sheet = loader.loadImage("/hero-Sheet.png", 's');
             heroSwordRun_sheet = loader.loadImage("/heroSwordRun-Sheet.png", 's');
             slime_sheet = loader.loadImage("/slime-Sheet.png", 's');
+            chest_sheet = loader.loadImage("/chest-Sheet.png",'s');
+            gate_sheet = loader.loadImage("/gate-Sheet.png",'s');
+            gateBack_sheet = loader.loadImage("/gateBack-Sheet.png",'s');
             tile_sheet = loader.loadImage("/jungle-tileset.png",'a');
             backgroundOne = loader.loadImage("/plx-1.png",'a');
             backgroundTwo = loader.loadImage("/plx-2.png",'a');
@@ -65,7 +73,12 @@ public class Texture {
 
         dilucRunSword = new BufferedImage[6];
         for (int i = 0; i < 6; i++) {
-            dilucRunSword[i] = diluc[77 + i];
+            dilucRunSword[i] = diluc[112 + i];
+        }
+
+        dilucInteract = new BufferedImage[5];
+        for (int i = 0; i < 5; i++) {
+            dilucInteract[i] = diluc[87 + i];
         }
 
         slash = new BufferedImage[2]; //16
@@ -100,6 +113,11 @@ public class Texture {
         slimeDeath = new BufferedImage[4];
         for (int i = 0; i < 4; i++) {
             slimeDeath[i] = slime[17 + i];
+        }
+
+        slimeAttack = new BufferedImage[5];
+        for (int i = 0; i < 5; i++) {
+            slimeAttack[i] = slime[7 + i];
         }
     }
 
@@ -147,10 +165,38 @@ public class Texture {
             }
         }
 
+        int chestWidth = 16;
+        int chestHeight = 16;
+        int chestRows = chest_sheet.getHeight() / chestHeight;
+        int chestCols = chest_sheet.getWidth() / chestWidth;
 
-        tileLandBlock = tile_sheet.getSubimage(16, 224, 31,31);
+        chest = new BufferedImage[chestRows * chestCols];
 
+        int chestIndex = 0;
+        for (int y = 0; y < chestRows; y++) {
+            for (int x = 0; x < chestCols; x++) {
+                chest[chestIndex++] = chest_sheet.getSubimage(x * chestWidth, y * chestHeight, chestWidth, chestHeight);
+            }
+        }
 
+        tile = new BufferedImage[10];
+        tile[9] = tile_sheet.getSubimage(16, 224, 31,31);
+        tile[0] = tile_sheet.getSubimage(96, 34, 29,29);
+        tile[1] = tile_sheet.getSubimage(305, 210, 29,29);
+        tile[2] = tile_sheet.getSubimage(65, 34, 29,29);
+        tile[3] = tile_sheet.getSubimage(65, 65, 29,29);
+        tile[4] = tile_sheet.getSubimage(480, 208, 14,14);
+
+        gate = new BufferedImage[4];
+        gate[0] = gate_sheet.getSubimage(0,0, 153, 153);
+        gate[1] = gate_sheet.getSubimage(0,240, 153, 153);
+        gate[2] = gate_sheet.getSubimage(0,480, 153, 153);
+        gate[3] = gate_sheet.getSubimage(0,720, 153, 153);
+
+        gateBackground = new  BufferedImage[3];
+        gateBackground[0] = gateBack_sheet.getSubimage(0, 0, 122, 134);
+        gateBackground[1] = gateBack_sheet.getSubimage(240, 0, 122, 134);
+        gateBackground[2] = gateBack_sheet.getSubimage(480, 0, 122, 134);
     }
 
     public BufferedImage[] getIdle() {
@@ -175,6 +221,10 @@ public class Texture {
 
     public BufferedImage[] getJump() {
         return jump;
+    }
+
+    public BufferedImage[] getDilucInteract() {
+        return dilucInteract;
     }
 
     public BufferedImage[] getDoubleJump() {
@@ -217,7 +267,23 @@ public class Texture {
         return slime;
     }
 
-    public BufferedImage getTileLandBlock() {
-        return tileLandBlock;
+    public BufferedImage[] getSlimeAttack() {
+        return slimeAttack;
+    }
+
+    public BufferedImage[] getTileBlock() {
+        return tile;
+    }
+
+    public BufferedImage[] getChest() {
+        return chest;
+    }
+
+    public BufferedImage[] getGate() {
+        return gate;
+    }
+
+    public BufferedImage[] getGateBackground() {
+        return gateBackground;
     }
 }

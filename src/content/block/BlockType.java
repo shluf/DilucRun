@@ -1,0 +1,13 @@
+package content.block;
+
+public enum BlockType {
+    GROUND_TOP,
+    GROUND_TOP_INNER,
+    GROUND_TOP_LEFT,
+    GROUND_TOP_RIGHT,
+    GROUND_MIDDLE_LEFT,
+    GROUND_MIDDLE_RIGHT,
+    GROUND_BOTTOM,
+    GROUND_BOTTOM_LEFT,
+    ORDINARY
+}

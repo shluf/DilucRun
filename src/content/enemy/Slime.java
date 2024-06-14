@@ -15,61 +15,61 @@ public class Slime extends GameObject {
     private static final int HEIGHT = 25;
     private static final int SPEED = 2;
 
-    private ObjectHandler handler;
+    private final ObjectHandler handler;
 
     private ObjectAction action = ObjectAction.IDLE;
     private boolean isRight;
+    private int lives = 1;
 
-    private Texture tex;
-    private Animation animIdle, animRun, animDeath;
+    private final Animation animIdle, animRun, animDeath, animAttack;
+    private boolean attackRight;
 
     public Slime(float x, float y, int scale, boolean isRight, ObjectHandler handler) {
         super(x, y-(int) (HEIGHT/2), ObjectID.SLIME, WIDTH * 2, HEIGHT * 2, scale);
         this.isRight = isRight;
         this.handler = handler;
 
-        tex = GameEngine.getTexture();
+        Texture tex = GameEngine.getTexture();
 
         animIdle = new Animation(10, tex.getSlimeIdle());
-        animRun = new Animation(5, tex.getSlimeMove());
+        animRun = new Animation(8, tex.getSlimeMove());
         animDeath = new Animation(10, tex.getSlimeDeath());
+        animAttack = new Animation(10, tex.getSlimeAttack());
     }
 
     public void respawn() {
         if (handler.getHero().getAction() == ObjectAction.RESPAWN) {
             setAction(ObjectAction.IDLE);
             animDeath.reset();
+            lives = 1;
         }
     }
 
     public void movement() {
+        if (getVelX()!=0) {
+            setAction(ObjectAction.RUN);
+        }
         if (!(action == ObjectAction.DEATH)) {
             for (int i = 0; i < handler.getGameObjs().size(); i++) {
                 GameObject temp = handler.getGameObjs().get(i);
-                if (!isRight) {
-                    setVelX(-SPEED);
-                    if (temp.getId() == ObjectID.TILE) {
-                        if (getBounds().intersects(temp.getBounds())) {
-                            isRight = true;
-                        }
-                        if (getBoundsBotom().intersects(temp.getBounds())) {
-                            setVelY(0);
-                        }
-                    }
-                } else {
-                    setVelX(SPEED);
-                    if (temp.getId() == ObjectID.TILE) {
-                        if (getBounds().intersects(temp.getBounds())) {
-                            isRight = false;
-                        }
-                        if (getBoundsBotom().intersects(temp.getBounds())) {
-                            setVelY(0);
+                if (temp.getId() == ObjectID.SLIMEHOLDER) {
+                    if (!isRight) {
+                        setVelX(-SPEED);
+                            if (getBounds().intersects(temp.getBounds())) {
+                                isRight = true;
+                            }
+                    } else {
+                        setVelX(SPEED);
+                        if (temp.getId() == ObjectID.SLIMEHOLDER) {
+                            if (getBounds().intersects(temp.getBounds())) {
+                                isRight = false;
+                            }
                         }
                     }
                 }
             }
         } else {
-            setBoundsDeath();
+            deathAnimation();
         }
     }
 
@@ -77,7 +77,7 @@ public class Slime extends GameObject {
     public void tick() {
         setX(getVelX() + getX());
         setY(getVelY() + getY());
-        applyGravity();
+        death();
         movement();
         respawn();
 
@@ -96,7 +96,7 @@ public class Slime extends GameObject {
                 }
                 break;
             case RUN:
-                if (!isRight) {
+                if (isRight) {
                     animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
                 } else {
                     animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
@@ -109,9 +109,16 @@ public class Slime extends GameObject {
                     animDeath.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
                 }
                 break;
+            case ATTACK:
+                if (!attackRight) {
+                    animAttack.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                } else {
+                    animAttack.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                }
+                break;
         }
 
-        showBounds(g);
+//        showBounds(g);
     }
 
     @Override
@@ -122,9 +129,23 @@ public class Slime extends GameObject {
                 (int) getHeight() - 40);
     }
 
+    public Rectangle getBoundsAttackLeft() {
+        return new Rectangle((int) getX() ,
+                (int) (getY() + 15),
+                30,
+                (int) (getHeight() - 20));
+    }
+
+    public Rectangle getBoundsAttackRight() {
+        return new Rectangle((int) (getX() + getWidth()/2),
+                (int) (getY() + 15),
+                30,
+                (int) (getHeight() - 20));
+    }
+
     public Rectangle getBoundsBotom() {
         return new Rectangle((int) getX() + 20,
-                (int) getY() + 40,
+                (int) getY() + 50,
                 (int) getWidth() - 40,
                 (int) getHeight()/3 -10);
     }
@@ -136,9 +157,18 @@ public class Slime extends GameObject {
         g.setColor(Color.red);
         g2.draw(getBoundsBotom());
         g2.draw(getBounds());
+        g2.draw(getBoundsAttackLeft());
+        g2.draw(getBoundsAttackRight());
+//        g2.draw(getOuterBounds());
     }
 
-    public void setBoundsDeath() {
+    private void death() {
+        if (lives <= 0) {
+            action = ObjectAction.DEATH;
+        }
+    }
+
+    public void deathAnimation() {
         animDeath.runSingleAnimation();
         setVelY(0);
         setVelX(0);
@@ -158,5 +188,25 @@ public class Slime extends GameObject {
 
     public static int getSlimeWidth() {
         return WIDTH;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void decreaseLives() {
+        this.lives--;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public Animation getAnimAttack() {
+        return animAttack;
+    }
+
+    public void setAttackRight(boolean right) {
+        attackRight = right;
     }
 }

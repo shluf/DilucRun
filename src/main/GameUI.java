@@ -20,7 +20,7 @@ public class GameUI extends JPanel {
     private final ObjectHandler handler;
     private Camera cam;
 
-    private GameStatus gameStatus = GameStatus.START_SCREEN;
+    private GameStatus gameStatus = GameStatus.RUNNING;
     private Font gameFont;
 
     private Texture tex;
@@ -34,7 +34,7 @@ public class GameUI extends JPanel {
         cam = new Camera(0, screenOffset);
 
         levelCreator = new LevelCreator(handler, engine);
-        levelCreator.start();
+        createMap(0);
 
         try {
             InputStream in = getClass().getResourceAsStream("/assets/font/mario-font.ttf");
@@ -116,6 +116,15 @@ public class GameUI extends JPanel {
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
+    }
+
+    private void createMap(int level) {
+        boolean loaded = levelCreator.start(level);
+        if(loaded){
+            setGameStatus(GameStatus.RUNNING);
+        }
+        else
+            setGameStatus(GameStatus.START_SCREEN);
     }
 
     private void animateBackground() {

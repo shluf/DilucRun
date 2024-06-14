@@ -1,9 +1,9 @@
 package main.menu;
 
 import content.ObjectHandler;
-import content.block.Hollow;
-import content.block.Tile;
+import content.block.*;
 import content.enemy.Slime;
+import content.enemy.SlimeHolder;
 import content.hero.Diluc;
 import main.GameEngine;
 import textures.ImageLoader;
@@ -12,13 +12,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class LevelCreator {
-    private static final int PIXEL_SIZE = 32;
-
     private GameEngine engine;
     private ImageLoader loader;
-    private BufferedImage map;
+    private BufferedImage mapTex;
     private ObjectHandler handler;
-
 
     public LevelCreator(ObjectHandler handler, GameEngine engine) {
         this.handler = handler;
@@ -26,34 +23,67 @@ public class LevelCreator {
         this.engine = engine;
     }
 
-    public void start() {
-        setLevel("/level/Map-0.png");
+    public boolean start(int mapLevel) {
+        setLevel("/level/Map-"+ mapLevel +".png");
+        return true;
     }
 
-    public void setLevel(String mapPath) {
-        this.map = loader.loadImage(mapPath, 'a');
+    private void setLevel(String mapPath) {
+        this.mapTex = loader.loadImage(mapPath, 'a');
 
-        int width = map.getWidth();
-        int height = map.getHeight();
+        int width = mapTex.getWidth();
+        int height = mapTex.getHeight();
 
         handler.addObj(new Hollow(handler, width));
+        handler.addObj(new Gate(181*32,18*32,1));
+//        handler.addObj(new Gate(15*32,15*32,1));
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                int pixel = map.getRGB(i,j);
+                int pixel = mapTex.getRGB(i,j);
                 int diluc = new Color(255, 255, 0).getRGB();
                 int slime = new Color(255, 0, 0).getRGB();
+                int slimeHolder = new Color(160, 0, 160).getRGB();
                 int tile = new Color(0, 0, 0).getRGB();
+                int tileTopLeft = new Color(40, 40, 40).getRGB();
+                int tileTopRight = new Color(80, 80, 80).getRGB();
+                int tileMiddleLeft = new Color(80, 0, 80).getRGB();
+                int tileMiddleRight = new Color(0, 80, 0).getRGB();
                 int tileGround = new Color(160, 160, 160).getRGB();
+                int tileGroundLeft = new Color(160, 160, 0).getRGB();
                 int chest = new Color(0, 0, 255).getRGB();
                 int gate = new Color(0, 255, 0).getRGB();
 
                 if (pixel == diluc) {
                     handler.setHero(new Diluc(i * 32,j,2, handler, engine));
-                } else if (pixel == tile) {
-                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1));
-                } else if (pixel == slime) {
+                }
+
+                else if (pixel == tile) {
+                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1, BlockType.GROUND_BOTTOM));
+                } else if (pixel == tileTopLeft) {
+                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1, BlockType.GROUND_TOP_LEFT));
+                } else if (pixel == tileTopRight) {
+                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1, BlockType.GROUND_TOP_RIGHT));
+                } else if (pixel == tileMiddleLeft) {
+                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1, BlockType.GROUND_MIDDLE_LEFT));
+                } else if (pixel == tileMiddleRight) {
+                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1, BlockType.GROUND_MIDDLE_RIGHT));
+                } else if (pixel == tileGround) {
+                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1, BlockType.GROUND_TOP));
+                } else if (pixel == tileGroundLeft) {
+                    handler.addObj(new Tile(i * 32, 32 * j, 32, 32, 1, BlockType.GROUND_BOTTOM_LEFT));
+                }
+
+                else if (pixel == slime) {
                     handler.addObj(new Slime(i*32,j*32,1, false, handler));
+                } else if (pixel == slimeHolder) {
+                    handler.addObj(new SlimeHolder(i*32,j*32, 32, 32, 1));
+                } else if (pixel == chest) {
+                    handler.addObj(new Chest(i*32,j*32,1));
+                }
+                else if (pixel == gate) {
+//                    handler.addObj(new Gate(i*32,j*32,1, handler));
+                    System.out.println(i+" " + j);
                 }
             }
 

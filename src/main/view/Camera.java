@@ -12,18 +12,14 @@ public class Camera {
     }
 
     public void tick(GameObject hero) {
-//        x = (int) -hero.getX() + GameEngine.getWindowWidth() / 2;
-//        y = (int) -hero.getY() + GameEngine.getWindowHeight() / 2;
-//        System.out.println(x + ", " + y);
-
-
         this.x = (int)hero.getX() - GameEngine.getWindowWidth() / 2;
-//        this.y = (int)hero.getY() - GameEngine.getWindowHeight() / 2;
-
+        this.y = (int)hero.getY() - GameEngine.getWindowHeight() / 2;
 
         if (this.x < 0) this.x = 0;
         if (this.y < 0) this.y = 0;
-//        if (this.x > (187*32)-GameEngine.getWindowWidth()) this.x = 187*32 - GameEngine.getWindowWidth();
+
+        if (this.x > (187 * 32) - GameEngine.getWindowWidth()) this.x = 187 * 32 - GameEngine.getWindowWidth();
+        if (this.y > (30 * 32) - GameEngine.getWindowHeight()) this.y = 30 * 32 - GameEngine.getWindowHeight();
     }
 
     public int getX() {

@@ -61,10 +61,6 @@ public abstract class GameObject {
         return id;
     }
 
-    public void setId(ObjectID id) {
-        this.id = id;
-    }
-
     public float getWidth() {
         return width;
     }

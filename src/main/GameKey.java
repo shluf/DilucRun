@@ -52,7 +52,7 @@ public class GameKey implements KeyListener {
                 keyDown[2] = true;
                 break;
             case KeyEvent.VK_SPACE:
-                if (handler.getHero().getLives() >=2) {
+                if (handler.getHero().getLevel() >= 2) {
                     handler.getHero().setVelX(0);
                     handler.getHero().setAction(ObjectAction.ATTACK);
                     handler.getHero().setSlash(true);
@@ -84,6 +84,10 @@ public class GameKey implements KeyListener {
                 break;
             case KeyEvent.VK_SPACE:
                 handler.getHero().setSlash(false);
+                handler.getHero().setAction(ObjectAction.IDLE);
+                break;
+            case KeyEvent.VK_Z:
+                handler.getHero().getAnimInteract().reset();
                 handler.getHero().setAction(ObjectAction.IDLE);
                 break;
         }
