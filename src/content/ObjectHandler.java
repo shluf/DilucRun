@@ -20,23 +20,23 @@ public class ObjectHandler {
         deathSlime = new ArrayList<>();
     }
 
-    public void tick() {
+    public synchronized  void tick() {
         for (GameObject obj : gameObjs) {
             obj.tick();
         }
     }
 
-    public void render(Graphics g) {
+    public synchronized  void render(Graphics g) {
         for (GameObject obj: gameObjs) {
             obj.render(g);
         }
     }
 
-    public void addObj(GameObject obj) {
+    public synchronized  void addObj(GameObject obj) {
         gameObjs.add(obj);
     }
 
-    public void removeObj(GameObject obj) {
+    public synchronized  void removeObj(GameObject obj) {
         gameObjs.remove(obj);
     }
 
@@ -79,5 +79,12 @@ public class ObjectHandler {
         for (GameObject obj: gameObjs) {
             System.out.println(obj);
         }
+    }
+
+    public void cleanHandler() {
+        hero = null;
+        gameObjs.clear();
+        deathSlime.clear();
+//        coin.clear();
     }
 }

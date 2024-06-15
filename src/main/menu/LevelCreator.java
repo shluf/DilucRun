@@ -37,7 +37,7 @@ public class LevelCreator {
         int width = mapTex.getWidth();
         int height = mapTex.getHeight();
 
-        handler.addObj(new Hollow(handler, width));
+        handler.addObj(new Hollow(handler, width, engine));
         handler.addObj(new Gate(181*32,18*32,1));
 //        handler.addObj(new Gate(15*32,15*32,1));
 

@@ -64,6 +64,9 @@ public class GameKey implements KeyListener {
             case KeyEvent.VK_ENTER:
                 gameUI.setGameStatus(GameStatus.RUNNING);
                 break;
+            case KeyEvent.VK_P:
+                gameUI.setGameStatus(GameStatus.PAUSED);
+                break;
         }
     }
 
@@ -92,7 +95,9 @@ public class GameKey implements KeyListener {
                 break;
         }
         if (!keyDown[1] && !keyDown[2]) {
-            handler.getHero().setVelX(0);
+            if (handler.getHero() != null) {
+                handler.getHero().setVelX(0);
+            }
 
         }
     }

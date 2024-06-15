@@ -17,8 +17,8 @@ public class Gate extends GameObject {
     private boolean opened = false;
     private boolean enterable = false;
 
-    private Animation animGate, animGateBack;
-    private BufferedImage[] texGate;
+    private final Animation animGate, animGateBack;
+    private final BufferedImage[] texGate;
 
     public Gate(float x, float y, int scale) {
         super(x, y-50, ObjectID.GATE, WIDTH, HEIGHT, scale);

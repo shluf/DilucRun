@@ -1,6 +1,7 @@
 package main;
 
 import content.ObjectHandler;
+import main.condition.GameStatus;
 import main.view.Windows;
 import textures.Texture;
 
@@ -20,6 +21,8 @@ public class GameEngine extends Canvas implements Runnable {
 
     private boolean running;
     private GameUI gameUI;
+
+    private int mapLevel = 0;
 
     private Thread thread;
     private ObjectHandler handler;
@@ -100,11 +103,17 @@ public class GameEngine extends Canvas implements Runnable {
     }
 
     private void tick() {
-        gameUI.tick();
+        if (handler.getHero() != null) {
+            gameUI.tick();
+        } else if (gameUI.getGameStatus() == GameStatus.RUNNING && mapLevel ==0) {
+            loadMap(mapLevel);
+        }
     }
 
     private void render() {
-        gameUI.repaint();
+        if (handler.getHero() != null) {
+            gameUI.repaint();
+        }
     }
 
     public static int getWindowWidth() {
@@ -133,5 +142,24 @@ public class GameEngine extends Canvas implements Runnable {
 
     public GameUI getGameUI() {
         return gameUI;
+    }
+
+    public void nextMapLevel() {
+        handler.cleanHandler();
+        this.mapLevel++;
+        loadMap(mapLevel);
+    }
+
+    public boolean previousMapLevel() {
+        if (mapLevel > 0) {
+            handler.cleanHandler();
+            this.mapLevel--;
+            return true;
+        }
+        return false;
+    }
+
+    private void loadMap(int level) {
+        gameUI.createMap(level);
     }
 }

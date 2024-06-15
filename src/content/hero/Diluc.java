@@ -1,9 +1,6 @@
 package content.hero;
 
-import content.GameObject;
-import content.ObjectAction;
-import content.ObjectHandler;
-import content.ObjectID;
+import content.*;
 import content.block.Chest;
 import content.block.Gate;
 import content.enemy.Slime;
@@ -14,7 +11,7 @@ import textures.Texture;
 
 import java.awt.*;
 
-public class Diluc extends GameObject {
+public class Diluc extends GameObject implements ObjectBehavior {
     private static final int WIDTH = 50;
     private static final int HEIGHT = 37;
 
@@ -102,8 +99,8 @@ public class Diluc extends GameObject {
                     }
                 }
                 if (getBounds().intersects(gate.getBounds()) && gate.isEnterable()) {
-                    System.out.println("Next Level");
                     setVelX(0);
+                    engine.nextMapLevel();
                 }
             }
 

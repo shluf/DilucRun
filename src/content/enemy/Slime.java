@@ -1,16 +1,13 @@
 package content.enemy;
 
-import content.GameObject;
-import content.ObjectAction;
-import content.ObjectHandler;
-import content.ObjectID;
+import content.*;
 import main.GameEngine;
 import textures.Animation;
 import textures.Texture;
 
 import java.awt.*;
 
-public class Slime extends GameObject {
+public class Slime extends GameObject implements ObjectBehavior {
     private static final int WIDTH = 32;
     private static final int HEIGHT = 25;
     private static final int SPEED = 2;
