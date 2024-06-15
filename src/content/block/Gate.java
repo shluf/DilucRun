@@ -48,7 +48,7 @@ public class Gate extends GameObject {
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle((int) (getX() + getWidth()/3), (int) getY(), (int) getWidth()/4, (int) getHeight());
+        return new Rectangle((int) (getX() + getWidth()/2), (int) getY(), (int) getWidth()/10, (int) getHeight());
     }
 
     public Rectangle getOuterBounds() {

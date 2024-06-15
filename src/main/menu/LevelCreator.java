@@ -39,7 +39,7 @@ public class LevelCreator {
 
         handler.addObj(new Hollow(handler, width, engine));
         handler.addObj(new Gate(181*32,18*32,1));
-        handler.addObj(new Gate(15*32,15*32,1));
+//        handler.addObj(new Gate(15*32,15*32,1));
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
