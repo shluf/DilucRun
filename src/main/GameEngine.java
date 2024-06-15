@@ -42,7 +42,7 @@ public class GameEngine extends Canvas implements Runnable {
 
         handler = new ObjectHandler();
         gameUI = new GameUI(this, handler);
-        gameUI.addKeyListener(new GameKey(handler, gameUI));
+        gameUI.addKeyListener(new GameKey(handler, gameUI, this));
 
         new Windows(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, gameUI);
 
@@ -93,7 +93,7 @@ public class GameEngine extends Canvas implements Runnable {
 
              if (System.currentTimeMillis() - timer > MILLIS_PER_SEC) {
                  timer += MILLIS_PER_SEC;
-//                 System.out.println("FPS: " + frames + " TPS: " + updates);
+                 System.out.println("FPS: " + frames + " TPS: " + updates);
                  updates = 0;
                  frames = 0;
              }
@@ -105,15 +105,11 @@ public class GameEngine extends Canvas implements Runnable {
     private void tick() {
         if (handler.getHero() != null) {
             gameUI.tick();
-        } else if (gameUI.getGameStatus() == GameStatus.RUNNING && mapLevel ==0) {
-            loadMap(mapLevel);
         }
     }
 
     private void render() {
-        if (handler.getHero() != null) {
-            gameUI.repaint();
-        }
+        gameUI.repaint();
     }
 
     public static int getWindowWidth() {
@@ -154,12 +150,17 @@ public class GameEngine extends Canvas implements Runnable {
         if (mapLevel > 0) {
             handler.cleanHandler();
             this.mapLevel--;
+            loadMap(mapLevel);
             return true;
         }
         return false;
     }
 
-    private void loadMap(int level) {
+    public void loadMap(int level) {
         gameUI.createMap(level);
+    }
+
+    public int getMapLevel() {
+        return mapLevel;
     }
 }

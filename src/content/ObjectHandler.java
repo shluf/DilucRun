@@ -6,13 +6,11 @@ import content.hero.Diluc;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ObjectHandler {
-    private ArrayList<GameObject> gameObjs;
-    private ArrayList<Slime> deathSlime;
-    private ArrayList<Coin> coin;
+    private final List<GameObject> gameObjs;
+    private final List<Slime> deathSlime;
     private Diluc hero;
 
     public ObjectHandler() {
@@ -20,36 +18,45 @@ public class ObjectHandler {
         deathSlime = new ArrayList<>();
     }
 
-    public synchronized  void tick() {
-        for (GameObject obj : gameObjs) {
+    public synchronized void tick() {
+
+        List<GameObject> snapshot;
+        synchronized (this) {
+            snapshot = new ArrayList<>(gameObjs);
+        }
+        
+        for (GameObject obj : snapshot) {
             obj.tick();
         }
     }
 
-    public synchronized  void render(Graphics g) {
-        for (GameObject obj: gameObjs) {
+    public synchronized void render(Graphics g) {
+
+//        List<GameObject> snapshot;
+//        synchronized (this) {
+//            snapshot = new ArrayList<>(gameObjs);
+//        }
+        for (GameObject obj : gameObjs) {
             obj.render(g);
         }
     }
 
-    public synchronized  void addObj(GameObject obj) {
+    public void addObj(GameObject obj) {
         gameObjs.add(obj);
     }
 
-    public synchronized  void removeObj(GameObject obj) {
+    public void removeObj(GameObject obj) {
         gameObjs.remove(obj);
     }
 
     public List<GameObject> getGameObjs() {
-        return gameObjs;
+        return new ArrayList<>(gameObjs);
     }
-
 
     public int setHero(Diluc diluc) {
         if (this.hero != null) {
             return -1;
         }
-
         addObj(diluc);
         this.hero = diluc;
         return 0;
@@ -67,24 +74,17 @@ public class ObjectHandler {
         return hero;
     }
 
-    public ArrayList<Slime> getDeathSlime() {
-        return deathSlime;
+    public List<Slime> getDeathSlime() {
+        return new ArrayList<>(deathSlime);
     }
 
     public void addDeathSlime(Slime deathSlime) {
         this.deathSlime.add(deathSlime);
     }
 
-    public void allObject() {
-        for (GameObject obj: gameObjs) {
-            System.out.println(obj);
-        }
-    }
-
     public void cleanHandler() {
         hero = null;
         gameObjs.clear();
         deathSlime.clear();
-//        coin.clear();
     }
 }

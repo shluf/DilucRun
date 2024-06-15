@@ -11,10 +11,12 @@ public class GameKey implements KeyListener {
     private final boolean[] keyDown = new boolean[4];
     private final ObjectHandler handler;
     private final GameUI gameUI;
+    private final GameEngine engine;
 
-    public GameKey(ObjectHandler handler, GameUI gameUI) {
+    public GameKey(ObjectHandler handler, GameUI gameUI, GameEngine engine) {
         this.handler = handler;
         this.gameUI = gameUI;
+        this.engine = engine;
     }
 
     @Override
@@ -62,6 +64,7 @@ public class GameKey implements KeyListener {
                 handler.getHero().setAction(ObjectAction.INTERACT);
                 break;
             case KeyEvent.VK_ENTER:
+                engine.loadMap(engine.getMapLevel());
                 gameUI.setGameStatus(GameStatus.RUNNING);
                 break;
             case KeyEvent.VK_P:
