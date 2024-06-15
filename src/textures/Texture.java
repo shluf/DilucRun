@@ -263,10 +263,6 @@ public class Texture {
         return backgroundFive;
     }
 
-    public BufferedImage[] getSlime() {
-        return slime;
-    }
-
     public BufferedImage[] getSlimeAttack() {
         return slimeAttack;
     }

@@ -84,10 +84,10 @@ public class LevelCreator {
                 } else if (pixel == chest) {
                     handler.addObj(new Chest(i*32,j*32,1, gameUI));
                 }
-                else if (pixel == gate) {
+//                else if (pixel == gate) {
 //                    handler.addObj(new Gate(i*32,j*32,1, handler));
-                    System.out.println(i+" " + j);
-                }
+//                    System.out.println(i+" " + j);
+//                }
             }
 
         }

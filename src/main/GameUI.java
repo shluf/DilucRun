@@ -12,25 +12,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class GameUI extends JPanel {
-    private int screenOffset;
-
     private float bgOneX = 0, bgTwoX = 0, bgThreeX = 0, bgFourX = 0, bgFiveX = 0;
 
-    private LevelCreator levelCreator;
+    private final LevelCreator levelCreator;
     private final ObjectHandler handler;
-    private Camera cam;
+    private final Camera cam;
 
     private GameStatus gameStatus = GameStatus.START_SCREEN;
     private Font gameFont;
 
-    private Texture tex;
+    private final Texture tex;
 
     public GameUI(GameEngine engine, ObjectHandler handler) {
         this.handler = handler;
 
         tex = GameEngine.getTexture();
 
-        screenOffset = GameEngine.getScreenOffset();
+        int screenOffset = GameEngine.getScreenOffset();
         cam = new Camera(0, screenOffset);
 
         levelCreator = new LevelCreator(handler, engine, this);
@@ -102,11 +100,9 @@ public class GameUI extends JPanel {
     }
 
     public void tick() {
-        if (handler.getHero() != null) {
-            handler.tick();
-            animateBackground();
-            cam.tick(handler.getHero());
-        }
+        handler.tick();
+        animateBackground();
+        cam.tick(handler.getHero());
     }
 
     public GameStatus getGameStatus() {

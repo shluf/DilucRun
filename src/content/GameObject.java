@@ -6,7 +6,7 @@ public abstract class GameObject {
 
     private float x, y;
     private float velX, velY;
-    private ObjectID id;
+    private final ObjectID id;
     private float width, height;
 
     public GameObject(float x, float y, ObjectID id, float width, float height, int scale) {

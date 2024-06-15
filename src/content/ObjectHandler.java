@@ -82,6 +82,14 @@ public class ObjectHandler {
         this.deathSlime.add(deathSlime);
     }
 
+    public int getSlimePoint() {
+        int slimePoint = 0;
+        for (Slime slime: deathSlime) {
+            slimePoint += slime.getSlimePoint();
+        }
+        return slimePoint;
+    }
+
     public void cleanHandler() {
         hero = null;
         gameObjs.clear();

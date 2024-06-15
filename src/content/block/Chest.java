@@ -1,7 +1,6 @@
 package content.block;
 
 import content.GameObject;
-import content.ObjectHandler;
 import content.ObjectID;
 import main.GameEngine;
 import main.GameUI;
@@ -9,7 +8,6 @@ import main.GameUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-import java.util.random.RandomGenerator;
 
 public class Chest extends GameObject {
     private static final int WIDTH = 32;
@@ -17,9 +15,9 @@ public class Chest extends GameObject {
 
     private boolean opened = false;
     private boolean notify = false;
-    private int type;
+    private final int type;
 
-    private GameUI gameUI;
+    private final GameUI gameUI;
 
     private final BufferedImage[] chestTex;
 

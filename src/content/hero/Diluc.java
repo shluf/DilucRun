@@ -10,6 +10,7 @@ import textures.Animation;
 import textures.Texture;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class Diluc extends GameObject implements ObjectBehavior {
     private static final int WIDTH = 50;
@@ -83,9 +84,9 @@ public class Diluc extends GameObject implements ObjectBehavior {
                             chest.setOpened(true);
                         }
                     }
-                        if (chest.isOpened()){
-                        chest.setNotify(false);
-                        }
+                    if (chest.isOpened()){
+                    chest.setNotify(false);
+                    }
                 }
             }
 
@@ -95,10 +96,13 @@ public class Diluc extends GameObject implements ObjectBehavior {
                     gate.getAnimGate().runSingleAnimation();
                     gate.setOpened(true);
                     if (gate.getAnimGate().isFinished()) {
-                        gate.setEnterable(true);
+                        if (!(engine.getMapLevel() >= GameEngine.getTotalLevel())) {
+                            gate.setEnterable(true);
+                        }
                     }
                 }
                 if (getBounds().intersects(gate.getBounds()) && gate.isEnterable()) {
+                    uploadScore();
                     setVelX(0);
                     engine.nextMapLevel();
                 }
@@ -140,14 +144,15 @@ public class Diluc extends GameObject implements ObjectBehavior {
                         if (!isRight) {
                             if (getBoundsAttackLeft().intersects(temp.getBounds())) {
                                 slime.decreaseLives();
+                                handler.addDeathSlime(slime);
                             }
                         } else {
                             if (getBoundsAttackRight().intersects(temp.getBounds())) {
-//                                slime.setAction(ObjectAction.DEATH);
-//                                System.out.println("Slime: " + slime);
                                 slime.decreaseLives();
                                 handler.addDeathSlime(slime);
-                                System.out.println(handler.getDeathSlime());
+//                                slime.setAction(ObjectAction.DEATH);
+//                                System.out.println("Slime: " + slime);
+//                                System.out.println(handler.getDeathSlime());
                             }
                         }
                     }
@@ -389,5 +394,16 @@ public class Diluc extends GameObject implements ObjectBehavior {
 
     public Animation getAnimInteract() {
         return animInteract;
+    }
+
+    private void uploadScore() {
+        int score = handler.getSlimePoint() * lives;
+        engine.setScore(engine.getMapLevel(), score);
+        try {
+            engine.saveHighScores(engine.getScore());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Score level "+engine.getMapLevel()+": "+score);
     }
 }

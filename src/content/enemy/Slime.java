@@ -6,6 +6,7 @@ import textures.Animation;
 import textures.Texture;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Slime extends GameObject implements ObjectBehavior {
     private static final int WIDTH = 32;
@@ -18,6 +19,8 @@ public class Slime extends GameObject implements ObjectBehavior {
     private boolean isRight;
     private int lives = 1;
 
+    private final int slimePoint;
+
     private final Animation animIdle, animRun, animDeath, animAttack;
     private boolean attackRight;
 
@@ -25,6 +28,11 @@ public class Slime extends GameObject implements ObjectBehavior {
         super(x, y-(int) (HEIGHT/2), ObjectID.SLIME, WIDTH * 2, HEIGHT * 2, scale);
         this.isRight = isRight;
         this.handler = handler;
+
+        Random random = new Random();
+        int min = 100;
+        int max = 500;
+        slimePoint = random.nextInt((max - min) + 1) + min;
 
         Texture tex = GameEngine.getTexture();
 
@@ -205,5 +213,9 @@ public class Slime extends GameObject implements ObjectBehavior {
 
     public void setAttackRight(boolean right) {
         attackRight = right;
+    }
+
+    public int getSlimePoint() {
+        return slimePoint;
     }
 }
