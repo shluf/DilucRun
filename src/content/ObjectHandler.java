@@ -11,11 +11,13 @@ import java.util.List;
 public class ObjectHandler {
     private final List<GameObject> gameObjs;
     private final List<Slime> deathSlime;
+    private final List<Coin> coinPicked;
     private Diluc hero;
 
     public ObjectHandler() {
         gameObjs = new ArrayList<>();
         deathSlime = new ArrayList<>();
+        coinPicked = new ArrayList<>();
     }
 
     public synchronized void tick() {
@@ -78,8 +80,24 @@ public class ObjectHandler {
         return new ArrayList<>(deathSlime);
     }
 
+    public void clearDeathSlime() {
+        this.deathSlime.clear();
+    }
+
     public void addDeathSlime(Slime deathSlime) {
         this.deathSlime.add(deathSlime);
+    }
+
+    public List<Coin> getCoinPicked() {
+        return new ArrayList<>(coinPicked);
+    }
+
+    public void clearCoinPicked() {
+        this.coinPicked.clear();
+    }
+
+    public void addCoinPicked(Coin coin) {
+        this.coinPicked.add(coin);
     }
 
     public int getSlimePoint() {

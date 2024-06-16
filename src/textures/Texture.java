@@ -14,6 +14,8 @@ public class Texture {
     private BufferedImage tile_sheet;
     private BufferedImage gate_sheet;
     private BufferedImage gateBack_sheet;
+    private BufferedImage coin_sheet;
+    private BufferedImage coinPick_sheet;
 
     private BufferedImage[] diluc;
     private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, dilucRunSword, dilucInteract, slash, jump, doubleJump;
@@ -29,6 +31,8 @@ public class Texture {
 
     private BufferedImage[] gate, gateBackground;
 
+    private BufferedImage[] coin, coinPick;
+
     public Texture() {
 
         ImageLoader loader = new ImageLoader();
@@ -40,6 +44,8 @@ public class Texture {
             chest_sheet = loader.loadImage("/chest-Sheet.png",'s');
             gate_sheet = loader.loadImage("/gate-Sheet.png",'s');
             gateBack_sheet = loader.loadImage("/gateBack-Sheet.png",'s');
+            coin_sheet = loader.loadImage("/coin-Sheet.png",'s');
+            coinPick_sheet = loader.loadImage("/coinPick-Sheet.png",'s');
             tile_sheet = loader.loadImage("/jungle-tileset.png",'a');
             backgroundOne = loader.loadImage("/plx-1.png",'a');
             backgroundTwo = loader.loadImage("/plx-2.png",'a');
@@ -123,10 +129,6 @@ public class Texture {
 
 
     public void getFrames() {
-//        System.out.println(slime_sheet.getHeight());
-//        System.out.println(slime_sheet.getWidth());
-//        System.out.println(hero_sheet.getHeight());
-//        System.out.println(hero_sheet.getWidth());
         int heroHeight = Diluc.getHeroHeight();
         int heroWidth = Diluc.getHeroWidth();
         int heroRows = hero_sheet.getHeight() / heroHeight;
@@ -136,8 +138,6 @@ public class Texture {
         int heroSwordRunCols = heroSwordRun_sheet.getWidth() / heroWidth;
 
         diluc = new BufferedImage[heroRows * heroCols + heroSwordRunRows * heroSwordRunCols];   // 77 + 6
-
-//        System.out.println(heroRows * heroCols + heroSwordRunRows * heroSwordRunCols);
 
         int heroIndex = 0;
         for (int y = 0; y < heroRows; y++) {
@@ -176,6 +176,34 @@ public class Texture {
         for (int y = 0; y < chestRows; y++) {
             for (int x = 0; x < chestCols; x++) {
                 chest[chestIndex++] = chest_sheet.getSubimage(x * chestWidth, y * chestHeight, chestWidth, chestHeight);
+            }
+        }
+
+        int coinWidth = 16;
+        int coinHeight = 16;
+        int coinRows = coin_sheet.getHeight() / coinHeight;
+        int coinCols = 9;
+
+        coin = new BufferedImage[coinRows * coinCols];
+
+        int coinIndex = 0;
+        for (int y = 0; y < coinRows; y++) {
+            for (int x = 0; x < coinCols; x++) {
+                coin[coinIndex++] = coin_sheet.getSubimage(x * coinWidth, y * coinHeight, coinWidth, coinHeight);
+            }
+        }
+
+        int coinPickWidth = 32;
+        int coinPickHeight = 32;
+        int coinPickRows = coinPick_sheet.getHeight() / coinPickHeight;
+        int coinPickCols = coinPick_sheet.getWidth() / coinPickWidth;
+
+        coinPick = new BufferedImage[coinPickRows * coinPickCols];
+
+        int coinPickIndex = 0;
+        for (int y = 0; y < coinPickRows; y++) {
+            for (int x = 0; x < coinPickCols; x++) {
+                coinPick[coinPickIndex++] = coinPick_sheet.getSubimage(x * coinPickWidth, y * coinPickHeight, coinPickWidth, coinPickHeight);
             }
         }
 
@@ -281,5 +309,13 @@ public class Texture {
 
     public BufferedImage[] getGateBackground() {
         return gateBackground;
+    }
+
+    public BufferedImage[] getCoinPick() {
+        return coinPick;
+    }
+
+    public BufferedImage[] getCoin() {
+        return coin;
     }
 }

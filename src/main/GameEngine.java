@@ -154,7 +154,7 @@ public class GameEngine extends Canvas implements Runnable {
     }
 
     public boolean previousMapLevel() {
-        if (mapLevel > 0) {
+        if (mapLevel > 1) {
             handler.cleanHandler();
             this.mapLevel--;
             loadMap(mapLevel);

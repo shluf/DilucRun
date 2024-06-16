@@ -38,7 +38,7 @@ public class LevelCreator {
         int height = mapTex.getHeight();
 
         handler.addObj(new Hollow(handler, width, engine));
-        handler.addObj(new Gate(181*32,18*32,1));
+        handler.addObj(new Gate(181*32,18*32,1, 10));
 //        handler.addObj(new Gate(15*32,15*32,1));
 
         for (int i = 0; i < width; i++) {
@@ -55,7 +55,7 @@ public class LevelCreator {
                 int tileGround = new Color(160, 160, 160).getRGB();
                 int tileGroundLeft = new Color(160, 160, 0).getRGB();
                 int chest = new Color(0, 0, 255).getRGB();
-                int gate = new Color(0, 255, 0).getRGB();
+                int coin = new Color(0, 255, 0).getRGB();
 
                 if (pixel == diluc) {
                     handler.setHero(new Diluc(i * 32,j,2, handler, engine));
@@ -84,10 +84,9 @@ public class LevelCreator {
                 } else if (pixel == chest) {
                     handler.addObj(new Chest(i*32,j*32,1, gameUI));
                 }
-//                else if (pixel == gate) {
-//                    handler.addObj(new Gate(i*32,j*32,1, handler));
-//                    System.out.println(i+" " + j);
-//                }
+                else if (pixel == coin) {
+                    handler.addObj(new Coin(i*32,j*32,1, handler));
+                }
             }
 
         }

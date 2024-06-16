@@ -2,6 +2,7 @@ package content.hero;
 
 import content.*;
 import content.block.Chest;
+import content.block.Coin;
 import content.block.Gate;
 import content.enemy.Slime;
 import main.GameEngine;
@@ -90,14 +91,25 @@ public class Diluc extends GameObject implements ObjectBehavior {
                 }
             }
 
+            if (temp.getId() == ObjectID.COIN) {
+                Coin coin = (Coin) temp;
+                if (getBounds().intersects(coin.getBounds())) {
+                    if (!coin.isClaimed()) {
+                        coin.setPicked(true);
+                    }
+                }
+            }
+
             if (temp.getId() == ObjectID.GATE) {
                 Gate gate = (Gate) temp;
                 if (getBounds().intersects(gate.getOuterBounds()) && action == ObjectAction.INTERACT) {
-                    gate.getAnimGate().runSingleAnimation();
-                    gate.setOpened(true);
-                    if (gate.getAnimGate().isFinished()) {
-                        if (!(engine.getMapLevel() >= GameEngine.getTotalLevel())) {
-                            gate.setEnterable(true);
+                    if (handler.getCoinPicked().size() >= gate.getMinimimCoin()) {
+                        gate.getAnimGate().runSingleAnimation();
+                        gate.setOpened(true);
+                        if (gate.getAnimGate().isFinished()) {
+                            if (!(engine.getMapLevel() >= GameEngine.getTotalLevel())) {
+                                gate.setEnterable(true);
+                            }
                         }
                     }
                 }
@@ -145,6 +157,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
                             if (getBoundsAttackLeft().intersects(temp.getBounds())) {
                                 slime.decreaseLives();
                                 handler.addDeathSlime(slime);
+                                System.out.println("Jumlah slime terbunuh: " + handler.getDeathSlime().size());
                             }
                         } else {
                             if (getBoundsAttackRight().intersects(temp.getBounds())) {
@@ -153,6 +166,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
 //                                slime.setAction(ObjectAction.DEATH);
 //                                System.out.println("Slime: " + slime);
 //                                System.out.println(handler.getDeathSlime());
+                                System.out.println("Jumlah slime terbunuh: " + handler.getDeathSlime().size());
                             }
                         }
                     }
@@ -164,6 +178,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
     private void death() {
         if (action == ObjectAction.DEATH) {
             level = 1;
+            handler.clearDeathSlime();
             if (lives > 1) {
                 if (!levelDecreased) {
                     decreaseLives();
@@ -217,7 +232,6 @@ public class Diluc extends GameObject implements ObjectBehavior {
             if (level >= 2) {
                 switch (action) {
                     case RUN:
-                        //                g.drawImage(diluc[8], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
                         if (!isRight) {
                             animRunSword.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
                         } else {
@@ -379,8 +393,13 @@ public class Diluc extends GameObject implements ObjectBehavior {
     }
 
     public void increaseLevel() {
-        this.level++;
-        System.out.println("Level : " + level);
+        if (level < 5) {
+            this.level++;
+            System.out.println("Level : " + level);
+        } else {
+            this.lives++;
+            System.out.println("Sisa nyawa : " + lives);
+        }
     }
 
     public int getLevel() {

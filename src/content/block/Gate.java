@@ -17,11 +17,14 @@ public class Gate extends GameObject {
     private boolean opened = false;
     private boolean enterable = false;
 
+    private final int minimimCoin;
+
     private final Animation animGate, animGateBack;
     private final BufferedImage[] texGate;
 
-    public Gate(float x, float y, int scale) {
+    public Gate(float x, float y, int scale, int minimimCoin) {
         super(x, y-50, ObjectID.GATE, WIDTH, HEIGHT, scale);
+        this.minimimCoin = minimimCoin;
 
         Texture tex = GameEngine.getTexture();
 
@@ -81,5 +84,9 @@ public class Gate extends GameObject {
 
     public Animation getAnimGate() {
         return animGate;
+    }
+
+    public int getMinimimCoin() {
+        return minimimCoin;
     }
 }

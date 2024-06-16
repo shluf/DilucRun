@@ -7,5 +7,6 @@ public enum ObjectID {
     HOLLOW,
     TILE,
     CHEST,
+    COIN,
     GATE
 }

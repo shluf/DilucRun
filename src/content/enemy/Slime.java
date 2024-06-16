@@ -42,7 +42,7 @@ public class Slime extends GameObject implements ObjectBehavior {
         animAttack = new Animation(10, tex.getSlimeAttack());
     }
 
-    public void respawn() {
+    private void respawn() {
         if (handler.getHero().getAction() == ObjectAction.RESPAWN) {
             setAction(ObjectAction.IDLE);
             animDeath.reset();
@@ -50,7 +50,7 @@ public class Slime extends GameObject implements ObjectBehavior {
         }
     }
 
-    public void movement() {
+    private void collision() {
         if (getVelX()!=0) {
             setAction(ObjectAction.RUN);
         }
@@ -83,7 +83,7 @@ public class Slime extends GameObject implements ObjectBehavior {
         setX(getVelX() + getX());
         setY(getVelY() + getY());
         death();
-        movement();
+        collision();
         respawn();
 
         animRun.runAnimation();
@@ -95,30 +95,30 @@ public class Slime extends GameObject implements ObjectBehavior {
         switch (action) {
             case IDLE:
                 if (!isRight) {
-                    animIdle.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                    animIdle.drawAnimation(g, (int) getX(), (int) getY()-4, (int) getWidth(), (int) getHeight());
                 } else {
-                    animIdle.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                    animIdle.drawAnimation(g, (int) (getX() + getWidth()), (int) getY()-4, -(int) getWidth(), (int) getHeight());
                 }
                 break;
             case RUN:
                 if (isRight) {
-                    animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                    animRun.drawAnimation(g, (int) (getX() + getWidth()), (int) getY()-4, -(int) getWidth(), (int) getHeight());
                 } else {
-                    animRun.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                    animRun.drawAnimation(g, (int) getX(), (int) getY()-4, (int) getWidth(), (int) getHeight());
                 }
                 break;
             case DEATH:
                 if (!isRight) {
-                    animDeath.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                    animDeath.drawAnimation(g, (int) (getX() + getWidth()), (int) getY()-4, -(int) getWidth(), (int) getHeight());
                 } else {
-                    animDeath.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                    animDeath.drawAnimation(g, (int) getX(), (int) getY()-4, (int) getWidth(), (int) getHeight());
                 }
                 break;
             case ATTACK:
                 if (!attackRight) {
-                    animAttack.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                    animAttack.drawAnimation(g, (int) (getX() + getWidth()), (int) getY()-4, -(int) getWidth(), (int) getHeight());
                 } else {
-                    animAttack.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                    animAttack.drawAnimation(g, (int) getX(), (int) getY()-4, (int) getWidth(), (int) getHeight());
                 }
                 break;
         }
@@ -164,7 +164,6 @@ public class Slime extends GameObject implements ObjectBehavior {
         g2.draw(getBounds());
         g2.draw(getBoundsAttackLeft());
         g2.draw(getBoundsAttackRight());
-//        g2.draw(getOuterBounds());
     }
 
     private void death() {

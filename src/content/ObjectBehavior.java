@@ -6,4 +6,6 @@ public interface ObjectBehavior {
     Rectangle getBoundsAttackRight();
     Rectangle getBoundsAttackLeft();
     void decreaseLives();
+    int getLives();
+    ObjectAction getAction();
 }

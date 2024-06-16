@@ -51,6 +51,8 @@ public class Hollow extends GameObject {
                     if (!loaded) {
                         hero.setX(0);
                         hero.setVelY(0);
+                    } else {
+                        handler.getHero().setX(32*180);
                     }
                 }
             }
