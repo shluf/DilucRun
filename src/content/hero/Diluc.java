@@ -6,6 +6,7 @@ import content.block.Coin;
 import content.block.Gate;
 import content.enemy.Slime;
 import main.GameEngine;
+import main.GameUI;
 import main.condition.GameStatus;
 import textures.Animation;
 import textures.Texture;
@@ -18,6 +19,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
     private static final int HEIGHT = 37;
 
     private final GameEngine engine;
+    private final GameUI gameUI;
     private final ObjectHandler handler;
     private final Animation animIdle, animRun, animIdleSword, animRunSword, animSlash, animJump, animDoubleJump, animInteract;
 
@@ -32,10 +34,11 @@ public class Diluc extends GameObject implements ObjectBehavior {
     private boolean levelDecreased = false;
 
 
-    public Diluc(float x, float y, int scale, ObjectHandler handler, GameEngine engine) {
+    public Diluc(float x, float y, int scale, ObjectHandler handler, GameEngine engine, GameUI gameUI) {
         super(x, y, ObjectID.HERO, WIDTH, HEIGHT, scale);
         this.handler = handler;
         this.engine = engine;
+        this.gameUI = gameUI;
 
         Texture tex = GameEngine.getTexture();
 
@@ -102,21 +105,30 @@ public class Diluc extends GameObject implements ObjectBehavior {
 
             if (temp.getId() == ObjectID.GATE) {
                 Gate gate = (Gate) temp;
+                boolean gameCompleted = (engine.getMapLevel() >= GameEngine.getTotalLevel());
+                gate.setNotify(false);
                 if (getBounds().intersects(gate.getOuterBounds()) && action == ObjectAction.INTERACT) {
-                    if (handler.getCoinPicked().size() >= gate.getMinimimCoin()) {
+                    if (handler.getCoinPicked().size() >= gate.getMinimumCoin()) {
                         gate.getAnimGate().runSingleAnimation();
                         gate.setOpened(true);
+
                         if (gate.getAnimGate().isFinished()) {
-                            if (!(engine.getMapLevel() >= GameEngine.getTotalLevel())) {
-                                gate.setEnterable(true);
-                            }
+                            gate.setEnterable(true);
                         }
+                    } else {
+                        gate.setNotify(true);
                     }
                 }
                 if (getBounds().intersects(gate.getBounds()) && gate.isEnterable()) {
                     uploadScore();
                     setVelX(0);
-                    engine.nextMapLevel();
+
+                    if (!gameCompleted) {
+                        engine.nextMapLevel();
+                    } else {
+//                        handler.cleanHandler();
+                        gameUI.setGameStatus(GameStatus.FINISHED);
+                    }
                 }
             }
 
@@ -203,9 +215,6 @@ public class Diluc extends GameObject implements ObjectBehavior {
         applyGravity();
         collision();
         death();
-
-//        System.out.println("X: " + getX() + ",  Y: " + getY());
-//        System.out.println("Slime: " + handler.getDeathSlime().size());
 
         animRun.runAnimation();
         animIdle.runAnimation();

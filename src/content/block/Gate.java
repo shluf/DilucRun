@@ -4,6 +4,7 @@ import content.GameObject;
 import content.ObjectHandler;
 import content.ObjectID;
 import main.GameEngine;
+import main.GameUI;
 import textures.Animation;
 import textures.Texture;
 
@@ -16,15 +17,19 @@ public class Gate extends GameObject {
 
     private boolean opened = false;
     private boolean enterable = false;
+    private boolean notify = false;
 
-    private final int minimimCoin;
+    private final int minimumCoin;
+
+    private final GameUI gameUI;
 
     private final Animation animGate, animGateBack;
     private final BufferedImage[] texGate;
 
-    public Gate(float x, float y, int scale, int minimimCoin) {
+    public Gate(float x, float y, int scale, int minimumCoin, GameUI gameUI) {
         super(x, y-50, ObjectID.GATE, WIDTH, HEIGHT, scale);
-        this.minimimCoin = minimimCoin;
+        this.gameUI = gameUI;
+        this.minimumCoin = minimumCoin;
 
         Texture tex = GameEngine.getTexture();
 
@@ -45,6 +50,12 @@ public class Gate extends GameObject {
         } else {
             animGateBack.drawAnimation(g, (int) getX()+10, (int) getY()+10, (int) getWidth()-20, (int) getHeight());
             animGate.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+        }
+
+        if (notify) {
+            g.setFont(gameUI.getGameFont().deriveFont(10f));
+            g.setColor(Color.WHITE);
+            g.drawString("Locked", (int) getX() + 15, (int) (getY() - 10));
         }
 //        showBounds(g);
     }
@@ -82,11 +93,15 @@ public class Gate extends GameObject {
         this.enterable = enterable;
     }
 
+    public void setNotify(boolean notify) {
+        this.notify = notify;
+    }
+
     public Animation getAnimGate() {
         return animGate;
     }
 
-    public int getMinimimCoin() {
-        return minimimCoin;
+    public int getMinimumCoin() {
+        return minimumCoin;
     }
 }

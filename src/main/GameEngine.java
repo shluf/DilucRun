@@ -173,7 +173,6 @@ public class GameEngine extends Canvas implements Runnable {
 
     public void saveHighScores(HashMap<Integer, Integer> highScores) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(HIGHSCORE_FILE))) {
-            int countLevel = 0;
             for (Map.Entry<Integer, Integer> entry : highScores.entrySet()) {
                 if (!highScore.isEmpty()) {
                     if (entry.getValue() > highScore.get(entry.getKey())) {
@@ -185,10 +184,9 @@ public class GameEngine extends Canvas implements Runnable {
                         writer.newLine();
                     }
                 }
-                countLevel++;
             }
-            if (countLevel < totalLevel) {
-                for (int i = countLevel+1; i <= totalLevel; i++) {
+            if (mapLevel < totalLevel) {
+                for (int i = mapLevel+1; i <= totalLevel; i++) {
                     writer.write(i + "=" + (highScore.get(i) == null ? 0 : highScore.get(i)));
                     writer.newLine();
                 }
@@ -214,6 +212,18 @@ public class GameEngine extends Canvas implements Runnable {
 
     public HashMap<Integer, Integer> getScore() {
         return score;
+    }
+
+    public int getScore(int level) {
+        return (score.get(level) == null ? 0 : score.get(level));
+    }
+
+    public int getTotalScore() {
+        int totalScore = 0;
+        for (Map.Entry<Integer, Integer> entry : score.entrySet()) {
+            totalScore += entry.getValue();
+        }
+        return totalScore;
     }
 
     public void setScore(int level, int score) {

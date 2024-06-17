@@ -11,7 +11,7 @@ import java.util.Random;
 public class Slime extends GameObject implements ObjectBehavior {
     private static final int WIDTH = 32;
     private static final int HEIGHT = 25;
-    private static final int SPEED = 2;
+    private final float SPEED;
 
     private final ObjectHandler handler;
 
@@ -24,10 +24,11 @@ public class Slime extends GameObject implements ObjectBehavior {
     private final Animation animIdle, animRun, animDeath, animAttack;
     private boolean attackRight;
 
-    public Slime(float x, float y, int scale, boolean isRight, ObjectHandler handler) {
+    public Slime(float x, float y, int scale, boolean isRight, ObjectHandler handler, int attackSpeed, float speed) {
         super(x, y-(int) (HEIGHT/2), ObjectID.SLIME, WIDTH * 2, HEIGHT * 2, scale);
         this.isRight = isRight;
         this.handler = handler;
+        this.SPEED = speed;
 
         Random random = new Random();
         int min = 100;
@@ -39,12 +40,12 @@ public class Slime extends GameObject implements ObjectBehavior {
         animIdle = new Animation(10, tex.getSlimeIdle());
         animRun = new Animation(8, tex.getSlimeMove());
         animDeath = new Animation(10, tex.getSlimeDeath());
-        animAttack = new Animation(10, tex.getSlimeAttack());
+        animAttack = new Animation(10 - attackSpeed, tex.getSlimeAttack());
     }
 
     private void respawn() {
         if (handler.getHero().getAction() == ObjectAction.RESPAWN) {
-            setAction(ObjectAction.IDLE);
+            setAction(ObjectAction.RUN);
             animDeath.reset();
             lives = 1;
         }

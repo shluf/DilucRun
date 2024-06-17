@@ -6,6 +6,7 @@ public enum GameStatus {
     RUNNING,
     START_SCREEN,
     HELP_SCREEN,
+    LEVEL_COMPLETED,
     FINISHED,
     ABOUT_SCREEN
 }

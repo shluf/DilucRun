@@ -1,4 +1,4 @@
-package main.menu;
+package textures;
 
 import content.ObjectHandler;
 import content.block.*;
@@ -7,7 +7,6 @@ import content.enemy.SlimeHolder;
 import content.hero.Diluc;
 import main.GameEngine;
 import main.GameUI;
-import textures.ImageLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,8 +15,15 @@ public class LevelCreator {
     private GameEngine engine;
     private GameUI gameUI;
     private ImageLoader loader;
-    private BufferedImage mapTex;
     private ObjectHandler handler;
+
+    private BufferedImage mapTex;
+
+    private int minimumCoin;
+    private float slimeSpeed;
+    private int slimeAttackSpeed;
+    private int gateX;
+    private int gateY;
 
     public LevelCreator(ObjectHandler handler, GameEngine engine, GameUI gameUI) {
         this.handler = handler;
@@ -37,9 +43,34 @@ public class LevelCreator {
         int width = mapTex.getWidth();
         int height = mapTex.getHeight();
 
+        int mapLevel = engine.getMapLevel();
+        switch (mapLevel) {
+            case 1:
+                minimumCoin= 10;
+                slimeAttackSpeed = 0;
+                slimeSpeed=2.0F;
+                gateX=181;
+                gateY=18;
+                break;
+            case 2:
+                minimumCoin = handler.getCoinPicked().size() + 1;
+                slimeAttackSpeed = 2;
+                slimeSpeed=2.3F;
+                gateX=181;
+                gateY=18;
+                break;
+            case 3:
+                minimumCoin = handler.getCoinPicked().size() + 1;
+                slimeAttackSpeed = 4;
+                slimeSpeed=2.5F;
+                gateX=181;
+                gateY=18;
+                break;
+        }
+
         handler.addObj(new Hollow(handler, width, engine));
-        handler.addObj(new Gate(181*32,18*32,1, 10));
-//        handler.addObj(new Gate(15*32,15*32,1));
+        handler.addObj(new Gate(gateX*32,gateY*32,1, minimumCoin, gameUI));
+//        handler.addObj(new Gate(15*32,15*32,1, minimumCoin, gameUI));
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -58,7 +89,7 @@ public class LevelCreator {
                 int coin = new Color(0, 255, 0).getRGB();
 
                 if (pixel == diluc) {
-                    handler.setHero(new Diluc(i * 32,j,2, handler, engine));
+                    handler.setHero(new Diluc(i * 32,j,2, handler, engine, gameUI));
                 }
 
                 else if (pixel == tile) {
@@ -78,7 +109,7 @@ public class LevelCreator {
                 }
 
                 else if (pixel == slime) {
-                    handler.addObj(new Slime(i*32,j*32,1, false, handler));
+                    handler.addObj(new Slime(i*32,j*32,1, false, handler, slimeAttackSpeed, slimeSpeed));
                 } else if (pixel == slimeHolder) {
                     handler.addObj(new SlimeHolder(i*32,j*32, 32, 32, 1));
                 } else if (pixel == chest) {
@@ -92,4 +123,7 @@ public class LevelCreator {
         }
     }
 
+    public int getMinimumCoin() {
+        return minimumCoin;
+    }
 }

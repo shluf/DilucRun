@@ -2,7 +2,7 @@ package main;
 
 import content.ObjectHandler;
 import main.condition.GameStatus;
-import main.menu.LevelCreator;
+import textures.LevelCreator;
 import main.view.Camera;
 import textures.Texture;
 
@@ -14,6 +14,7 @@ import java.io.InputStream;
 public class GameUI extends JPanel {
     private float bgOneX = 0, bgTwoX = 0, bgThreeX = 0, bgFourX = 0, bgFiveX = 0;
 
+    private final GameEngine engine;
     private final LevelCreator levelCreator;
     private final ObjectHandler handler;
     private final Camera cam;
@@ -25,6 +26,7 @@ public class GameUI extends JPanel {
 
     public GameUI(GameEngine engine, ObjectHandler handler) {
         this.handler = handler;
+        this.engine = engine;
 
         tex = GameEngine.getTexture();
 
@@ -68,7 +70,8 @@ public class GameUI extends JPanel {
             g2.setColor(Color.BLACK);
             g2.drawString("GAME OVER", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
         }
-        else {
+        else if (gameStatus == GameStatus.RUNNING){
+
             renderBackground(g);
 
             g2.translate(-cam.getX(), -cam.getY());
@@ -77,14 +80,12 @@ public class GameUI extends JPanel {
 
 
 
-//            System.out.println("HeroX: " + handler.getHero().getX());
-
-
-
-//            drawPoints(g2);
-//            drawRemainingLives(g2);
-//            drawAcquiredCoins(g2);
-//            drawRemainingTime(g2);
+            drawRemainingLives(g2);
+            drawHeroLevel(g2);;
+            drawMapLevel(g2);;
+            drawAcquiredCoins(g2);
+            drawKilledSlimes(g2);
+            drawAcquiredScore(g2);
 
 //            if(gameStatus == GameStatus.PAUSED){
 //                drawPauseScreen(g2);
@@ -92,6 +93,12 @@ public class GameUI extends JPanel {
 //            else if(gameStatus == GameStatus.MISSION_PASSED){
 //                drawVictoryScreen(g2);
 //            }
+
+            switch (gameStatus) {
+                case PAUSED -> drawPausedScreen(g2);
+                case LEVEL_COMPLETED -> drawLevelCompleted(g2);
+                case FINISHED -> drawVictory(g2);
+            }
         }
 
         g2.dispose();
@@ -152,6 +159,67 @@ public class GameUI extends JPanel {
         g.drawImage(tex.getBackgroundFive(), (int) bgFiveX, 0, GameEngine.getWindowWidth(), GameEngine.getWindowHeight(), null);
         g.drawImage(tex.getBackgroundFive(), (int) bgFiveX + GameEngine.getWindowWidth(), 0, GameEngine.getScreenWidth(), GameEngine.getWindowHeight(), null);
 
+    }
+
+    private void drawAcquiredCoins(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString((handler.getCoinPicked().size()+"/"+levelCreator.getMinimumCoin()), 300, 40);
+    }
+
+    private void drawRemainingLives(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("" + handler.getHero().getLives(), 50, 40);
+    }
+
+    private void drawHeroLevel(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("" + handler.getHero().getLevel(), 100, 40);
+    }
+
+    private void drawMapLevel(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Map: " + engine.getMapLevel(), GameEngine.getScreenWidth()-100, 40);
+    }
+
+    private void drawKilledSlimes(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Slime: " + handler.getDeathSlime().size(), GameEngine.getScreenWidth()/2, 40);
+    }
+
+    private void drawAcquiredScore(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("" +handler.getSlimePoint() * handler.getHero().getLives(), GameEngine.getScreenWidth()/2, 80);
+    }
+
+    private void drawVictory(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(50f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Victory", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
+
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.drawString("Level 1 " + engine.getScore(1), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+25);
+        g2.drawString("Level 2 " + engine.getScore(2), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+50);
+        g2.drawString("Level 3 " + engine.getScore(3), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+75);
+        g2.drawString("Total Score", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+100);
+        g2.drawString("" + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+125);
+    }
+
+    private void drawPausedScreen(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Paused", GameEngine.getScreenWidth()/2, 40);
+    }
+
+    private void drawLevelCompleted(Graphics2D g2) {
+        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Level Completed", GameEngine.getScreenWidth()/2, 40);
     }
 
     public Font getGameFont() {

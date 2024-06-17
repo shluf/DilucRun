@@ -64,8 +64,9 @@ public class GameKey implements KeyListener {
                 handler.getHero().setAction(ObjectAction.INTERACT);
                 break;
             case KeyEvent.VK_ENTER:
-                engine.loadMap(engine.getMapLevel());
-                gameUI.setGameStatus(GameStatus.RUNNING);
+                if (handler.getGameObjs().isEmpty()) {
+                    engine.loadMap(engine.getMapLevel());
+                }
                 break;
             case KeyEvent.VK_P:
                 gameUI.setGameStatus(GameStatus.PAUSED);
