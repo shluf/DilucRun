@@ -9,6 +9,7 @@ public class Texture {
 
     private BufferedImage hero_sheet;
     private BufferedImage heroSwordRun_sheet;
+    private BufferedImage heroBow_sheet;
     private BufferedImage slime_sheet;
     private BufferedImage chest_sheet;
     private BufferedImage tile_sheet;
@@ -18,7 +19,7 @@ public class Texture {
     private BufferedImage coinPick_sheet;
 
     private BufferedImage[] diluc;
-    private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, dilucRunSword, dilucInteract, slash, jump, doubleJump;
+    private BufferedImage[] dilucIdle, dilucIdleSword, dilucRun, dilucRunSword, dilucBow, dilucInteract, slash, jump, doubleJump;
 
     private BufferedImage[] slime;
     private BufferedImage[] slimeIdle, slimeMove, slimeDeath, slimeAttack;
@@ -33,6 +34,8 @@ public class Texture {
 
     private BufferedImage[] coin, coinPick;
 
+    private BufferedImage[] arrows;
+
     public Texture() {
 
         ImageLoader loader = new ImageLoader();
@@ -40,6 +43,7 @@ public class Texture {
         try {
             hero_sheet = loader.loadImage("/hero-Sheet.png", 's');
             heroSwordRun_sheet = loader.loadImage("/heroSwordRun-Sheet.png", 's');
+            heroBow_sheet = loader.loadImage("/heroBow-Sheet.png", 's');
             slime_sheet = loader.loadImage("/slime-Sheet.png", 's');
             chest_sheet = loader.loadImage("/chest-Sheet.png",'s');
             gate_sheet = loader.loadImage("/gate-Sheet.png",'s');
@@ -59,6 +63,7 @@ public class Texture {
         getFrames();
         getHeroTexture();
         getSlimeTexture();
+        getArrowTexture(loader);
     }
 
     private void getHeroTexture() {
@@ -84,13 +89,19 @@ public class Texture {
 
         dilucInteract = new BufferedImage[5];
         for (int i = 0; i < 5; i++) {
-            dilucInteract[i] = diluc[87 + i];
+            dilucInteract[i] = diluc[88 + i];
         }
 
-        slash = new BufferedImage[2]; //16
-        for (int i = 0; i < 2; i++) {
-//            slash[i] = diluc[43 + i];
-            slash[i] = diluc[49 + i];
+        slash = new BufferedImage[13]; //16
+        for (int i = 0; i < 13; i++) {
+            slash[i] = diluc[46 + i];
+//            slash[i] = diluc[51 + i];
+//            slash[i] = diluc[49 + i]; // 2
+        }
+
+        dilucBow = new BufferedImage[9];
+        for (int i = 0; i < 9; i++) {
+            dilucBow[i] = diluc[119 + i];
         }
 
         jump = new BufferedImage[2];
@@ -127,6 +138,13 @@ public class Texture {
         }
     }
 
+    private void getArrowTexture(ImageLoader loader) {
+        arrows = new BufferedImage[4];
+
+        for (int i = 0; i < 4; i++) {
+            arrows[i] = loader.loadImage("/arrow/1_" + (i) + ".png",'s');
+        }
+    }
 
     public void getFrames() {
         int heroHeight = Diluc.getHeroHeight();
@@ -137,7 +155,10 @@ public class Texture {
         int heroSwordRunRows = heroSwordRun_sheet.getHeight() / heroHeight;
         int heroSwordRunCols = heroSwordRun_sheet.getWidth() / heroWidth;
 
-        diluc = new BufferedImage[heroRows * heroCols + heroSwordRunRows * heroSwordRunCols];   // 77 + 6
+        int heroBowRows = heroBow_sheet.getHeight() / heroHeight;
+        int heroBowCols = heroBow_sheet.getWidth() / heroWidth;
+
+        diluc = new BufferedImage[heroRows * heroCols + heroSwordRunRows * heroSwordRunCols + heroBowRows * heroBowCols];   // 77 + 6 + 16
 
         int heroIndex = 0;
         for (int y = 0; y < heroRows; y++) {
@@ -148,6 +169,11 @@ public class Texture {
         for (int y = 0; y < heroSwordRunRows; y++) {
             for (int x = 0; x < heroSwordRunCols; x++) {
                 diluc[heroIndex++] = heroSwordRun_sheet.getSubimage(x * heroWidth, y * heroHeight, heroWidth, heroHeight);
+            }
+        }
+        for (int y = 0; y < heroBowRows; y++) {
+            for (int x = 0; x < heroBowCols; x++) {
+                diluc[heroIndex++] = heroBow_sheet.getSubimage(x * heroWidth, y * heroHeight, heroWidth, heroHeight);
             }
         }
 
@@ -247,6 +273,10 @@ public class Texture {
         return slash;
     }
 
+    public BufferedImage[] getBow() {
+        return dilucBow;
+    }
+
     public BufferedImage[] getJump() {
         return jump;
     }
@@ -317,5 +347,9 @@ public class Texture {
 
     public BufferedImage[] getCoin() {
         return coin;
+    }
+
+    public BufferedImage[] getArrows() {
+        return arrows;
     }
 }

@@ -52,9 +52,10 @@ public class Slime extends GameObject implements ObjectBehavior {
     }
 
     private void collision() {
-        if (getVelX()!=0) {
+        if (getVelX() != 0) {
             setAction(ObjectAction.RUN);
         }
+
         if (!(action == ObjectAction.DEATH)) {
             for (int i = 0; i < handler.getGameObjs().size(); i++) {
                 GameObject temp = handler.getGameObjs().get(i);
@@ -73,9 +74,23 @@ public class Slime extends GameObject implements ObjectBehavior {
                         }
                     }
                 }
+
+                if (temp.getId() == ObjectID.ARROW) {
+                    if (lives > 0) {
+                        if (getBounds().intersects(temp.getBounds())) {
+                            decreaseLives();
+                            handler.addDeathSlime(this);
+                            handler.removeObj(temp);
+                        }
+                    }
+                }
             }
-        } else {
-            deathAnimation();
+        }
+    }
+
+    private void resetAnim() {
+        if (action != ObjectAction.ATTACK) {
+            animAttack.reset();
         }
     }
 
@@ -86,6 +101,7 @@ public class Slime extends GameObject implements ObjectBehavior {
         death();
         collision();
         respawn();
+        resetAnim();
 
         animRun.runAnimation();
         animIdle.runAnimation();
@@ -130,9 +146,9 @@ public class Slime extends GameObject implements ObjectBehavior {
     @Override
     public Rectangle getBounds() {
         return new Rectangle((int) getX() + 15,
-                (int) getY() + 25,
+                (int) getY() + 15,
                 (int) getWidth() - 30,
-                (int) getHeight() - 40);
+                (int) getHeight() - 20);
     }
 
     public Rectangle getBoundsAttackLeft() {
@@ -170,6 +186,7 @@ public class Slime extends GameObject implements ObjectBehavior {
     private void death() {
         if (lives <= 0) {
             action = ObjectAction.DEATH;
+            deathAnimation();
         }
     }
 

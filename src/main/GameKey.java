@@ -57,11 +57,17 @@ public class GameKey implements KeyListener {
                 if (handler.getHero().getLevel() >= 2) {
                     handler.getHero().setVelX(0);
                     handler.getHero().setAction(ObjectAction.ATTACK);
-                    handler.getHero().setSlash(true);
+//                    handler.getHero().setSlash(true);
                 }
                 break;
             case KeyEvent.VK_Z:
                 handler.getHero().setAction(ObjectAction.INTERACT);
+                break;
+            case KeyEvent.VK_X:
+                if (handler.getHero().getLevel() >= 3 && handler.getHero().getArrow() > 0) {
+                    handler.getHero().setVelX(0);
+                    handler.getHero().setAction(ObjectAction.BOW);
+                }
                 break;
             case KeyEvent.VK_ENTER:
                 if (handler.getGameObjs().isEmpty()) {
@@ -69,7 +75,11 @@ public class GameKey implements KeyListener {
                 }
                 break;
             case KeyEvent.VK_P:
-                gameUI.setGameStatus(GameStatus.PAUSED);
+                if (gameUI.getInGameStatus() != GameStatus.PAUSED) {
+                    gameUI.setInGameStatus(GameStatus.PAUSED);
+                } else {
+                    gameUI.setInGameStatus(GameStatus.RUNNING);
+                }
                 break;
         }
     }
@@ -87,10 +97,6 @@ public class GameKey implements KeyListener {
                 break;
             case KeyEvent.VK_RIGHT:
                 keyDown[2] = false;
-                handler.getHero().setAction(ObjectAction.IDLE);
-                break;
-            case KeyEvent.VK_SPACE:
-                handler.getHero().setSlash(false);
                 handler.getHero().setAction(ObjectAction.IDLE);
                 break;
             case KeyEvent.VK_Z:

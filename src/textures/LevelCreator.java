@@ -53,7 +53,7 @@ public class LevelCreator {
                 gateY=18;
                 break;
             case 2:
-                minimumCoin = handler.getCoinPicked().size() + 1;
+                minimumCoin = handler.getCoinPicked().size() + 10;
                 slimeAttackSpeed = 2;
                 slimeSpeed=2.3F;
                 gateX=181;
@@ -113,7 +113,7 @@ public class LevelCreator {
                 } else if (pixel == slimeHolder) {
                     handler.addObj(new SlimeHolder(i*32,j*32, 32, 32, 1));
                 } else if (pixel == chest) {
-                    handler.addObj(new Chest(i*32,j*32,1, gameUI));
+                    handler.addObj(new Chest(i*32,j*32,1, gameUI, handler));
                 }
                 else if (pixel == coin) {
                     handler.addObj(new Coin(i*32,j*32,1, handler));

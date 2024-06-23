@@ -1,6 +1,7 @@
 package main;
 
 import content.ObjectHandler;
+import main.condition.GameStatus;
 import main.view.Windows;
 import textures.Texture;
 
@@ -88,7 +89,9 @@ public class GameEngine extends Canvas implements Runnable {
              lastTime = now;
 
              while (delta >= 1) {
-                 tick();
+                 if (gameUI.getInGameStatus() != GameStatus.PAUSED) {
+                     tick();
+                 }
                  updates++;
                  delta--;
              }

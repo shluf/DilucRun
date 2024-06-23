@@ -1,6 +1,8 @@
 package content.block;
 
 import content.GameObject;
+import content.ObjectAction;
+import content.ObjectHandler;
 import content.ObjectID;
 import main.GameEngine;
 import main.GameUI;
@@ -18,12 +20,14 @@ public class Chest extends GameObject {
     private final int type;
 
     private final GameUI gameUI;
+    private final ObjectHandler handler;
 
     private final BufferedImage[] chestTex;
 
-    public Chest(float x, float y, int scale, GameUI gameUI) {
+    public Chest(float x, float y, int scale, GameUI gameUI, ObjectHandler handler) {
         super(x, y, ObjectID.CHEST, WIDTH, HEIGHT, scale);
         this.gameUI = gameUI;
+        this.handler = handler;
 
         int[] index = {0, 2, 4, 6};
         Random random = new Random();
@@ -34,7 +38,9 @@ public class Chest extends GameObject {
 
     @Override
     public void tick() {
-
+        if (handler.getHero().getAction() == ObjectAction.RESPAWN) {
+            setOpened(false);
+        }
     }
 
     @Override

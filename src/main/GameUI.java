@@ -20,6 +20,7 @@ public class GameUI extends JPanel {
     private final Camera cam;
 
     private GameStatus gameStatus = GameStatus.START_SCREEN;
+    private GameStatus inGameStatus = GameStatus.RUNNING;
     private Font gameFont;
 
     private final Texture tex;
@@ -36,7 +37,7 @@ public class GameUI extends JPanel {
         levelCreator = new LevelCreator(handler, engine, this);
 
         try {
-            InputStream in = getClass().getResourceAsStream("/assets/font/mario-font.ttf");
+            InputStream in = getClass().getResourceAsStream("/assets/font/emulogic.ttf");
             gameFont = Font.createFont(Font.TRUETYPE_FONT, in);
         } catch (FontFormatException | IOException e) {
             gameFont = new Font("Verdana", Font.PLAIN, 12);
@@ -94,7 +95,7 @@ public class GameUI extends JPanel {
 //                drawVictoryScreen(g2);
 //            }
 
-            switch (gameStatus) {
+            switch (inGameStatus) {
                 case PAUSED -> drawPausedScreen(g2);
                 case LEVEL_COMPLETED -> drawLevelCompleted(g2);
                 case FINISHED -> drawVictory(g2);
@@ -118,6 +119,14 @@ public class GameUI extends JPanel {
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
+    }
+
+    public GameStatus getInGameStatus() {
+        return inGameStatus;
+    }
+
+    public void setInGameStatus(GameStatus inGameStatus) {
+        this.inGameStatus = inGameStatus;
     }
 
     public void createMap(int level) {
@@ -194,7 +203,7 @@ public class GameUI extends JPanel {
     private void drawAcquiredScore(Graphics2D g2) {
         g2.setFont(getGameFont().deriveFont(20f));
         g2.setColor(Color.WHITE);
-        g2.drawString("" +handler.getSlimePoint() * handler.getHero().getLives(), GameEngine.getScreenWidth()/2, 80);
+        g2.drawString("" +handler.getSlimePoint() * handler.getHero().getLives(), 40, GameEngine.getWindowHeight()-40);
     }
 
     private void drawVictory(Graphics2D g2) {
@@ -203,17 +212,17 @@ public class GameUI extends JPanel {
         g2.drawString("Victory", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
 
         g2.setFont(getGameFont().deriveFont(20f));
-        g2.drawString("Level 1 " + engine.getScore(1), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+25);
-        g2.drawString("Level 2 " + engine.getScore(2), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+50);
-        g2.drawString("Level 3 " + engine.getScore(3), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+75);
-        g2.drawString("Total Score", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+100);
-        g2.drawString("" + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+125);
+        g2.drawString("Level 1 " + engine.getScore(1), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+50);
+        g2.drawString("Level 2 " + engine.getScore(2), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+75);
+        g2.drawString("Level 3 " + engine.getScore(3), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+100);
+        g2.drawString("Total Score ", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+130);
+        g2.drawString("" + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+155);
     }
 
     private void drawPausedScreen(Graphics2D g2) {
         g2.setFont(getGameFont().deriveFont(20f));
         g2.setColor(Color.WHITE);
-        g2.drawString("Paused", GameEngine.getScreenWidth()/2, 40);
+        g2.drawString("Game Paused", GameEngine.getScreenWidth()/2 -40, GameEngine.getWindowHeight()-40);
     }
 
     private void drawLevelCompleted(Graphics2D g2) {

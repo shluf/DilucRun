@@ -21,15 +21,15 @@ public class Diluc extends GameObject implements ObjectBehavior {
     private final GameEngine engine;
     private final GameUI gameUI;
     private final ObjectHandler handler;
-    private final Animation animIdle, animRun, animIdleSword, animRunSword, animSlash, animJump, animDoubleJump, animInteract;
+    private final Animation animIdle, animRun, animIdleSword, animRunSword, animSlash, animBow, animJump, animDoubleJump, animInteract;
 
     private ObjectAction action = ObjectAction.IDLE;
     private int jumped = 0;
     private boolean isRight = true;
-    private boolean slash = false;
 
     private int level = 1;
-    private int lives = 3;
+    private int lives = 5;
+    private int arrow = 0;
 
     private boolean levelDecreased = false;
 
@@ -44,9 +44,10 @@ public class Diluc extends GameObject implements ObjectBehavior {
 
         animIdle = new Animation(10, tex.getIdle());
         animIdleSword = new Animation(10, tex.getIdleSword());
+        animBow = new Animation(5, tex.getBow());
         animRun = new Animation(5, tex.getRun());
         animRunSword = new Animation(5, tex.getRunSword());
-        animSlash = new Animation(5, tex.getSlash());
+        animSlash = new Animation(10, tex.getSlash());
         animJump = new Animation(10, tex.getJump());
         animDoubleJump = new Animation(5, tex.getDoubleJump());
         animInteract = new Animation(5, tex.getDilucInteract());
@@ -80,7 +81,8 @@ public class Diluc extends GameObject implements ObjectBehavior {
             if (temp.getId() == ObjectID.CHEST) {
                 Chest chest = (Chest) temp;
                 chest.setNotify(false);
-                if (getBoundsRight().intersects(chest.getOuterBounds()) || getBoundsLeft().intersects(chest.getOuterBounds())) {
+                if (isRight && getBoundsRight().intersects(chest.getOuterBounds()) ||
+                        !isRight && getBoundsLeft().intersects(chest.getOuterBounds())) {
                     chest.setNotify(true);
                     if (action == ObjectAction.INTERACT) {
                         if (!chest.isOpened()) {
@@ -127,7 +129,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
                         engine.nextMapLevel();
                     } else {
 //                        handler.cleanHandler();
-                        gameUI.setGameStatus(GameStatus.FINISHED);
+                        gameUI.setInGameStatus(GameStatus.FINISHED);
                     }
                 }
             }
@@ -163,7 +165,9 @@ public class Diluc extends GameObject implements ObjectBehavior {
                     }
                 }
 
-                if (slash) {
+                if (action == ObjectAction.ATTACK) {
+                    animSlash.runSingleAnimation();
+
                     if (slime.getLives() >= 1) {
                         if (!isRight) {
                             if (getBoundsAttackLeft().intersects(temp.getBounds())) {
@@ -181,6 +185,10 @@ public class Diluc extends GameObject implements ObjectBehavior {
                                 System.out.println("Jumlah slime terbunuh: " + handler.getDeathSlime().size());
                             }
                         }
+                    }
+
+                    if (animSlash.isFinished()) {
+                        action = ObjectAction.IDLE;
                     }
                 }
             }
@@ -208,6 +216,30 @@ public class Diluc extends GameObject implements ObjectBehavior {
         levelDecreased = false;
     }
 
+    private void bow() {
+        if (action == ObjectAction.BOW && arrow > 0) {
+            if (animBow.isFinished()) {
+                animBow.reset();
+            }
+            animBow.runSingleAnimation();
+            if (animBow.isFinished()) {
+                arrow--;
+                Arrow shoot = new Arrow(getX(), getY(), 1, isRight, handler);
+                handler.addObj(shoot);
+                setAction(ObjectAction.IDLE);
+            }
+        }
+    }
+
+    private void resetAnim() {
+        if (action != ObjectAction.BOW) {
+            animBow.reset();
+        }
+        if (action != ObjectAction.ATTACK) {
+            animSlash.reset();
+        }
+    }
+
     @Override
     public void tick() {
         setX(getVelX() + getX());
@@ -215,6 +247,9 @@ public class Diluc extends GameObject implements ObjectBehavior {
         applyGravity();
         collision();
         death();
+        bow();
+
+        resetAnim();
 
         animRun.runAnimation();
         animIdle.runAnimation();
@@ -222,9 +257,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
         animDoubleJump.runAnimation();
         animIdleSword.runAnimation();
         animRunSword.runAnimation();
-        animSlash.runAnimation();
-        animInteract.runSingleAnimation();
-
+        animInteract.runAnimation();
 
     }
 
@@ -261,6 +294,13 @@ public class Diluc extends GameObject implements ObjectBehavior {
                             animSlash.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
                         } else {
                             animSlash.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+                        }
+                        break;
+                    case BOW:
+                        if (!isRight) {
+                            animBow.drawAnimation(g, (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight());
+                        } else {
+                            animBow.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
                         }
                         break;
                 }
@@ -384,10 +424,6 @@ public class Diluc extends GameObject implements ObjectBehavior {
         isRight = right;
     }
 
-    public void setSlash(boolean slash) {
-        this.slash = slash;
-    }
-
     public int getLives() {
         return lives;
     }
@@ -402,12 +438,12 @@ public class Diluc extends GameObject implements ObjectBehavior {
     }
 
     public void increaseLevel() {
-        if (level < 5) {
+        if (level < 3) {
             this.level++;
             System.out.println("Level : " + level);
         } else {
-            this.lives++;
-            System.out.println("Sisa nyawa : " + lives);
+            this.arrow++;
+            System.out.println("Sisa Panah : " + arrow);
         }
     }
 
@@ -422,6 +458,10 @@ public class Diluc extends GameObject implements ObjectBehavior {
 
     public Animation getAnimInteract() {
         return animInteract;
+    }
+
+    public int getArrow() {
+        return arrow;
     }
 
     private void uploadScore() {
