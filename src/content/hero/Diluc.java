@@ -210,7 +210,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
             }
             else if (lives == 1){
                 decreaseLives();
-                engine.getGameUI().setGameStatus(GameStatus.GAME_OVER);
+                engine.getGameUI().setInGameStatus(GameStatus.GAME_OVER);
             }
         }
         levelDecreased = false;
@@ -339,7 +339,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
 //        System.out.println("Jump: " + jumped);
 //        System.out.println("Action: " + action);
 
-//        showBounds(g);
+        showBounds(g);
     }
 
     @Override

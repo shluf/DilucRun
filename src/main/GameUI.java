@@ -66,11 +66,6 @@ public class GameUI extends JPanel {
             g2.setColor(Color.WHITE);
             g2.drawString("HELP", GameEngine.getWindowWidth()/2, GameEngine.getWindowHeight()/2);
         }
-        else if(gameStatus == GameStatus.GAME_OVER){
-            g2.setFont(gameFont.deriveFont(50f));
-            g2.setColor(Color.BLACK);
-            g2.drawString("GAME OVER", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
-        }
         else if (gameStatus == GameStatus.RUNNING){
 
             renderBackground(g);
@@ -100,6 +95,7 @@ public class GameUI extends JPanel {
                 case PAUSED -> drawPausedScreen(g2);
                 case LEVEL_COMPLETED -> drawLevelCompleted(g2);
                 case FINISHED -> drawVictory(g2);
+                case GAME_OVER -> drawGameOver(g2);
             }
         }
 
@@ -171,6 +167,8 @@ public class GameUI extends JPanel {
 
     }
 
+////////////////////// In Game UI
+
     private void drawAcquiredCoins(Graphics2D g2) {
         g2.setFont(getGameFont().deriveFont(20f));
         g2.setColor(Color.WHITE);
@@ -212,6 +210,14 @@ public class GameUI extends JPanel {
         g2.setColor(Color.WHITE);
         g2.drawString("" +handler.getSlimePoint() * handler.getHero().getLives(), 40, GameEngine.getWindowHeight()-40);
     }
+
+    private void drawGameOver(Graphics2D g2) {
+        g2.setFont(gameFont.deriveFont(50f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("GAME OVER", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
+    }
+
+////////////////////// End in Game UI
 
     private void drawVictory(Graphics2D g2) {
         g2.setFont(getGameFont().deriveFont(50f));

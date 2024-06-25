@@ -56,6 +56,10 @@ public class Gate extends GameObject {
             g.setFont(gameUI.getGameFont().deriveFont(10f));
             g.setColor(Color.WHITE);
             g.drawString("Locked", (int) getX() + 15, (int) (getY() - 10));
+        } else {
+            g.setFont(gameUI.getGameFont().deriveFont(10f));
+            g.setColor(Color.WHITE);
+            g.drawString("Hold Z to open", (int) getX() -15, (int) (getY() - 10));
         }
 //        showBounds(g);
     }

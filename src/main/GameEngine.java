@@ -23,13 +23,13 @@ public class GameEngine extends Canvas implements Runnable {
     private static final int SCREEN_OFFSET = 16 * 3;
 
     private boolean running;
-    private GameUI gameUI;
 
     private int mapLevel = 1;
     private static final int totalLevel = 3;
     private HashMap<Integer, Integer> highScore;
     private HashMap<Integer, Integer> score;
 
+    private GameUI gameUI;
     private Thread thread;
     private ObjectHandler handler;
     private static Texture tex;
@@ -154,6 +154,13 @@ public class GameEngine extends Canvas implements Runnable {
         handler.cleanHandler();
         this.mapLevel++;
         loadMap(mapLevel);
+    }
+
+    public void restartLevel() {
+        handler.cleanHandler();
+        this.mapLevel = 1;
+        gameUI.setInGameStatus(GameStatus.RUNNING);
+        loadMap(1);
     }
 
     public boolean previousMapLevel() {

@@ -74,6 +74,11 @@ public class GameKey implements KeyListener {
                     engine.loadMap(engine.getMapLevel());
                 }
                 break;
+            case KeyEvent.VK_R:
+                if (gameUI.getInGameStatus() == GameStatus.GAME_OVER) {
+                    engine.restartLevel();
+                }
+                break;
             case KeyEvent.VK_P:
                 if (gameUI.getInGameStatus() != GameStatus.PAUSED) {
                     gameUI.setInGameStatus(GameStatus.PAUSED);
