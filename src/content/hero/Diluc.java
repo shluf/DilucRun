@@ -28,7 +28,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
     private boolean isRight = true;
 
     private int level = 1;
-    private int lives = 5;
+    private int lives = 3;
     private int arrow = 0;
 
     private boolean levelDecreased = false;

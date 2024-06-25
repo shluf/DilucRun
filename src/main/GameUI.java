@@ -87,6 +87,7 @@ public class GameUI extends JPanel {
             drawAcquiredCoins(g2);
             drawKilledSlimes(g2);
             drawAcquiredScore(g2);
+            drawShowArrow(g2);
 
 //            if(gameStatus == GameStatus.PAUSED){
 //                drawPauseScreen(g2);
@@ -173,19 +174,25 @@ public class GameUI extends JPanel {
     private void drawAcquiredCoins(Graphics2D g2) {
         g2.setFont(getGameFont().deriveFont(20f));
         g2.setColor(Color.WHITE);
-        g2.drawString((handler.getCoinPicked().size()+"/"+levelCreator.getMinimumCoin()), 300, 40);
+        g2.drawString(("Coins: "+handler.getCoinPicked().size()+"/"+levelCreator.getMinimumCoin()), 300, 40);
     }
 
     private void drawRemainingLives(Graphics2D g2) {
-        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setFont(getGameFont().deriveFont(10f));
         g2.setColor(Color.WHITE);
-        g2.drawString("" + handler.getHero().getLives(), 50, 40);
+        g2.drawString("Health: " + handler.getHero().getLives(), 50, 60);
+    }
+
+    public void drawShowArrow(Graphics2D g2){
+        g2.setFont(getGameFont().deriveFont(10f));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Arrows: " + handler.getHero().getArrow(), 50, 80);
     }
 
     private void drawHeroLevel(Graphics2D g2) {
-        g2.setFont(getGameFont().deriveFont(20f));
+        g2.setFont(getGameFont().deriveFont(10f));
         g2.setColor(Color.WHITE);
-        g2.drawString("" + handler.getHero().getLevel(), 100, 40);
+        g2.drawString("Hero Level: " + handler.getHero().getLevel(), 50, 40);
     }
 
     private void drawMapLevel(Graphics2D g2) {
@@ -197,7 +204,7 @@ public class GameUI extends JPanel {
     private void drawKilledSlimes(Graphics2D g2) {
         g2.setFont(getGameFont().deriveFont(20f));
         g2.setColor(Color.WHITE);
-        g2.drawString("Slime: " + handler.getDeathSlime().size(), GameEngine.getScreenWidth()/2, 40);
+        g2.drawString("Slime: " + handler.getDeathSlime().size(), 575, 40);
     }
 
     private void drawAcquiredScore(Graphics2D g2) {
