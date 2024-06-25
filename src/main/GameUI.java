@@ -215,6 +215,8 @@ public class GameUI extends JPanel {
         g2.setFont(gameFont.deriveFont(50f));
         g2.setColor(Color.WHITE);
         g2.drawString("GAME OVER", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
+        g2.setFont(gameFont.deriveFont(20f));
+        g2.drawString("PRESS [R] TO RETRY", GameEngine.getWindowWidth()/2-250 + 50, GameEngine.getWindowHeight()/2 + 50);
     }
 
 ////////////////////// End in Game UI
@@ -228,8 +230,8 @@ public class GameUI extends JPanel {
         g2.drawString("Level 1 " + engine.getScore(1), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+50);
         g2.drawString("Level 2 " + engine.getScore(2), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+75);
         g2.drawString("Level 3 " + engine.getScore(3), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+100);
-        g2.drawString("Total Score ", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+130);
-        g2.drawString("" + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+155);
+        g2.drawString("Total Score " + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+130);
+//        g2.drawString("" + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+155);
     }
 
     private void drawPausedScreen(Graphics2D g2) {

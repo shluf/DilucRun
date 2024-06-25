@@ -339,7 +339,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
 //        System.out.println("Jump: " + jumped);
 //        System.out.println("Action: " + action);
 
-        showBounds(g);
+//        showBounds(g);
     }
 
     @Override
