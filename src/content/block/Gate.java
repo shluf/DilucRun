@@ -17,7 +17,7 @@ public class Gate extends GameObject {
 
     private boolean opened = false;
     private boolean enterable = false;
-    private boolean notify = false;
+    private int notify = 0;
 
     private final int minimumCoin;
 
@@ -52,14 +52,17 @@ public class Gate extends GameObject {
             animGate.drawAnimation(g, (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
         }
 
-        if (notify) {
-            g.setFont(gameUI.getGameFont().deriveFont(10f));
-            g.setColor(Color.WHITE);
-            g.drawString("Locked", (int) getX() + 15, (int) (getY() - 10));
-        } else {
-            g.setFont(gameUI.getGameFont().deriveFont(10f));
-            g.setColor(Color.WHITE);
-            g.drawString("Hold Z to open", (int) getX() -15, (int) (getY() - 10));
+        switch (notify){
+            case 1:
+                g.setFont(gameUI.getGameFont().deriveFont(10f));
+                g.setColor(Color.WHITE);
+                g.drawString("Locked", (int) getX() + 15, (int) (getY() - 10));
+                break;
+            case 2:
+                g.setFont(gameUI.getGameFont().deriveFont(10f));
+                g.setColor(Color.WHITE);
+                g.drawString("Hold Z to open", (int) getX() -15, (int) (getY() - 10));
+                break;
         }
 //        showBounds(g);
     }
@@ -97,7 +100,7 @@ public class Gate extends GameObject {
         this.enterable = enterable;
     }
 
-    public void setNotify(boolean notify) {
+    public void setNotify(int notify) {
         this.notify = notify;
     }
 

@@ -108,17 +108,20 @@ public class Diluc extends GameObject implements ObjectBehavior {
             if (temp.getId() == ObjectID.GATE) {
                 Gate gate = (Gate) temp;
                 boolean gameCompleted = (engine.getMapLevel() >= GameEngine.getTotalLevel());
-                gate.setNotify(false);
-                if (getBounds().intersects(gate.getOuterBounds()) && action == ObjectAction.INTERACT) {
-                    if (handler.getCoinPicked().size() >= gate.getMinimumCoin()) {
-                        gate.getAnimGate().runSingleAnimation();
-                        gate.setOpened(true);
+                gate.setNotify(0);
+                if (getBounds().intersects(gate.getOuterBounds())) {
+                    gate.setNotify(2);
+                    if (action == ObjectAction.INTERACT) {
+                        if (handler.getCoinPicked().size() >= gate.getMinimumCoin()) {
+                            gate.getAnimGate().runSingleAnimation();
+                            gate.setOpened(true);
 
-                        if (gate.getAnimGate().isFinished()) {
-                            gate.setEnterable(true);
+                            if (gate.getAnimGate().isFinished()) {
+                                gate.setEnterable(true);
+                            }
+                        } else {
+                            gate.setNotify(1);
                         }
-                    } else {
-                        gate.setNotify(true);
                     }
                 }
                 if (getBounds().intersects(gate.getBounds()) && gate.isEnterable()) {
