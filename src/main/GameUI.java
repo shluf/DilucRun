@@ -23,6 +23,8 @@ public class GameUI extends JPanel {
     private GameStatus inGameStatus = GameStatus.RUNNING;
     private Font gameFont;
 
+    private int select = 0;
+
     private final Texture tex;
 
     public GameUI(GameEngine engine, ObjectHandler handler) {
@@ -52,19 +54,30 @@ public class GameUI extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         if(gameStatus == GameStatus.START_SCREEN){
+            g.drawImage(tex.getMainMenu(), 0, 0, GameEngine.getWindowWidth(), GameEngine.getWindowHeight(), null);
             g2.setFont(gameFont.deriveFont(50f));
             g2.setColor(Color.BLACK);
-            g2.drawString("START", GameEngine.getWindowWidth()/2 - 150, GameEngine.getWindowHeight()/2);
+
+            switch (select) {
+                case 0:
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 - 70);
+                    break;
+                case 1:
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 10);
+                    break;
+                case 2:
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 90);
+                    break;
+                case 3:
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 170);
+                    break;
+            }
         }
-        else if(gameStatus == GameStatus.ABOUT_SCREEN){
-            g2.setFont(gameFont.deriveFont(50f));
-            g2.setColor(Color.WHITE);
-            g2.drawString("ABOUT", GameEngine.getWindowWidth()/2, GameEngine.getWindowHeight()/2);
+        else if(gameStatus == GameStatus.TUTORIAL){
+            g.drawImage(tex.getTutorial(), 0, 0, GameEngine.getWindowWidth(), GameEngine.getWindowHeight(), null);
         }
-        else if(gameStatus == GameStatus.HELP_SCREEN){
-            g2.setFont(gameFont.deriveFont(50f));
-            g2.setColor(Color.WHITE);
-            g2.drawString("HELP", GameEngine.getWindowWidth()/2, GameEngine.getWindowHeight()/2);
+        else if(gameStatus == GameStatus.CREDIT){
+            g.drawImage(tex.getCredits(), 0, 0, GameEngine.getWindowWidth(), GameEngine.getWindowHeight(), null);
         }
         else if (gameStatus == GameStatus.RUNNING){
 
@@ -75,7 +88,6 @@ public class GameUI extends JPanel {
             g2.translate(cam.getX(), cam.getY());
 
 
-
             drawRemainingLives(g2);
             drawHeroLevel(g2);;
             drawMapLevel(g2);;
@@ -84,12 +96,6 @@ public class GameUI extends JPanel {
             drawAcquiredScore(g2);
             drawShowArrow(g2);
 
-//            if(gameStatus == GameStatus.PAUSED){
-//                drawPauseScreen(g2);
-//            }
-//            else if(gameStatus == GameStatus.MISSION_PASSED){
-//                drawVictoryScreen(g2);
-//            }
 
             switch (inGameStatus) {
                 case PAUSED -> drawPausedScreen(g2);
@@ -248,5 +254,21 @@ public class GameUI extends JPanel {
 
     public Font getGameFont() {
         return gameFont;
+    }
+
+    public void keyUp() {
+        if (select > 0) {
+            this.select--;
+        }
+    }
+
+    public void keyDown() {
+        if (select < 3) {
+            this.select++;
+        }
+    }
+
+    public int getSelect() {
+        return select;
     }
 }

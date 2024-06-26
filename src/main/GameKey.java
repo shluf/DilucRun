@@ -29,12 +29,32 @@ public class GameKey implements KeyListener {
         int keyCode = e.getKeyCode();
         switch (keyCode) {
             case KeyEvent.VK_ESCAPE:
-                System.exit(0);
+                if (gameUI.getGameStatus() == GameStatus.RUNNING) {
+                    gameUI.setGameStatus(GameStatus.START_SCREEN);
+                    if (gameUI.getInGameStatus() != GameStatus.PAUSED) {
+                        gameUI.setInGameStatus(GameStatus.PAUSED);
+                    }
+                }
+                if (gameUI.getGameStatus() == GameStatus.TUTORIAL || gameUI.getGameStatus() == GameStatus.CREDIT) {
+                    gameUI.setGameStatus(GameStatus.START_SCREEN);
+                }
                 break;
             case KeyEvent.VK_UP:
-                if (handler.getHero().isJumped() < 2) {
-                    handler.getHero().setJumped();
-                    handler.getHero().setVelY(-10);
+                switch (gameUI.getGameStatus()) {
+                    case START_SCREEN:
+                        gameUI.keyUp();
+                        break;
+                    case RUNNING:
+                        if (handler.getHero().isJumped() < 2) {
+                            handler.getHero().setJumped();
+                            handler.getHero().setVelY(-10);
+                        }
+                        break;
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                if (gameUI.getGameStatus() == GameStatus.START_SCREEN) {
+                    gameUI.keyDown();
                 }
                 break;
             case KeyEvent.VK_LEFT:
@@ -70,8 +90,25 @@ public class GameKey implements KeyListener {
                 }
                 break;
             case KeyEvent.VK_ENTER:
-                if (handler.getGameObjs().isEmpty()) {
-                    engine.loadMap(engine.getMapLevel());
+                if (gameUI.getGameStatus() == GameStatus.START_SCREEN) {
+                    switch (gameUI.getSelect()) {
+                        case 0:
+                            if (handler.getGameObjs().isEmpty()) {
+                                engine.loadMap(engine.getMapLevel());
+                            } else {
+                                gameUI.setGameStatus(GameStatus.RUNNING);
+                            }
+                            break;
+                        case 1:
+                            gameUI.setGameStatus(GameStatus.TUTORIAL);
+                            break;
+                        case 2:
+                            gameUI.setGameStatus(GameStatus.CREDIT);
+                            break;
+                        case 3:
+                            System.exit(0);
+                            break;
+                    }
                 }
                 break;
             case KeyEvent.VK_R:

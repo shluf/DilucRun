@@ -17,12 +17,32 @@ public class ImageLoader {
             }
         }
 
-        if (type == 'a') {
+        if (type == 'm') {
             try {
-                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets" + path)));
+                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/menu" + path)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        if (type == 'l') {
+            try {
+                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/level" + path)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return image;
+    }
+
+    public BufferedImage loadImage(String path) {
+        BufferedImage image = null;
+
+        try {
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets" + path)));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return image;

@@ -8,5 +8,7 @@ public enum GameStatus {
     HELP_SCREEN,
     LEVEL_COMPLETED,
     FINISHED,
-    ABOUT_SCREEN
+    ABOUT_SCREEN,
+    TUTORIAL,
+    CREDIT
 }

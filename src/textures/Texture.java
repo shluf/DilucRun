@@ -3,6 +3,7 @@ package textures;
 import content.enemy.Slime;
 import content.hero.Diluc;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Texture {
@@ -36,6 +37,8 @@ public class Texture {
 
     private BufferedImage[] arrows;
 
+    private Image mainMenu, credits, tutorial;
+
     public Texture() {
 
         ImageLoader loader = new ImageLoader();
@@ -50,12 +53,15 @@ public class Texture {
             gateBack_sheet = loader.loadImage("/gateBack-Sheet.png",'s');
             coin_sheet = loader.loadImage("/coin-Sheet.png",'s');
             coinPick_sheet = loader.loadImage("/coinPick-Sheet.png",'s');
-            tile_sheet = loader.loadImage("/jungle-tileset.png",'a');
-            backgroundOne = loader.loadImage("/plx-1.png",'a');
-            backgroundTwo = loader.loadImage("/plx-2.png",'a');
-            backgroundThree = loader.loadImage("/plx-3.png",'a');
-            backgroundFour = loader.loadImage("/plx-4.png",'a');
-            backgroundFive = loader.loadImage("/plx-5.png",'a');
+            tile_sheet = loader.loadImage("/jungle-tileset.png");
+            backgroundOne = loader.loadImage("/plx-1.png");
+            backgroundTwo = loader.loadImage("/plx-2.png");
+            backgroundThree = loader.loadImage("/plx-3.png");
+            backgroundFour = loader.loadImage("/plx-4.png");
+            backgroundFive = loader.loadImage("/plx-5.png");
+            mainMenu = loader.loadImage("/main_menu.png", 'm');
+            tutorial = loader.loadImage("/tutorial.png", 'm');
+            credits = loader.loadImage("/credits.png", 'm');
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -351,5 +357,17 @@ public class Texture {
 
     public BufferedImage[] getArrows() {
         return arrows;
+    }
+
+    public Image getMainMenu() {
+        return mainMenu;
+    }
+
+    public Image getCredits() {
+        return credits;
+    }
+
+    public Image getTutorial() {
+        return tutorial;
     }
 }

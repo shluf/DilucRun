@@ -33,12 +33,12 @@ public class LevelCreator {
     }
 
     public boolean start(int mapLevel) {
-        setLevel("/level/Map-"+ mapLevel +".png");
+        setLevel("/Map-"+ mapLevel +".png");
         return true;
     }
 
     private void setLevel(String mapPath) {
-        this.mapTex = loader.loadImage(mapPath, 'a');
+        this.mapTex = loader.loadImage(mapPath, 'l');
 
         int width = mapTex.getWidth();
         int height = mapTex.getHeight();
