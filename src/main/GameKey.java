@@ -36,7 +36,7 @@ public class GameKey implements KeyListener {
                         engine.getMusic().stop();
                     }
                 }
-                if (gameUI.getGameStatus() == GameStatus.TUTORIAL || gameUI.getGameStatus() == GameStatus.CREDIT) {
+                if (gameUI.getGameStatus() == GameStatus.TUTORIAL || gameUI.getGameStatus() == GameStatus.CREDIT || gameUI.getGameStatus() == GameStatus.HIGHSCORES) {
                     gameUI.setGameStatus(GameStatus.START_SCREEN);
                 }
                 break;
@@ -109,7 +109,13 @@ public class GameKey implements KeyListener {
                         case 3:
                             System.exit(0);
                             break;
+                        case 4:
+                            gameUI.setGameStatus(GameStatus.HIGHSCORES);
+                            break;
                     }
+                }
+                if (gameUI.getGameStatus() == GameStatus.LEVEL_COMPLETED) {
+                    engine.nextMapLevel();
                 }
                 break;
             case KeyEvent.VK_R:

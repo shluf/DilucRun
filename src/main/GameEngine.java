@@ -2,6 +2,7 @@ package main;
 
 import content.ObjectHandler;
 import main.condition.GameStatus;
+import main.condition.Notify;
 import main.view.Windows;
 import textures.Texture;
 
@@ -10,7 +11,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameEngine extends Canvas implements Runnable {
+public class GameEngine extends Canvas implements Runnable, Notify {
     private static final int MILLIS_PER_SEC = 1000;
     private static final int NANOS_PER_SEC = 1000000000;
     private static final double NUM_TICKS = 60.0;
@@ -28,6 +29,7 @@ public class GameEngine extends Canvas implements Runnable {
     private static final int totalLevel = 3;
     private HashMap<Integer, Integer> highScore;
     private HashMap<Integer, Integer> score;
+    private int notify = 0;
 
     private GameUI gameUI;
     private Thread thread;
@@ -197,6 +199,8 @@ public class GameEngine extends Canvas implements Runnable {
                     if (entry.getValue() > highScore.get(entry.getKey())) {
                         writer.write(entry.getKey() + "=" + entry.getValue());
                         writer.newLine();
+
+                        setNotify(1);
                         System.out.println("New Highscore!!!");
                     } else {
                         writer.write(entry.getKey() + "=" + highScore.get(entry.getKey()));
@@ -261,7 +265,19 @@ public class GameEngine extends Canvas implements Runnable {
         }
     }
 
+    public int getHighScore(int mapLevel) {
+        return (highScore.get(mapLevel) == null ? 0 : highScore.get(mapLevel));
+    }
+
     public MusicPlayer getMusic() {
         return music;
+    }
+
+    public int getNotify() {
+        return notify;
+    }
+
+    public void setNotify(int notify) {
+        this.notify = notify;
     }
 }

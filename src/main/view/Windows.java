@@ -1,14 +1,13 @@
 package main.view;
 
-import main.GameEngine;
 import main.GameUI;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Windows {
-    private JFrame frame;
-    private Dimension size;
+    private final JFrame frame;
+    private final Dimension size;
 
     public Windows(int width, int height, String title, GameUI game) {
         size = new Dimension(width, height);

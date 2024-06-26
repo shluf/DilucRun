@@ -80,10 +80,10 @@ public class Diluc extends GameObject implements ObjectBehavior {
 
             if (temp.getId() == ObjectID.CHEST) {
                 Chest chest = (Chest) temp;
-                chest.setNotify(false);
+                chest.setNotify(0);
                 if (isRight && getBoundsRight().intersects(chest.getOuterBounds()) ||
                         !isRight && getBoundsLeft().intersects(chest.getOuterBounds())) {
-                    chest.setNotify(true);
+                    chest.setNotify(1);
                     if (action == ObjectAction.INTERACT) {
                         if (!chest.isOpened()) {
                             increaseLevel();
@@ -91,7 +91,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
                         }
                     }
                     if (chest.isOpened()){
-                    chest.setNotify(false);
+                    chest.setNotify(0);
                     }
                 }
             }
@@ -129,7 +129,7 @@ public class Diluc extends GameObject implements ObjectBehavior {
                     setVelX(0);
 
                     if (!gameCompleted) {
-                        engine.nextMapLevel();
+                        gameUI.setGameStatus(GameStatus.LEVEL_COMPLETED);
                     } else {
 //                        handler.cleanHandler();
                         gameUI.setInGameStatus(GameStatus.FINISHED);

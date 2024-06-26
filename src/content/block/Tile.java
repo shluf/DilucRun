@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 
 public class Tile extends GameObject {
     private final Texture tex;
-    private BufferedImage[] tile;
-    private BlockType type;
+    private final BufferedImage[] tile;
+    private final BlockType type;
 
 
     public Tile(float x, float y, float width, float height, int scale, BlockType type) {

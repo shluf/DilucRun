@@ -16,7 +16,7 @@ public class Chest extends GameObject {
     private static final int HEIGHT = 32;
 
     private boolean opened = false;
-    private boolean notify = false;
+    private int notify = 0;
     private final int type;
 
     private final GameUI gameUI;
@@ -50,7 +50,7 @@ public class Chest extends GameObject {
         } else {
             g.drawImage(chestTex[type+1], (int) (getX() + getWidth()), (int) getY(), -(int) getWidth(), (int) getHeight(), null);
         }
-        if (notify) {
+        if (notify == 1) {
             g.setFont(gameUI.getGameFont().deriveFont(10f));
             g.setColor(Color.WHITE);
             g.drawString("Press Z to open", (int) (getX() - getWidth() - 20), (int) (getY() - getHeight() - 10));
@@ -74,7 +74,7 @@ public class Chest extends GameObject {
         return opened;
     }
 
-    public void setNotify(boolean notify) {
+    public void setNotify(int notify) {
         this.notify = notify;
     }
 }

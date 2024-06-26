@@ -1,17 +1,17 @@
 package content.block;
 
 import content.GameObject;
-import content.ObjectHandler;
 import content.ObjectID;
 import main.GameEngine;
 import main.GameUI;
+import main.condition.Notify;
 import textures.Animation;
 import textures.Texture;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Gate extends GameObject {
+public class Gate extends GameObject implements Notify {
     private static final int WIDTH = 90;
     private static final int HEIGHT = 90;
 

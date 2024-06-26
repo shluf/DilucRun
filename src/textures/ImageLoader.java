@@ -9,28 +9,30 @@ public class ImageLoader {
     public BufferedImage loadImage(String path, char type) {
         BufferedImage image = null;
 
-        if (type == 's') {
-            try {
-                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/sprite" + path)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        switch (type) {
+            case 's':
+                try {
+                    image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/sprite" + path)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
 
-        if (type == 'm') {
-            try {
-                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/menu" + path)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+            case 'm':
+                try {
+                    image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/menu" + path)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
 
-        if (type == 'l') {
-            try {
-                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/level" + path)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            case 'l':
+                try {
+                    image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/assets/level" + path)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
 
         return image;

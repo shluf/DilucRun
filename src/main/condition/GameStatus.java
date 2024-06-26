@@ -5,10 +5,9 @@ public enum GameStatus {
     PAUSED,
     RUNNING,
     START_SCREEN,
-    HELP_SCREEN,
     LEVEL_COMPLETED,
     FINISHED,
-    ABOUT_SCREEN,
     TUTORIAL,
-    CREDIT
+    CREDIT,
+    HIGHSCORES
 }

@@ -12,10 +12,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class LevelCreator {
-    private GameEngine engine;
-    private GameUI gameUI;
-    private ImageLoader loader;
-    private ObjectHandler handler;
+    private final GameEngine engine;
+    private final GameUI gameUI;
+    private final ImageLoader loader;
+    private final ObjectHandler handler;
 
     private BufferedImage mapTex;
 
@@ -46,22 +46,22 @@ public class LevelCreator {
         int mapLevel = engine.getMapLevel();
         switch (mapLevel) {
             case 1:
-                minimumCoin= 10;
-                slimeAttackSpeed = 0;
+                minimumCoin= 15;
+                slimeAttackSpeed = 2;
                 slimeSpeed=2.0F;
                 gateX=181;
                 gateY=18;
                 break;
             case 2:
-                minimumCoin = handler.getCoinPicked().size() + 10;
-                slimeAttackSpeed = 2;
+                minimumCoin = 25;
+                slimeAttackSpeed = 4;
                 slimeSpeed=2.3F;
                 gateX=181;
                 gateY=18;
                 break;
             case 3:
-                minimumCoin = handler.getCoinPicked().size() + 1;
-                slimeAttackSpeed = 4;
+                minimumCoin = 35;
+                slimeAttackSpeed = 8;
                 slimeSpeed=2.5F;
                 gateX=181;
                 gateY=18;

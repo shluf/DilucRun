@@ -99,9 +99,11 @@ public class Slime extends GameObject implements ObjectBehavior {
         setX(getVelX() + getX());
         setY(getVelY() + getY());
         death();
-        collision();
-        respawn();
         resetAnim();
+        if (handler.getHero() != null) {
+            collision();
+            respawn();
+        }
 
         animRun.runAnimation();
         animIdle.runAnimation();

@@ -4,8 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Animation {
-    private int speed;
-    private int frames;
+    private final int speed;
+    private final int frames;
     private int index = 0;
     private int count = 0;
     private boolean isFinished = false;

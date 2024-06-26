@@ -55,13 +55,12 @@ public class ObjectHandler {
         return new ArrayList<>(gameObjs);
     }
 
-    public int setHero(Diluc diluc) {
+    public void setHero(Diluc diluc) {
         if (this.hero != null) {
-            return -1;
+            return;
         }
         addObj(diluc);
         this.hero = diluc;
-        return 0;
     }
 
     public void removeHero() {

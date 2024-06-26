@@ -10,8 +10,8 @@ import main.GameEngine;
 import java.awt.*;
 
 public class Hollow extends GameObject {
-    private ObjectHandler handler;
-    private GameEngine engine;
+    private final ObjectHandler handler;
+    private final GameEngine engine;
 
     public Hollow(ObjectHandler handler, int blocks, GameEngine engine) {
         super(0, GameEngine.getWindowHeight()+(int)(GameEngine.getWindowHeight()/2), ObjectID.HOLLOW, 32*blocks, 30, 1);
