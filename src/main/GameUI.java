@@ -55,7 +55,7 @@ public class GameUI extends JPanel {
 
         if(gameStatus == GameStatus.START_SCREEN){
             g.drawImage(tex.getMainMenu(), 0, 0, GameEngine.getWindowWidth(), GameEngine.getWindowHeight(), null);
-            g2.setFont(gameFont.deriveFont(50f));
+            g2.setFont(gameFont.deriveFont(40f));
             g2.setColor(Color.BLACK);
 
             switch (select) {
@@ -63,13 +63,16 @@ public class GameUI extends JPanel {
                     g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 - 70);
                     break;
                 case 1:
-                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 10);
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 - 10);
                     break;
                 case 2:
-                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 90);
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 60);
                     break;
                 case 3:
-                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 170);
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 125);
+                    break;
+                case 4:
+                    g2.drawString(">", GameEngine.getWindowWidth() / 2 - 200, GameEngine.getWindowHeight() / 2 + 185);
                     break;
             }
         }
@@ -239,6 +242,9 @@ public class GameUI extends JPanel {
 ////////////////////// End in Game UI
 
     private void drawHighScores(Graphics2D g2) {
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0, 0, GameEngine.getWindowWidth(), GameEngine.getWindowHeight());
+
         g2.setFont(getGameFont().deriveFont(50f));
         g2.setColor(Color.BLACK);
         g2.drawString("High Scores", GameEngine.getScreenWidth()/4 - 20, 200);

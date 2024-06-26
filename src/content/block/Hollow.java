@@ -21,7 +21,9 @@ public class Hollow extends GameObject {
 
     @Override
     public void tick() {
-        deathLine();
+        if (handler.getHero() != null) {
+            deathLine();
+        }
     }
 
     @Override

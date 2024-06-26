@@ -101,16 +101,16 @@ public class GameKey implements KeyListener {
                             }
                             break;
                         case 1:
-                            gameUI.setGameStatus(GameStatus.TUTORIAL);
+                            gameUI.setGameStatus(GameStatus.HIGHSCORES);
                             break;
                         case 2:
-                            gameUI.setGameStatus(GameStatus.CREDIT);
+                            gameUI.setGameStatus(GameStatus.TUTORIAL);
                             break;
                         case 3:
-                            System.exit(0);
+                            gameUI.setGameStatus(GameStatus.CREDIT);
                             break;
                         case 4:
-                            gameUI.setGameStatus(GameStatus.HIGHSCORES);
+                            System.exit(0);
                             break;
                     }
                 }

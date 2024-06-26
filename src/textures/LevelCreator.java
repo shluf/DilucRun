@@ -60,7 +60,7 @@ public class LevelCreator {
                 gateY=18;
                 break;
             case 3:
-                minimumCoin = 35;
+                minimumCoin = 26;
                 slimeAttackSpeed = 8;
                 slimeSpeed=2.5F;
                 gateX=181;
