@@ -101,6 +101,7 @@ public class GameKey implements KeyListener {
                             }
                             break;
                         case 1:
+                            engine.getHighScore();
                             gameUI.setGameStatus(GameStatus.HIGHSCORES);
                             break;
                         case 2:
