@@ -34,6 +34,8 @@ public class GameEngine extends Canvas implements Runnable {
     private ObjectHandler handler;
     private static Texture tex;
 
+    private MusicPlayer music;
+
     public GameEngine() {
         initialize();
     }
@@ -55,7 +57,10 @@ public class GameEngine extends Canvas implements Runnable {
         score = new HashMap<>();
         getHighScore();
 
+        music = new MusicPlayer("tetris.wav");
+        music.play();
         start();
+        
     }
 
     private synchronized void start() {

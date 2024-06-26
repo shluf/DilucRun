@@ -15,12 +15,13 @@ public class MusicPlayer {
     public MusicPlayer(String filePath) {
         try {
             // Open the audio file
-            File audioFile = new File("/assets/bgm/" + filePath);
+            File audioFile = new File("src/assets/bgm/" + filePath);
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
             // Get a clip resource
             audioClip = AudioSystem.getClip();
             audioClip.open(audioStream);
+            audioClip.loop(Clip.LOOP_CONTINUOUSLY);
 
             // Get the volume control
             volumeControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
