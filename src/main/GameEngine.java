@@ -123,7 +123,6 @@ public class GameEngine extends Canvas implements Runnable {
         }
 
         if (gameUI.getGameStatus() == GameStatus.RUNNING && gameUI.getInGameStatus() == GameStatus.RUNNING) {
-            System.out.println(gameUI.getInGameStatus() + " " + gameUI.getGameStatus());
             music.play();
         }
     }
