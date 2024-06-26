@@ -3,7 +3,7 @@ package textures;
 import content.ObjectHandler;
 import content.block.*;
 import content.enemy.Slime;
-import content.enemy.SlimeHolder;
+import content.block.SlimeHolder;
 import content.hero.Diluc;
 import main.GameEngine;
 import main.GameUI;

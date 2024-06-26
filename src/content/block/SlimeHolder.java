@@ -1,7 +1,6 @@
-package content.enemy;
+package content.block;
 
 import content.ObjectID;
-import content.block.Square;
 
 public class SlimeHolder extends Square {
 
