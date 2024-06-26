@@ -195,7 +195,7 @@ public class GameUI extends JPanel {
     public void drawShowArrow(Graphics2D g2){
         g2.setFont(getGameFont().deriveFont(10f));
         g2.setColor(Color.WHITE);
-        g2.drawString("Arrows: " + handler.getHero().getArrow(), 50, 80);
+        g2.drawString("Arrows: " + handler.getArrow(), 50, 80);
     }
 
     private void drawHeroLevel(Graphics2D g2) {

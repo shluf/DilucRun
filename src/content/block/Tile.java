@@ -8,7 +8,7 @@ import textures.Texture;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Tile extends GameObject {
+public class Tile extends Square {
     private final Texture tex;
     private final BufferedImage[] tile;
     private final BlockType type;
@@ -23,13 +23,9 @@ public class Tile extends GameObject {
     }
 
     @Override
-    public void tick() {
-
-    }
-
-    @Override
     public void render(Graphics g) {
-//        showBounds(g);
+//        super.showBounds(g);
+
         switch (type) {
             case GROUND_TOP:
                 g.drawImage(tile[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
@@ -53,17 +49,5 @@ public class Tile extends GameObject {
                 g.drawImage(tile[4], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
                 break;
         }
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return new Rectangle((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
-    }
-
-    private void showBounds(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-
-        g.setColor(Color.red);
-        g2.draw(getBounds());
     }
 }

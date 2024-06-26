@@ -6,12 +6,13 @@ import content.ObjectHandler;
 import content.ObjectID;
 import main.GameEngine;
 import main.GameUI;
+import main.condition.Notify;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class Chest extends GameObject {
+public class Chest extends Square implements Notify {
     private static final int WIDTH = 32;
     private static final int HEIGHT = 32;
 
@@ -55,11 +56,6 @@ public class Chest extends GameObject {
             g.setColor(Color.WHITE);
             g.drawString("Press Z to open", (int) (getX() - getWidth() - 20), (int) (getY() - getHeight() - 10));
         }
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return new Rectangle((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
     }
 
     public Rectangle getOuterBounds() {

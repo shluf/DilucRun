@@ -13,6 +13,7 @@ public class ObjectHandler {
     private final List<Slime> deathSlime;
     private final List<Coin> coinPicked;
     private Diluc hero;
+    private int arrow;
 
     public ObjectHandler() {
         gameObjs = new ArrayList<>();
@@ -73,6 +74,22 @@ public class ObjectHandler {
 
     public Diluc getHero() {
         return hero;
+    }
+
+    public int getArrow() {
+        return arrow;
+    }
+
+    public void increaseArrow() {
+        this.arrow++;
+    }
+
+    public void decreaseArrow() {
+        this.arrow--;
+    }
+
+    public void setArrow(int arrow) {
+        this.arrow = arrow;
     }
 
     public List<Slime> getDeathSlime() {

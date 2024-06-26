@@ -29,7 +29,6 @@ public class Diluc extends GameObject implements ObjectBehavior {
 
     private int level = 1;
     private int lives = 3;
-    private int arrow = 0;
 
     private boolean levelDecreased = false;
 
@@ -201,7 +200,9 @@ public class Diluc extends GameObject implements ObjectBehavior {
     private void death() {
         if (action == ObjectAction.DEATH) {
             level = 1;
+            handler.setArrow(0);
             handler.clearDeathSlime();
+
             if (lives > 1) {
                 if (!levelDecreased) {
                     decreaseLives();
@@ -220,13 +221,13 @@ public class Diluc extends GameObject implements ObjectBehavior {
     }
 
     private void bow() {
-        if (action == ObjectAction.BOW && arrow > 0) {
+        if (action == ObjectAction.BOW && handler.getArrow() > 0) {
             if (animBow.isFinished()) {
                 animBow.reset();
             }
             animBow.runSingleAnimation();
             if (animBow.isFinished()) {
-                arrow--;
+                handler.decreaseArrow();
                 Arrow shoot = new Arrow(getX(), getY(), 1, isRight, handler);
                 handler.addObj(shoot);
                 setAction(ObjectAction.IDLE);
@@ -445,8 +446,8 @@ public class Diluc extends GameObject implements ObjectBehavior {
             this.level++;
             System.out.println("Level : " + level);
         } else {
-            this.arrow++;
-            System.out.println("Sisa Panah : " + arrow);
+            handler.increaseArrow();
+            System.out.println("Sisa Panah : " + handler.getArrow());
         }
     }
 
@@ -461,10 +462,6 @@ public class Diluc extends GameObject implements ObjectBehavior {
 
     public Animation getAnimInteract() {
         return animInteract;
-    }
-
-    public int getArrow() {
-        return arrow;
     }
 
     private void uploadScore() {

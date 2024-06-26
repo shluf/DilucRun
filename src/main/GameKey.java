@@ -85,7 +85,7 @@ public class GameKey implements KeyListener {
                 handler.getHero().setAction(ObjectAction.INTERACT);
                 break;
             case KeyEvent.VK_X:
-                if (handler.getHero().getLevel() >= 3 && handler.getHero().getArrow() > 0) {
+                if (handler.getHero().getLevel() >= 3 && handler.getArrow() > 0) {
                     handler.getHero().setVelX(0);
                     handler.getHero().setAction(ObjectAction.BOW);
                 }
