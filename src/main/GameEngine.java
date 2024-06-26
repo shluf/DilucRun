@@ -58,7 +58,7 @@ public class GameEngine extends Canvas implements Runnable {
         getHighScore();
 
         music = new MusicPlayer("tetris.wav");
-        music.play();
+
         start();
         
     }
@@ -120,6 +120,11 @@ public class GameEngine extends Canvas implements Runnable {
     private void tick() {
         if (handler.getHero() != null) {
             gameUI.tick();
+        }
+
+        if (gameUI.getGameStatus() == GameStatus.RUNNING && gameUI.getInGameStatus() == GameStatus.RUNNING) {
+            System.out.println(gameUI.getInGameStatus() + " " + gameUI.getGameStatus());
+            music.play();
         }
     }
 
@@ -255,5 +260,9 @@ public class GameEngine extends Canvas implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public MusicPlayer getMusic() {
+        return music;
     }
 }

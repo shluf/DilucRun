@@ -21,7 +21,6 @@ public class MusicPlayer {
             // Get a clip resource
             audioClip = AudioSystem.getClip();
             audioClip.open(audioStream);
-            audioClip.loop(Clip.LOOP_CONTINUOUSLY);
 
             // Get the volume control
             volumeControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -36,6 +35,7 @@ public class MusicPlayer {
             audioClip.setMicrosecondPosition(clipPosition);
             isPaused = false;
         }
+        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
         audioClip.start();
         isPlaying = true;
     }

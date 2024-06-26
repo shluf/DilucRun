@@ -33,6 +33,7 @@ public class GameKey implements KeyListener {
                     gameUI.setGameStatus(GameStatus.START_SCREEN);
                     if (gameUI.getInGameStatus() != GameStatus.PAUSED) {
                         gameUI.setInGameStatus(GameStatus.PAUSED);
+                        engine.getMusic().stop();
                     }
                 }
                 if (gameUI.getGameStatus() == GameStatus.TUTORIAL || gameUI.getGameStatus() == GameStatus.CREDIT) {
@@ -119,6 +120,7 @@ public class GameKey implements KeyListener {
             case KeyEvent.VK_P:
                 if (gameUI.getInGameStatus() != GameStatus.PAUSED) {
                     gameUI.setInGameStatus(GameStatus.PAUSED);
+                    engine.getMusic().stop();
                 } else {
                     gameUI.setInGameStatus(GameStatus.RUNNING);
                 }
