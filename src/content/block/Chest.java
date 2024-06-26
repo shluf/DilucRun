@@ -38,7 +38,7 @@ public class Chest extends GameObject {
 
     @Override
     public void tick() {
-        if (handler.getHero().getAction() == ObjectAction.RESPAWN) {
+        if (handler.getHero() != null && handler.getHero().getAction() == ObjectAction.RESPAWN) {
             setOpened(false);
         }
     }
