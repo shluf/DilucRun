@@ -249,9 +249,9 @@ public class GameUI extends JPanel {
         g2.setColor(Color.BLACK);
         g2.drawString("High Scores", GameEngine.getScreenWidth()/4 - 20, 200);
         g2.setFont(getGameFont().deriveFont(30f));
-        g2.drawString("level 1: "+ engine.getHighScore(1), GameEngine.getScreenWidth()/2 -180, 300);
-        g2.drawString("level 2: "+ engine.getHighScore(2), GameEngine.getScreenWidth()/2 -180, 340);
-        g2.drawString("level 3: "+ engine.getHighScore(3), GameEngine.getScreenWidth()/2 -180, 380);
+        g2.drawString("level 1: "+ engine.getHighScore(1), GameEngine.getScreenWidth()/2 -150, 300);
+        g2.drawString("level 2: "+ engine.getHighScore(2), GameEngine.getScreenWidth()/2 -150, 340);
+        g2.drawString("level 3: "+ engine.getHighScore(3), GameEngine.getScreenWidth()/2 -150, 380);
     }
 
     private void drawVictory(Graphics2D g2) {
