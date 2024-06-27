@@ -257,13 +257,13 @@ public class GameUI extends JPanel {
     private void drawVictory(Graphics2D g2) {
         g2.setFont(getGameFont().deriveFont(50f));
         g2.setColor(Color.WHITE);
-        g2.drawString("Victory", GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2);
+        g2.drawString("Victory", GameEngine.getWindowWidth()/2 , GameEngine.getWindowHeight()/2);
 
         g2.setFont(getGameFont().deriveFont(20f));
-        g2.drawString("Level 1 " + engine.getScore(1), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+50);
-        g2.drawString("Level 2 " + engine.getScore(2), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+75);
-        g2.drawString("Level 3 " + engine.getScore(3), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+100);
-        g2.drawString("Total Score " + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+130);
+        g2.drawString("Level 1 " + engine.getScore(1), GameEngine.getWindowWidth()/2 - 250, GameEngine.getWindowHeight()/2+50);
+        g2.drawString("Level 2 " + engine.getScore(2), GameEngine.getWindowWidth()/2 - 250, GameEngine.getWindowHeight()/2+75);
+        g2.drawString("Level 3 " + engine.getScore(3), GameEngine.getWindowWidth()/2 - 250, GameEngine.getWindowHeight()/2+100);
+        g2.drawString("Total Score " + engine.getTotalScore(), GameEngine.getWindowWidth()/2 - 250, GameEngine.getWindowHeight()/2+130);
 //        g2.drawString("" + engine.getTotalScore(), GameEngine.getWindowWidth()/2-250 , GameEngine.getWindowHeight()/2+155);
     }
 
